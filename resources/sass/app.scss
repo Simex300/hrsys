@@ -1,0 +1,49 @@
+// Variables
+@import 'variables';
+
+// My SCSS
+// -- Layout --
+@import './layout/sidebar.scss';
+// -- Common --
+@import './common/card.scss';
+// -- Modules --
+@import './employee/employee.scss';
+
+:root {
+    font-size: 62.5%; // 1rem = 10px
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+a {
+    text-decoration: none;
+}
+
+.screen {
+    display: grid;
+    grid-template-columns: minmax(10rem, 2fr) 9fr;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+@media (max-width: 1000px) {
+    .screen {
+        grid-template-columns: 8rem 1fr;
+    }
+}

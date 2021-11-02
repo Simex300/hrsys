@@ -1,0 +1,30 @@
+.card {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+
+    margin-top: 2rem;
+
+    max-height: 8rem;
+
+    &__image {
+        max-width: 8rem;
+        max-height: 8rem;
+
+        border-radius: 50%;
+    }
+
+    &__container {
+        display: grid;
+        grid-template-rows: 3rem 3fr 1fr;
+
+        max-height: 8rem;
+
+        &__title {
+            font-size: 1.8rem;
+        }
+
+        &__body, &__footer {
+            font-size: 1.4rem;
+        }
+    }
+}

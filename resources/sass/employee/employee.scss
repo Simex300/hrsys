@@ -1,0 +1,95 @@
+.employee {
+    margin-top: 2.2rem;
+    margin-left: 2rem;
+
+    &__title {
+        margin-bottom: 2rem;
+
+        font-size: 2.8rem;
+        color: $font-color;
+    }
+
+    &__options {
+        display: grid;
+        grid-template-columns: 7fr 1fr;
+    }
+}
+
+// TODO: Move definition to a separate file later on the line
+.search {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+
+    &__icon {
+        font-size: 2rem;
+        align-self: center;
+        justify-self: center;
+    }
+
+    &__label {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+
+        font-size: 1.4rem;
+
+        span {
+            align-self: center;
+            padding-left: .4rem;
+        }
+
+        input {
+            padding-bottom: .4rem;
+            padding-left: .4rem;
+
+            font-size: 1.6rem;
+
+            border: none;
+            border-bottom: 1px solid #000;
+
+            &:focus {
+                box-shadow: 0px 1px 0px #000;
+            }
+        }
+    }
+}
+
+// TODO: Move definition to a separate file later on the line
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(4rem, 1fr));
+    justify-self: center;
+
+    button {
+        align-self: center;
+        width: 3.2rem;
+        height: 3.2rem;
+
+        border: none;
+        border-radius: .5rem;
+
+        font-size: 1.6rem;
+
+        cursor: pointer;
+    }
+
+    &__add {
+        background-color: $primary;
+        &:hover {
+            background-color: rgba($primary, 0.7);
+        }
+    }
+
+    &__edit {
+        background-color: $warning;
+        &:hover {
+            background-color: rgba($warning, 0.7);
+        }
+    }
+
+    &__delete {
+        background-color: $danger;
+        &:hover {
+            background-color: rgba($danger, 0.7);
+        }
+    }
+}
