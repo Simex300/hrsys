@@ -12,8 +12,22 @@
     background-color: rgba(#000, .7);
 
     &__container {
+        position: relative;
+
         width: 70%;
         padding: 4rem 2rem;
         background-color: $body-bg;
+
+        &__close {
+            position: absolute;
+            top: 12%;
+            left: 95%;
+
+            border: 0;
+            background-color: transparent;
+
+            font-size: 2.4rem;
+            cursor: pointer;
+        }
     }
 }

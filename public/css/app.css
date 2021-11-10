@@ -117,9 +117,19 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 .modal__container {
+  position: relative;
   width: 70%;
   padding: 4rem 2rem;
   background-color: #f8fafc;
+}
+.modal__container__close {
+  position: absolute;
+  top: 12%;
+  left: 95%;
+  border: 0;
+  background-color: transparent;
+  font-size: 2.4rem;
+  cursor: pointer;
 }
 
 .employee {
@@ -218,6 +228,7 @@
   border: 0;
   font-size: 1.4rem;
   background-color: #84a9ac;
+  cursor: pointer;
 }
 
 :root {

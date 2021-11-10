@@ -2106,7 +2106,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    title: String
+  }
+});
 
 /***/ }),
 
@@ -2157,8 +2161,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  setup: function setup() {}
+  props: ['showModal'],
+  methods: {
+    closeModal: function closeModal() {
+      this.$emit('onClose');
+    }
+  }
 });
 
 /***/ }),
@@ -2341,9 +2351,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -2355,6 +2362,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      modalShow: false,
       employees: []
     };
   },
@@ -2364,17 +2372,26 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("http://localhost:8000/api/employees").then(function (response) {
       _this.employees = response.data;
     });
-  } //   methods: {
-  //     deleteEmployee(id) {
-  //       this.axios
-  //         .delete(`http://localhost:8000/api/employees/${id}`)
-  //         .then((response) => {
-  //           let i = this.employees.map((data) => data.id).indexOf(id);
-  //           this.employees.splice(i, 1);
-  //         });
-  //     },
-  //   },
+  },
+  methods: {
+    openModal: function openModal() {
+      this.modalShow = true;
+    },
+    closeModal: function closeModal() {
+      this.modalShow = false;
+    },
+    deleteEmployee: function deleteEmployee(id) {
+      var _this2 = this;
 
+      this.axios["delete"]("http://localhost:8000/api/employees/".concat(id)).then(function (response) {
+        var i = _this2.employees.map(function (data) {
+          return data.id;
+        }).indexOf(id);
+
+        _this2.employees.splice(i, 1);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -39186,35 +39203,28 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("img", {
-        staticClass: "card__image",
-        attrs: { src: "https://via.placeholder.com/80", alt: "..." }
-      }),
+  return _c("div", { staticClass: "card" }, [
+    _c("img", {
+      staticClass: "card__image",
+      attrs: { src: "https://via.placeholder.com/80", alt: "..." }
+    }),
+    _vm._v(" "),
+    _c("div", { staticClass: "card__container" }, [
+      _c("h5", { staticClass: "card__container__title" }, [
+        _vm._v(_vm._s(_vm.title))
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card__container" }, [
-        _c("h5", { staticClass: "card__container__title" }, [
-          _vm._v("Employee Name")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "card__container__body" }, [
-          _vm._v("Relevant information goes here")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "card__container__footer" }, [
-          _vm._v("Absence time: 0")
-        ])
+      _c("p", { staticClass: "card__container__body" }, [
+        _vm._v("Relevant information goes here")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "card__container__footer" }, [
+        _vm._v("Absence time: 0")
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39275,9 +39285,39 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal" }, [
-    _c("div", { staticClass: "modal__container" }, [_vm._t("default")], 2)
-  ])
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.showModal,
+          expression: "showModal"
+        }
+      ],
+      staticClass: "modal"
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "modal__container" },
+        [
+          _c(
+            "button",
+            {
+              staticClass: "modal__container__close",
+              on: { click: _vm.closeModal }
+            },
+            [_c("i", { staticClass: "fas fa-times" })]
+          ),
+          _vm._v(" "),
+          _vm._t("default")
+        ],
+        2
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39611,19 +39651,48 @@ var render = function() {
     [
       _c("h2", { staticClass: "employee__title" }, [_vm._v("Employees")]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "employee__options" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "actions" }, [
+          _c(
+            "button",
+            { staticClass: "actions__add", on: { click: _vm.openModal } },
+            [_c("i", { staticClass: "fas fa-plus" })]
+          ),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2)
+        ])
+      ]),
       _vm._v(" "),
-      _c("Card"),
+      _vm._l(this.employees, function(employee) {
+        return _c("Card", {
+          key: employee.id,
+          attrs: {
+            title:
+              employee.first_name +
+              " " +
+              employee.middle_name[0] +
+              " " +
+              employee.last_name
+          }
+        })
+      }),
       _vm._v(" "),
-      _c("Card"),
-      _vm._v(" "),
-      _c("Card"),
-      _vm._v(" "),
-      _c("Card"),
-      _vm._v(" "),
-      _c("Modal", [_c("EmployeeForm")], 1)
+      _c(
+        "Modal",
+        {
+          ref: "employeeModal",
+          attrs: { showModal: _vm.modalShow },
+          on: { onClose: _vm.closeModal }
+        },
+        [_c("EmployeeForm")],
+        1
+      )
     ],
-    1
+    2
   )
 }
 var staticRenderFns = [
@@ -39631,33 +39700,33 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "employee__options" }, [
-      _c("div", { staticClass: "search" }, [
-        _c("i", { staticClass: "fas fa-search search__icon" }),
-        _vm._v(" "),
-        _c("label", { staticClass: "search__label label" }, [
-          _c("span", [_vm._v("Search")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "search__input",
-            attrs: { type: "text", placeholder: "Search by Employee Name" }
-          })
-        ])
-      ]),
+    return _c("div", { staticClass: "search" }, [
+      _c("i", { staticClass: "fas fa-search search__icon" }),
       _vm._v(" "),
-      _c("div", { staticClass: "actions" }, [
-        _c("button", { staticClass: "actions__add" }, [
-          _c("i", { staticClass: "fas fa-plus" })
-        ]),
+      _c("label", { staticClass: "search__label label" }, [
+        _c("span", [_vm._v("Search")]),
         _vm._v(" "),
-        _c("button", { staticClass: "actions__edit" }, [
-          _c("i", { staticClass: "fas fa-edit" })
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "actions__delete" }, [
-          _c("i", { staticClass: "fas fa-trash" })
-        ])
+        _c("input", {
+          staticClass: "search__input",
+          attrs: { type: "text", placeholder: "Search by Employee Name" }
+        })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "actions__edit" }, [
+      _c("i", { staticClass: "fas fa-edit" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("button", { staticClass: "actions__delete" }, [
+      _c("i", { staticClass: "fas fa-trash" })
     ])
   }
 ]

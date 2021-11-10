@@ -10,7 +10,7 @@
                 </label>
             </div>
             <div class="actions">
-                <button class="actions__add">
+                <button class="actions__add" @click="openModal">
                     <i class="fas fa-plus"></i>
                 </button>
                 <button class="actions__edit">
@@ -21,11 +21,8 @@
                 </button>
             </div>
         </div>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Modal>
+        <Card v-for="employee in this.employees" :key="employee.id" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" />
+        <Modal ref="employeeModal" :showModal="modalShow" @onClose="closeModal">
             <EmployeeForm/>
         </Modal>
     </div>
@@ -43,6 +40,7 @@
         },
         data() {
             return {
+                modalShow: false,
                 employees: [],
             };
         },
@@ -51,15 +49,21 @@
                 this.employees = response.data;
             });
         },
-        //   methods: {
-        //     deleteEmployee(id) {
-        //       this.axios
-        //         .delete(`http://localhost:8000/api/employees/${id}`)
-        //         .then((response) => {
-        //           let i = this.employees.map((data) => data.id).indexOf(id);
-        //           this.employees.splice(i, 1);
-        //         });
-        //     },
-        //   },
+        methods: {
+            openModal() {
+                this.modalShow = true
+            },
+            closeModal() {
+                this.modalShow = false
+            },
+            deleteEmployee(id) {
+                this.axios
+                .delete(`http://localhost:8000/api/employees/${id}`)
+                .then((response) => {
+                    let i = this.employees.map((data) => data.id).indexOf(id);
+                    this.employees.splice(i, 1);
+                });
+            },
+        },
     };
 </script>
