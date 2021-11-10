@@ -6,8 +6,11 @@
 @import './layout/sidebar.scss';
 // -- Common --
 @import './common/card.scss';
+@import './common/input.scss';
+@import './common/modal.scss';
 // -- Modules --
 @import './employee/employee.scss';
+@import './employee/employeeForm.scss';
 
 :root {
     font-size: 62.5%; // 1rem = 10px

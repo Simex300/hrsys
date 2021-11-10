@@ -1,0 +1,19 @@
+.modal {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(#000, .7);
+
+    &__container {
+        width: 70%;
+        padding: 4rem 2rem;
+        background-color: $body-bg;
+    }
+}

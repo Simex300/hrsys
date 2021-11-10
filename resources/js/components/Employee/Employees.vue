@@ -4,7 +4,7 @@
         <div class="employee__options">
             <div class="search">
                 <i class="fas fa-search search__icon"></i>
-                <label class="search__label">
+                <label class="search__label label">
                     <span>Search</span>
                     <input type="text" class="search__input" placeholder="Search by Employee Name">
                 </label>
@@ -25,14 +25,21 @@
         <Card />
         <Card />
         <Card />
+        <Modal>
+            <EmployeeForm/>
+        </Modal>
     </div>
 </template>
 <script>
+    import Modal from '../Common/Modal.vue'
     import Card from '../Common/Card.vue'
+    import EmployeeForm from './EmployeeForm.vue'
 
     export default {
         components: {
             Card,
+            Modal,
+            EmployeeForm
         },
         data() {
             return {
