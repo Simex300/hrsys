@@ -6,12 +6,12 @@
         <div class="body">
             <form @submit.prevent="onSubmit" class="form">
                 <div class="form__group">
-                    <Input name="firstName" label="First Name" v-model="employee.firstName" />
-                    <Input name="middleName" label="Middle Name" v-model="employee.middleName" />
-                    <Input name="lastName" label="Last Name" v-model="employee.lastName" />
+                    <Input name="first_name" label="First Name" v-model="employee.first_name" />
+                    <Input name="middle_name" label="Middle Name" v-model="employee.middle_name" />
+                    <Input name="last_name" label="Last Name" v-model="employee.last_name" />
                 </div>
                 <div class="form__group">
-                    <Input name="dateOfBirth" label="Date of Birth" v-model="employee.dateOfBirth" />
+                    <Input name="date_of_birth" label="Date of Birth" v-model="employee.date_of_birth" />
                     <Input name="gender" label="Gender" v-model="employee.gender" />
                 </div>
                 <div class="form__group">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form__group">
                     <Input name="salary" label="Salary" v-model="employee.salary" />
-                    <Input name="hireAt" label="Hire At" v-model="employee.hireAt" />
+                    <Input name="hire_at" label="Hire At" v-model="employee.hire_at" />
                 </div>
                 <div class="form__group footer">
                     <button>Submit</button>
@@ -41,43 +41,25 @@ export default {
     components: {
         Input
     },
-    data() {
-        return {
-            employee: {
-                firstName: "",
-                middleName: "",
-                lastName: "",
-                dateOfBirth: "",
-                gender: "",
-                address1: "",
-                address2: "",
-                city: "",
-                state: "",
-                country: "",
-                salary: "0",
-                hireAt: this.dateFormat(Date.now())
-            }
-        }
-    },
+    props: ['employee'],
     methods: {
         onSubmit(e) {
             this.AddEmployee(this.employee);
         },
         AddEmployee(employee) {
-            axios.post("http://localhost:8000/api/employees", employee)
-            .then(res => {
-                console.log(res);
-            })
-        },
-        dateFormat(date) {
-            let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];
-            return format.map(val => {
-                return new Intl.DateTimeFormat('es', val).format(date)
-            }).join("-");
+            if(employee.id > 0) {
+                axios.patch(`http://localhost:8000/api/employees/${employee.id}`, employee)
+                .then(res => {
+                    console.log(res);
+                })
+            }
+            else {
+                axios.post("http://localhost:8000/api/employees", employee)
+                .then(res => {
+                    console.log(res);
+                })
+            }
         }
-    },
-    setup() {
-
-    },
+    }
 }
 </script>

@@ -2108,7 +2108,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    title: String
+    data: Object,
+    title: String,
+    body: String,
+    footer: String
   }
 });
 
@@ -2263,47 +2266,23 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Input: _Common_Input_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  data: function data() {
-    return {
-      employee: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
-        dateOfBirth: "",
-        gender: "",
-        address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        country: "",
-        salary: "0",
-        hireAt: this.dateFormat(Date.now())
-      }
-    };
-  },
+  props: ['employee'],
   methods: {
     onSubmit: function onSubmit(e) {
       this.AddEmployee(this.employee);
     },
     AddEmployee: function AddEmployee(employee) {
-      axios.post("http://localhost:8000/api/employees", employee).then(function (res) {
-        console.log(res);
-      });
-    },
-    dateFormat: function dateFormat(date) {
-      var format = [{
-        year: 'numeric'
-      }, {
-        month: 'numeric'
-      }, {
-        day: 'numeric'
-      }];
-      return format.map(function (val) {
-        return new Intl.DateTimeFormat('es', val).format(date);
-      }).join("-");
+      if (employee.id > 0) {
+        axios.patch("http://localhost:8000/api/employees/".concat(employee.id), employee).then(function (res) {
+          console.log(res);
+        });
+      } else {
+        axios.post("http://localhost:8000/api/employees", employee).then(function (res) {
+          console.log(res);
+        });
+      }
     }
-  },
-  setup: function setup() {}
+  }
 });
 
 /***/ }),
@@ -2322,6 +2301,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Common_Modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Common/Modal.vue */ "./resources/js/components/Common/Modal.vue");
 /* harmony import */ var _Common_Card_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Card.vue */ "./resources/js/components/Common/Card.vue");
 /* harmony import */ var _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EmployeeForm.vue */ "./resources/js/components/Employee/EmployeeForm.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2363,22 +2348,52 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       modalShow: false,
-      employees: []
+      employees: [],
+      employee: {
+        id: 0,
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+        date_of_birth: "",
+        gender: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        country: "",
+        salary: "",
+        hire_at: this.dateFormat(Date.now())
+      }
     };
   },
   created: function created() {
     var _this = this;
 
     axios.get("http://localhost:8000/api/employees").then(function (response) {
+      for (var index = 0; index < response.data.length; index++) {
+        response.data[index] = _objectSpread(_objectSpread({}, response.data[index]), {}, {
+          selected: false
+        });
+      }
+
       _this.employees = response.data;
     });
   },
   methods: {
-    openModal: function openModal() {
+    openModal: function openModal(e, edit) {
+      if (edit) {
+        this.employee = this.employees.find(function (val) {
+          return val.selected == true;
+        });
+      }
+
       this.modalShow = true;
     },
     closeModal: function closeModal() {
       this.modalShow = false;
+    },
+    toggleSelect: function toggleSelect(e, index) {
+      this.employees[index].selected = !this.employees[index].selected;
     },
     deleteEmployee: function deleteEmployee(id) {
       var _this2 = this;
@@ -2390,6 +2405,18 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.employees.splice(i, 1);
       });
+    },
+    dateFormat: function dateFormat(date) {
+      var format = [{
+        year: 'numeric'
+      }, {
+        month: 'numeric'
+      }, {
+        day: 'numeric'
+      }];
+      return format.map(function (val) {
+        return new Intl.DateTimeFormat('es', val).format(date);
+      }).join("-");
     }
   }
 });
@@ -39203,7 +39230,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
+  return _c("div", { class: { card: true, selected: _vm.data.selected } }, [
     _c("img", {
       staticClass: "card__image",
       attrs: { src: "https://via.placeholder.com/80", alt: "..." }
@@ -39437,35 +39464,35 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "firstName", label: "First Name" },
+                attrs: { name: "first_name", label: "First Name" },
                 model: {
-                  value: _vm.employee.firstName,
+                  value: _vm.employee.first_name,
                   callback: function($$v) {
-                    _vm.$set(_vm.employee, "firstName", $$v)
+                    _vm.$set(_vm.employee, "first_name", $$v)
                   },
-                  expression: "employee.firstName"
+                  expression: "employee.first_name"
                 }
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "middleName", label: "Middle Name" },
+                attrs: { name: "middle_name", label: "Middle Name" },
                 model: {
-                  value: _vm.employee.middleName,
+                  value: _vm.employee.middle_name,
                   callback: function($$v) {
-                    _vm.$set(_vm.employee, "middleName", $$v)
+                    _vm.$set(_vm.employee, "middle_name", $$v)
                   },
-                  expression: "employee.middleName"
+                  expression: "employee.middle_name"
                 }
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "lastName", label: "Last Name" },
+                attrs: { name: "last_name", label: "Last Name" },
                 model: {
-                  value: _vm.employee.lastName,
+                  value: _vm.employee.last_name,
                   callback: function($$v) {
-                    _vm.$set(_vm.employee, "lastName", $$v)
+                    _vm.$set(_vm.employee, "last_name", $$v)
                   },
-                  expression: "employee.lastName"
+                  expression: "employee.last_name"
                 }
               })
             ],
@@ -39477,13 +39504,13 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "dateOfBirth", label: "Date of Birth" },
+                attrs: { name: "date_of_birth", label: "Date of Birth" },
                 model: {
-                  value: _vm.employee.dateOfBirth,
+                  value: _vm.employee.date_of_birth,
                   callback: function($$v) {
-                    _vm.$set(_vm.employee, "dateOfBirth", $$v)
+                    _vm.$set(_vm.employee, "date_of_birth", $$v)
                   },
-                  expression: "employee.dateOfBirth"
+                  expression: "employee.date_of_birth"
                 }
               }),
               _vm._v(" "),
@@ -39586,13 +39613,13 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "hireAt", label: "Hire At" },
+                attrs: { name: "hire_at", label: "Hire At" },
                 model: {
-                  value: _vm.employee.hireAt,
+                  value: _vm.employee.hire_at,
                   callback: function($$v) {
-                    _vm.$set(_vm.employee, "hireAt", $$v)
+                    _vm.$set(_vm.employee, "hire_at", $$v)
                   },
-                  expression: "employee.hireAt"
+                  expression: "employee.hire_at"
                 }
               })
             ],
@@ -39657,26 +39684,50 @@ var render = function() {
         _c("div", { staticClass: "actions" }, [
           _c(
             "button",
-            { staticClass: "actions__add", on: { click: _vm.openModal } },
+            {
+              staticClass: "actions__add",
+              on: {
+                click: function($event) {
+                  return _vm.openModal($event, false)
+                }
+              }
+            },
             [_c("i", { staticClass: "fas fa-plus" })]
           ),
           _vm._v(" "),
-          _vm._m(1),
+          _c(
+            "button",
+            {
+              staticClass: "actions__edit",
+              on: {
+                click: function($event) {
+                  return _vm.openModal($event, true)
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-edit" })]
+          ),
           _vm._v(" "),
-          _vm._m(2)
+          _vm._m(1)
         ])
       ]),
       _vm._v(" "),
-      _vm._l(this.employees, function(employee) {
+      _vm._l(this.employees, function(employee, index) {
         return _c("Card", {
-          key: employee.id,
+          key: index,
           attrs: {
             title:
               employee.first_name +
               " " +
               employee.middle_name[0] +
               " " +
-              employee.last_name
+              employee.last_name,
+            data: employee
+          },
+          nativeOn: {
+            click: function($event) {
+              return _vm.toggleSelect($event, index)
+            }
           }
         })
       }),
@@ -39688,7 +39739,7 @@ var render = function() {
           attrs: { showModal: _vm.modalShow },
           on: { onClose: _vm.closeModal }
         },
-        [_c("EmployeeForm")],
+        [_c("EmployeeForm", { attrs: { employee: this.employee } })],
         1
       )
     ],
@@ -39711,14 +39762,6 @@ var staticRenderFns = [
           attrs: { type: "text", placeholder: "Search by Employee Name" }
         })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "actions__edit" }, [
-      _c("i", { staticClass: "fas fa-edit" })
     ])
   },
   function() {

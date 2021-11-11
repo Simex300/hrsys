@@ -2,7 +2,9 @@
     display: grid;
     grid-template-columns: 10rem 1fr;
 
-    margin-top: 2rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    padding: 1rem;
 
     max-height: 8rem;
 
@@ -26,5 +28,9 @@
         &__body, &__footer {
             font-size: 1.4rem;
         }
+    }
+
+    &.selected {
+        background-color: rgba($main, 0.2);
     }
 }

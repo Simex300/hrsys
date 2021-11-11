@@ -65,7 +65,9 @@
 .card {
   display: grid;
   grid-template-columns: 10rem 1fr;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  margin-right: 2rem;
+  padding: 1rem;
   max-height: 8rem;
 }
 .card__image {
@@ -83,6 +85,9 @@
 }
 .card__container__body, .card__container__footer {
   font-size: 1.4rem;
+}
+.card.selected {
+  background-color: rgba(59, 105, 120, 0.2);
 }
 
 .label {

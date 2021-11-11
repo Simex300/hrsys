@@ -10,10 +10,10 @@
                 </label>
             </div>
             <div class="actions">
-                <button class="actions__add" @click="openModal">
+                <button class="actions__add" @click="openModal($event, false)">
                     <i class="fas fa-plus"></i>
                 </button>
-                <button class="actions__edit">
+                <button class="actions__edit" @click="openModal($event, true)" >
                     <i class="fas fa-edit"></i>
                 </button>
                 <button class="actions__delete">
@@ -21,9 +21,9 @@
                 </button>
             </div>
         </div>
-        <Card v-for="employee in this.employees" :key="employee.id" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" />
+        <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :data="employee" @click.native="toggleSelect($event, index)" />
         <Modal ref="employeeModal" :showModal="modalShow" @onClose="closeModal">
-            <EmployeeForm/>
+            <EmployeeForm :employee="this.employee" />
         </Modal>
     </div>
 </template>
@@ -42,19 +42,45 @@
             return {
                 modalShow: false,
                 employees: [],
+                employee: {
+                    id: 0,
+                    first_name: "",
+                    middle_name: "",
+                    last_name: "",
+                    date_of_birth: "",
+                    gender: "",
+                    address1: "",
+                    address2: "",
+                    city: "",
+                    state: "",
+                    country: "",
+                    salary: "",
+                    hire_at: this.dateFormat(Date.now()),
+                }
             };
         },
         created() {
             axios.get("http://localhost:8000/api/employees").then((response) => {
+                for (let index = 0; index < response.data.length; index++) {
+                    response.data[index] = {...response.data[index], selected: false}
+                }
                 this.employees = response.data;
             });
         },
         methods: {
-            openModal() {
-                this.modalShow = true
+            openModal(e, edit) {
+                if(edit) {
+                    this.employee = this.employees.find(val => {
+                        return val.selected == true
+                    });
+                }
+                this.modalShow = true;
             },
             closeModal() {
                 this.modalShow = false
+            },
+            toggleSelect(e, index) {
+                this.employees[index].selected = !this.employees[index].selected
             },
             deleteEmployee(id) {
                 this.axios
@@ -64,6 +90,12 @@
                     this.employees.splice(i, 1);
                 });
             },
+            dateFormat(date) {
+                let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];
+                return format.map(val => {
+                    return new Intl.DateTimeFormat('es', val).format(date)
+                }).join("-");
+            }
         },
     };
 </script>

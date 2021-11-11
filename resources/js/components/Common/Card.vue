@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div :class="{'card': true, 'selected': data.selected}">
         <img src="https://via.placeholder.com/80" class="card__image" alt="...">
         <div class="card__container">
             <h5 class="card__container__title">{{ title }}</h5>
@@ -11,7 +11,10 @@
 <script>
 export default {
     props: {
-        title: String
+        data: Object,
+        title: String,
+        body: String,
+        footer: String,
     }
 }
 </script>
