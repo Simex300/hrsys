@@ -37,15 +37,15 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $employee = new Employee([
-            'first_name' => $request->input('firstName'),
-            'middle_name' => $request->input('middleName'),
-            'last_name' => $request->input('lastName'),
+            'first_name' => $request->input('first_name'),
+            'middle_name' => $request->input('middle_name'),
+            'last_name' => $request->input('last_name'),
             'salary' => $request->input('salary'),
-            'hire_at' => $request->input('hireAt'),
+            'hire_at' => $request->input('hire_at'),
         ]);
         $employee->save();
 
-        return response()->json("Employee created successfully!");
+        return response()->json($employee);
     }
 
     /**

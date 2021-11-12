@@ -2272,13 +2272,15 @@ __webpack_require__.r(__webpack_exports__);
       this.AddEmployee(this.employee);
     },
     AddEmployee: function AddEmployee(employee) {
+      var _this = this;
+
       if (employee.id > 0) {
         axios.patch("http://localhost:8000/api/employees/".concat(employee.id), employee).then(function (res) {
-          console.log(res);
+          _this.$emit('editEmployee', res);
         });
       } else {
         axios.post("http://localhost:8000/api/employees", employee).then(function (res) {
-          console.log(res);
+          _this.$emit('addEmployee', res.data);
         });
       }
     }
@@ -2301,6 +2303,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Common_Modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Common/Modal.vue */ "./resources/js/components/Common/Modal.vue");
 /* harmony import */ var _Common_Card_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Card.vue */ "./resources/js/components/Common/Card.vue");
 /* harmony import */ var _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EmployeeForm.vue */ "./resources/js/components/Employee/EmployeeForm.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2348,6 +2362,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       modalShow: false,
+      search: "",
+      list: [],
       employees: [],
       employee: {
         id: 0,
@@ -2381,6 +2397,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     openModal: function openModal(e, edit) {
+      this.resetEmployee();
+
       if (edit) {
         this.employee = this.employees.find(function (val) {
           return val.selected == true;
@@ -2391,20 +2409,60 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     closeModal: function closeModal() {
       this.modalShow = false;
+      this.resetEmployee();
     },
     toggleSelect: function toggleSelect(e, index) {
       this.employees[index].selected = !this.employees[index].selected;
     },
-    deleteEmployee: function deleteEmployee(id) {
+    loadEmployee: function loadEmployee(data) {
+      this.employees = [data].concat(_toConsumableArray(this.employees));
+    },
+    resetEmployee: function resetEmployee() {
+      this.employee = {
+        id: 0,
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+        date_of_birth: "",
+        gender: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        country: "",
+        salary: "",
+        hire_at: this.dateFormat(Date.now())
+      };
+    },
+    searchEmployee: function searchEmployee() {
       var _this2 = this;
 
-      this.axios["delete"]("http://localhost:8000/api/employees/".concat(id)).then(function (response) {
-        var i = _this2.employees.map(function (data) {
-          return data.id;
-        }).indexOf(id);
+      if (this.list.length == 0) {
+        this.list = this.employees;
+      }
 
-        _this2.employees.splice(i, 1);
+      this.employees = this.list.filter(function (employee) {
+        return "".concat(employee.first_name.toLowerCase(), " ").concat(employee.middle_name.toLowerCase(), " ").concat(employee.last_name.toLowerCase()).includes(_this2.search.toLowerCase());
       });
+    },
+    deleteEmployee: function deleteEmployee() {
+      var _this3 = this;
+
+      var selectedEmployees = this.employees.filter(function (employee) {
+        return employee.selected;
+      });
+      selectedEmployees.forEach(function (employee) {
+        axios["delete"]("http://localhost:8000/api/employees/".concat(employee.id)).then(function (res) {
+          var index = _this3.employees.indexOf(employee);
+
+          _this3.employees.splice(index, 1);
+        });
+      }); // this.axios
+      // .delete(`http://localhost:8000/api/employees/${id}`)
+      // .then((response) => {
+      //     let i = this.employees.map((data) => data.id).indexOf(id);
+      //     this.employees.splice(i, 1);
+      // });
     },
     dateFormat: function dateFormat(date) {
       var format = [{
@@ -39679,7 +39737,38 @@ var render = function() {
       _c("h2", { staticClass: "employee__title" }, [_vm._v("Employees")]),
       _vm._v(" "),
       _c("div", { staticClass: "employee__options" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "search" }, [
+          _c("i", { staticClass: "fas fa-search search__icon" }),
+          _vm._v(" "),
+          _c("label", { staticClass: "search__label label" }, [
+            _c("span", [_vm._v("Search")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "search__input",
+              attrs: { type: "text", placeholder: "Search by Employee Name" },
+              domProps: { value: _vm.search },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search = $event.target.value
+                  },
+                  _vm.searchEmployee
+                ]
+              }
+            })
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "actions" }, [
           _c(
@@ -39708,7 +39797,14 @@ var render = function() {
             [_c("i", { staticClass: "fas fa-edit" })]
           ),
           _vm._v(" "),
-          _vm._m(1)
+          _c(
+            "button",
+            {
+              staticClass: "actions__delete",
+              on: { click: _vm.deleteEmployee }
+            },
+            [_c("i", { staticClass: "fas fa-trash" })]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -39739,40 +39835,19 @@ var render = function() {
           attrs: { showModal: _vm.modalShow },
           on: { onClose: _vm.closeModal }
         },
-        [_c("EmployeeForm", { attrs: { employee: this.employee } })],
+        [
+          _c("EmployeeForm", {
+            attrs: { employee: this.employee },
+            on: { addEmployee: _vm.loadEmployee }
+          })
+        ],
         1
       )
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "search" }, [
-      _c("i", { staticClass: "fas fa-search search__icon" }),
-      _vm._v(" "),
-      _c("label", { staticClass: "search__label label" }, [
-        _c("span", [_vm._v("Search")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "search__input",
-          attrs: { type: "text", placeholder: "Search by Employee Name" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "actions__delete" }, [
-      _c("i", { staticClass: "fas fa-trash" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

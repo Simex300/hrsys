@@ -6,7 +6,7 @@
                 <i class="fas fa-search search__icon"></i>
                 <label class="search__label label">
                     <span>Search</span>
-                    <input type="text" class="search__input" placeholder="Search by Employee Name">
+                    <input type="text" class="search__input" placeholder="Search by Employee Name" @input="searchEmployee" v-model="search">
                 </label>
             </div>
             <div class="actions">
@@ -16,14 +16,14 @@
                 <button class="actions__edit" @click="openModal($event, true)" >
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="actions__delete">
+                <button class="actions__delete" @click="deleteEmployee">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
         </div>
         <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :data="employee" @click.native="toggleSelect($event, index)" />
         <Modal ref="employeeModal" :showModal="modalShow" @onClose="closeModal">
-            <EmployeeForm :employee="this.employee" />
+            <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" />
         </Modal>
     </div>
 </template>
@@ -41,6 +41,8 @@
         data() {
             return {
                 modalShow: false,
+                search: "",
+                list: [],
                 employees: [],
                 employee: {
                     id: 0,
@@ -69,6 +71,7 @@
         },
         methods: {
             openModal(e, edit) {
+                this.resetEmployee();
                 if(edit) {
                     this.employee = this.employees.find(val => {
                         return val.selected == true
@@ -78,17 +81,56 @@
             },
             closeModal() {
                 this.modalShow = false
+                this.resetEmployee();
             },
             toggleSelect(e, index) {
                 this.employees[index].selected = !this.employees[index].selected
             },
-            deleteEmployee(id) {
-                this.axios
-                .delete(`http://localhost:8000/api/employees/${id}`)
-                .then((response) => {
-                    let i = this.employees.map((data) => data.id).indexOf(id);
-                    this.employees.splice(i, 1);
+            loadEmployee(data) {
+                this.employees = [data, ...this.employees];
+            },
+            resetEmployee() {
+                this.employee = {
+                    id: 0,
+                    first_name: "",
+                    middle_name: "",
+                    last_name: "",
+                    date_of_birth: "",
+                    gender: "",
+                    address1: "",
+                    address2: "",
+                    city: "",
+                    state: "",
+                    country: "",
+                    salary: "",
+                    hire_at: this.dateFormat(Date.now()),
+                }
+            },
+            searchEmployee(){
+                if(this.list.length == 0) {
+                    this.list = this.employees;
+                }
+                this.employees = this.list.filter(employee => {
+                    return `${employee.first_name.toLowerCase()} ${employee.middle_name.toLowerCase()} ${employee.last_name.toLowerCase()}`.includes(this.search.toLowerCase());
+                })
+            },
+            deleteEmployee() {
+                const selectedEmployees = this.employees.filter(employee => {
+                    return employee.selected
                 });
+                selectedEmployees.forEach(employee => {
+                    axios.delete(`http://localhost:8000/api/employees/${employee.id}`)
+                    .then(res => {
+                        let index = this.employees.indexOf(employee);
+                        this.employees.splice(index, 1);
+                    })
+                })
+                // this.axios
+                // .delete(`http://localhost:8000/api/employees/${id}`)
+                // .then((response) => {
+                //     let i = this.employees.map((data) => data.id).indexOf(id);
+                //     this.employees.splice(i, 1);
+                // });
             },
             dateFormat(date) {
                 let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];

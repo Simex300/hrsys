@@ -50,13 +50,13 @@ export default {
             if(employee.id > 0) {
                 axios.patch(`http://localhost:8000/api/employees/${employee.id}`, employee)
                 .then(res => {
-                    console.log(res);
+                    this.$emit('editEmployee', res);
                 })
             }
             else {
                 axios.post("http://localhost:8000/api/employees", employee)
                 .then(res => {
-                    console.log(res);
+                    this.$emit('addEmployee', res.data);
                 })
             }
         }
