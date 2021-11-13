@@ -12,7 +12,7 @@
                 </div>
                 <div class="form__group">
                     <Input name="date_of_birth" label="Date of Birth" v-model="employee.date_of_birth" />
-                    <Input name="gender" label="Gender" v-model="employee.gender" />
+                    <Select name="gender" label="Gender" v-model="employee.gender" :options="this.gender" />
                 </div>
                 <div class="form__group">
                     <Input name="address1" label="Address 1" v-model="employee.address1" />
@@ -36,12 +36,19 @@
 </template>
 <script>
 import Input from "../Common/Input.vue"
+import Select from "../Common/Select.vue"
 
 export default {
     components: {
-        Input
+        Input,
+        Select
     },
     props: ['employee'],
+    data() {
+        return {
+            gender: {male: "Male", female: "Female"}
+        }
+    },
     methods: {
         onSubmit(e) {
             this.AddEmployee(this.employee);

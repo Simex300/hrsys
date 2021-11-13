@@ -99,14 +99,15 @@
   align-self: center;
   padding-left: 0.4rem;
 }
-.label input {
+.label input, .label select {
   padding-bottom: 0.4rem;
   padding-left: 0.4rem;
   font-size: 1.6rem;
   border: none;
   border-bottom: 1px solid #000;
+  background-color: #f8fafc;
 }
-.label input:focus {
+.label input:focus, .label select:focus {
   box-shadow: 0px 1px 0px #000;
 }
 

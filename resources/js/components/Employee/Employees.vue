@@ -87,6 +87,7 @@
                 this.employees[index].selected = !this.employees[index].selected
             },
             loadEmployee(data) {
+                data.selected = false;
                 this.employees = [data, ...this.employees];
             },
             resetEmployee() {

@@ -9,7 +9,7 @@
         padding-left: .4rem;
     }
 
-    input {
+    input, select {
         padding-bottom: .4rem;
         padding-left: .4rem;
 
@@ -17,6 +17,7 @@
 
         border: none;
         border-bottom: 1px solid #000;
+        background-color: $body-bg;
 
         &:focus {
             box-shadow: 0px 1px 0px #000;
