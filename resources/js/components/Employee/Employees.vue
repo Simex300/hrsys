@@ -4,10 +4,7 @@
         <div class="employee__options">
             <div class="search">
                 <i class="fas fa-search search__icon"></i>
-                <label class="search__label label">
-                    <span>Search</span>
-                    <input type="text" class="search__input" placeholder="Search by Employee Name" @input="searchEmployee" v-model="search">
-                </label>
+                <Input label="Search" type="text" class="search__input" placeholder="Search by Employee Name" @input="searchEmployee" v-model="search" />
             </div>
             <div class="actions">
                 <button class="actions__add" @click="openModal($event, false)">
@@ -29,12 +26,14 @@
 </template>
 <script>
     import Modal from '../Common/Modal.vue'
+    import Input from '../Common/Input.vue'
     import Card from '../Common/Card.vue'
     import EmployeeForm from './EmployeeForm.vue'
 
     export default {
         components: {
             Card,
+            Input,
             Modal,
             EmployeeForm
         },
@@ -127,12 +126,6 @@
                         this.employees.splice(index, 1);
                     })
                 })
-                // this.axios
-                // .delete(`http://localhost:8000/api/employees/${id}`)
-                // .then((response) => {
-                //     let i = this.employees.map((data) => data.id).indexOf(id);
-                //     this.employees.splice(i, 1);
-                // });
             },
             dateFormat(date) {
                 let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];

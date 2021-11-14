@@ -2196,11 +2196,6 @@ __webpack_require__.r(__webpack_exports__);
     name: String,
     placeholder: String,
     value: [String, Number]
-  },
-  data: function data() {
-    return {
-      unformattedValue: 0
-    };
   }
 });
 
@@ -2406,8 +2401,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Common_Modal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Common/Modal.vue */ "./resources/js/components/Common/Modal.vue");
-/* harmony import */ var _Common_Card_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Card.vue */ "./resources/js/components/Common/Card.vue");
-/* harmony import */ var _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EmployeeForm.vue */ "./resources/js/components/Employee/EmployeeForm.vue");
+/* harmony import */ var _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Input.vue */ "./resources/js/components/Common/Input.vue");
+/* harmony import */ var _Common_Card_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Common/Card.vue */ "./resources/js/components/Common/Card.vue");
+/* harmony import */ var _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EmployeeForm.vue */ "./resources/js/components/Employee/EmployeeForm.vue");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2452,17 +2448,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    Card: _Common_Card_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Card: _Common_Card_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Input: _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Modal: _Common_Modal_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    EmployeeForm: _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    EmployeeForm: _EmployeeForm_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -2564,12 +2559,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           _this3.employees.splice(index, 1);
         });
-      }); // this.axios
-      // .delete(`http://localhost:8000/api/employees/${id}`)
-      // .then((response) => {
-      //     let i = this.employees.map((data) => data.id).indexOf(id);
-      //     this.employees.splice(i, 1);
-      // });
+      });
     },
     dateFormat: function dateFormat(date) {
       var format = [{
@@ -40095,38 +40085,31 @@ var render = function() {
       _c("h2", { staticClass: "employee__title" }, [_vm._v("Employees")]),
       _vm._v(" "),
       _c("div", { staticClass: "employee__options" }, [
-        _c("div", { staticClass: "search" }, [
-          _c("i", { staticClass: "fas fa-search search__icon" }),
-          _vm._v(" "),
-          _c("label", { staticClass: "search__label label" }, [
-            _c("span", [_vm._v("Search")]),
+        _c(
+          "div",
+          { staticClass: "search" },
+          [
+            _c("i", { staticClass: "fas fa-search search__icon" }),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search,
-                  expression: "search"
-                }
-              ],
+            _c("Input", {
               staticClass: "search__input",
-              attrs: { type: "text", placeholder: "Search by Employee Name" },
-              domProps: { value: _vm.search },
-              on: {
-                input: [
-                  function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.search = $event.target.value
-                  },
-                  _vm.searchEmployee
-                ]
+              attrs: {
+                label: "Search",
+                type: "text",
+                placeholder: "Search by Employee Name"
+              },
+              on: { input: _vm.searchEmployee },
+              model: {
+                value: _vm.search,
+                callback: function($$v) {
+                  _vm.search = $$v
+                },
+                expression: "search"
               }
             })
-          ])
-        ]),
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "actions" }, [
           _c(

@@ -12,11 +12,6 @@ export default {
         name: String,
         placeholder: String,
         value: [String, Number],
-    },
-    data() {
-        return {
-            unformattedValue: 0
-        }
     }
 }
 </script>
