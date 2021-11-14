@@ -24,7 +24,7 @@
                     <Input type="text" name="country" label="Country" v-model="employee.country" />
                 </div>
                 <div class="form__group">
-                    <Input type="text" name="salary" label="Salary" v-model="employee.salary" />
+                    <Currency type="text" name="salary" label="Salary" v-model="employee.salary" />
                     <Input type="date" name="hire_at" label="Hire At" v-model="employee.hire_at" />
                 </div>
                 <div class="form__group footer">
@@ -35,11 +35,13 @@
     </div>
 </template>
 <script>
+import Currency from "../Common/Currency.vue"
 import Input from "../Common/Input.vue"
 import Select from "../Common/Select.vue"
 
 export default {
     components: {
+        Currency,
         Input,
         Select
     },
