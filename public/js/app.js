@@ -2349,6 +2349,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -39891,6 +39895,35 @@ var render = function() {
                     _vm.$set(_vm.employee, "last_name", $$v)
                   },
                   expression: "employee.last_name"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form__group" },
+            [
+              _c("Input", {
+                attrs: { type: "text", name: "email", label: "Email" },
+                model: {
+                  value: _vm.employee.email,
+                  callback: function($$v) {
+                    _vm.$set(_vm.employee, "email", $$v)
+                  },
+                  expression: "employee.email"
+                }
+              }),
+              _vm._v(" "),
+              _c("Input", {
+                attrs: { type: "text", name: "phone", label: "Phone" },
+                model: {
+                  value: _vm.employee.phone,
+                  callback: function($$v) {
+                    _vm.$set(_vm.employee, "phone", $$v)
+                  },
+                  expression: "employee.phone"
                 }
               })
             ],

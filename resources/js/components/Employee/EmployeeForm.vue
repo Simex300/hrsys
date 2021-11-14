@@ -11,6 +11,10 @@
                     <Input type="text" name="last_name" label="Last Name" v-model="employee.last_name" />
                 </div>
                 <div class="form__group">
+                    <Input type="text" name="email" label="Email" v-model="employee.email" />
+                    <Input type="text" name="phone" label="Phone" v-model="employee.phone" />
+                </div>
+                <div class="form__group">
                     <Input type="date" name="date_of_birth" label="Date of Birth" v-model="employee.date_of_birth" />
                     <Select name="gender" label="Gender" v-model="employee.gender" :options="this.gender" />
                 </div>
