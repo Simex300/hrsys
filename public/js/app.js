@@ -2137,11 +2137,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     label: String,
+    type: String,
     name: String,
     placeholder: String,
-    value: String
+    value: [String, Number]
   },
-  setup: function setup() {}
+  data: function data() {
+    return {
+      unformattedValue: 0
+    };
+  }
 });
 
 /***/ }),
@@ -2419,7 +2424,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         city: "",
         state: "",
         country: "",
-        salary: "",
+        salary: "0.00",
         hire_at: this.dateFormat(Date.now())
       }
     };
@@ -2458,6 +2463,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     loadEmployee: function loadEmployee(data) {
       data.selected = false;
+      this.modalShow = false;
       this.employees = [data].concat(_toConsumableArray(this.employees));
     },
     resetEmployee: function resetEmployee() {
@@ -39452,7 +39458,7 @@ var render = function() {
     _vm._v(" "),
     _c("input", {
       staticClass: "form__group__input",
-      attrs: { type: "text", name: _vm.name, placeholder: _vm.placeholder },
+      attrs: { type: _vm.type, name: _vm.name, placeholder: _vm.placeholder },
       domProps: { value: _vm.value },
       on: {
         input: function($event) {
@@ -39679,7 +39685,11 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "first_name", label: "First Name" },
+                attrs: {
+                  type: "text",
+                  name: "first_name",
+                  label: "First Name"
+                },
                 model: {
                   value: _vm.employee.first_name,
                   callback: function($$v) {
@@ -39690,7 +39700,11 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "middle_name", label: "Middle Name" },
+                attrs: {
+                  type: "text",
+                  name: "middle_name",
+                  label: "Middle Name"
+                },
                 model: {
                   value: _vm.employee.middle_name,
                   callback: function($$v) {
@@ -39701,7 +39715,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "last_name", label: "Last Name" },
+                attrs: { type: "text", name: "last_name", label: "Last Name" },
                 model: {
                   value: _vm.employee.last_name,
                   callback: function($$v) {
@@ -39719,7 +39733,11 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "date_of_birth", label: "Date of Birth" },
+                attrs: {
+                  type: "date",
+                  name: "date_of_birth",
+                  label: "Date of Birth"
+                },
                 model: {
                   value: _vm.employee.date_of_birth,
                   callback: function($$v) {
@@ -39752,7 +39770,7 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "address1", label: "Address 1" },
+                attrs: { type: "text", name: "address1", label: "Address 1" },
                 model: {
                   value: _vm.employee.address1,
                   callback: function($$v) {
@@ -39763,7 +39781,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "address2", label: "Address 2" },
+                attrs: { type: "text", name: "address2", label: "Address 2" },
                 model: {
                   value: _vm.employee.address2,
                   callback: function($$v) {
@@ -39781,7 +39799,7 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "city", label: "City" },
+                attrs: { type: "text", name: "city", label: "City" },
                 model: {
                   value: _vm.employee.city,
                   callback: function($$v) {
@@ -39792,7 +39810,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "state", label: "State" },
+                attrs: { type: "text", name: "state", label: "State" },
                 model: {
                   value: _vm.employee.state,
                   callback: function($$v) {
@@ -39803,7 +39821,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "country", label: "Country" },
+                attrs: { type: "text", name: "country", label: "Country" },
                 model: {
                   value: _vm.employee.country,
                   callback: function($$v) {
@@ -39821,7 +39839,7 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
-                attrs: { name: "salary", label: "Salary" },
+                attrs: { type: "text", name: "salary", label: "Salary" },
                 model: {
                   value: _vm.employee.salary,
                   callback: function($$v) {
@@ -39832,7 +39850,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("Input", {
-                attrs: { name: "hire_at", label: "Hire At" },
+                attrs: { type: "date", name: "hire_at", label: "Hire At" },
                 model: {
                   value: _vm.employee.hire_at,
                   callback: function($$v) {

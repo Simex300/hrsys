@@ -56,7 +56,7 @@
                     city: "",
                     state: "",
                     country: "",
-                    salary: "",
+                    salary: "0.00",
                     hire_at: this.dateFormat(Date.now()),
                 }
             };
@@ -80,7 +80,7 @@
                 this.modalShow = true;
             },
             closeModal() {
-                this.modalShow = false
+                this.modalShow = false;
                 this.resetEmployee();
             },
             toggleSelect(e, index) {
@@ -88,6 +88,7 @@
             },
             loadEmployee(data) {
                 data.selected = false;
+                this.modalShow = false;
                 this.employees = [data, ...this.employees];
             },
             resetEmployee() {
