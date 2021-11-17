@@ -5,10 +5,11 @@
         </div>
         <div class="body">
             <form @submit.prevent="onSubmit" class="form">
-                <div class="form__group">
-                    <Input type="text" name="first_name" label="First Name" v-model="employee.first_name" />
-                    <Input type="text" name="middle_name" label="Middle Name" v-model="employee.middle_name" />
-                    <Input type="text" name="last_name" label="Last Name" v-model="employee.last_name" />
+                <div class="form__group row-2 col-3">
+                    <ImageInput class="r-full" name="profile" v-model="employee.profile" />
+                    <Input type="text" class="r-first-half" name="first_name" label="First Name" v-model="employee.first_name" />
+                    <Input type="text" class="r-first-half" name="middle_name" label="Middle Name" v-model="employee.middle_name" />
+                    <Input type="text" class="r-second-half c-two-third" name="last_name" label="Last Name" v-model="employee.last_name" />
                 </div>
                 <div class="form__group">
                     <Input type="text" name="email" label="Email" v-model="employee.email" />
@@ -40,12 +41,14 @@
 </template>
 <script>
 import Currency from "../Common/Currency.vue"
+import ImageInput from "../Common/ImageInput.vue"
 import Input from "../Common/Input.vue"
 import Select from "../Common/Select.vue"
 
 export default {
     components: {
         Currency,
+        ImageInput,
         Input,
         Select
     },
