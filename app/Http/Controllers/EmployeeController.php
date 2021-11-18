@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
+use Faker;
+
 class EmployeeController extends Controller
 {
     /**
@@ -43,6 +45,17 @@ class EmployeeController extends Controller
             'salary' => $request->input('salary'),
             'hire_at' => $request->input('hire_at'),
         ]);
+        $employee->email = $request->input('email');
+
+        if($request->hasFile('profile')) {
+            $faker = Faker\Factory::create();
+            $extension = $request->file('profile')->getClientOriginalExtension();
+            $filename = $faker->sha1;
+            $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
+
+            $employee->profile = str_replace("public/", "", $filepath);
+        }
+
         $employee->save();
 
         return response()->json($employee);

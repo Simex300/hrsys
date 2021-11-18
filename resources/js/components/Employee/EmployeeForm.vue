@@ -6,7 +6,7 @@
         <div class="body">
             <form @submit.prevent="onSubmit" class="form">
                 <div class="form__group row-2 col-3">
-                    <ImageInput class="r-full" name="profile" v-model="employee.profile" />
+                    <ImageInput class="r-full" name="profile" v-model="employee.profile" @getImage="getImage" />
                     <Input type="text" class="r-first-half" name="first_name" label="First Name" v-model="employee.first_name" />
                     <Input type="text" class="r-first-half" name="middle_name" label="Middle Name" v-model="employee.middle_name" />
                     <Input type="text" class="r-second-half c-two-third" name="last_name" label="Last Name" v-model="employee.last_name" />
@@ -55,27 +55,49 @@ export default {
     props: ['employee'],
     data() {
         return {
-            gender: {male: "Male", female: "Female"}
+            gender: {male: "Male", female: "Female"},
+            profile: null,
+            formConfig: {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
         }
     },
     methods: {
         onSubmit(e) {
             this.AddEmployee(this.employee);
         },
+        getImage(file) {
+            this.profile = file;
+        },
+        getFormDataFields(fields) {
+            let data  = new FormData();
+            for(const field in fields) {
+                data.append(field, fields[field]);
+            }
+            return data
+        },
         AddEmployee(employee) {
+            console.log("Employee: ", employee);
+            if (this.profile) {
+                employee.profile = this.profile
+            }
+            const formFields = this.getFormDataFields(employee);
+
             if(employee.id > 0) {
-                axios.patch(`http://localhost:8000/api/employees/${employee.id}`, employee)
+                axios.patch(`http://localhost:8000/api/employees/${employee.id}`, formFields, this.formConfig)
                 .then(res => {
                     this.$emit('editEmployee', res);
                 })
             }
             else {
-                axios.post("http://localhost:8000/api/employees", employee)
+                axios.post("http://localhost:8000/api/employees", formFields, this.formConfig)
                 .then(res => {
                     this.$emit('addEmployee', res.data);
                 })
             }
-        }
+        },
     }
 }
 </script>

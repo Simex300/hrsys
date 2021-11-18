@@ -2106,9 +2106,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
+    profile: String,
     title: String,
     body: String,
     footer: String
@@ -2206,6 +2208,7 @@ __webpack_require__.r(__webpack_exports__);
     previewImage: function previewImage(e) {
       var file = e.target.files[0];
       this.src = URL.createObjectURL(file);
+      this.$emit('getImage', file);
     }
   }
 });
@@ -2412,6 +2415,12 @@ __webpack_require__.r(__webpack_exports__);
       gender: {
         male: "Male",
         female: "Female"
+      },
+      profile: null,
+      formConfig: {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
     };
   },
@@ -2419,15 +2428,35 @@ __webpack_require__.r(__webpack_exports__);
     onSubmit: function onSubmit(e) {
       this.AddEmployee(this.employee);
     },
+    getImage: function getImage(file) {
+      this.profile = file;
+    },
+    getFormDataFields: function getFormDataFields(fields) {
+      var data = new FormData();
+
+      for (var field in fields) {
+        data.append(field, fields[field]);
+      }
+
+      return data;
+    },
     AddEmployee: function AddEmployee(employee) {
       var _this = this;
 
+      console.log("Employee: ", employee);
+
+      if (this.profile) {
+        employee.profile = this.profile;
+      }
+
+      var formFields = this.getFormDataFields(employee);
+
       if (employee.id > 0) {
-        axios.patch("http://localhost:8000/api/employees/".concat(employee.id), employee).then(function (res) {
+        axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, this.formConfig).then(function (res) {
           _this.$emit('editEmployee', res);
         });
       } else {
-        axios.post("http://localhost:8000/api/employees", employee).then(function (res) {
+        axios.post("http://localhost:8000/api/employees", formFields, this.formConfig).then(function (res) {
           _this.$emit('addEmployee', res.data);
         });
       }
@@ -39650,10 +39679,15 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: { card: true, selected: _vm.data.selected } }, [
-    _c("img", {
-      staticClass: "card__image",
-      attrs: { src: "https://via.placeholder.com/80", alt: "..." }
-    }),
+    _vm.profile
+      ? _c("img", {
+          staticClass: "card__image",
+          attrs: { src: "./storage/" + _vm.profile, alt: "..." }
+        })
+      : _c("img", {
+          staticClass: "card__image",
+          attrs: { src: "https://via.placeholder.com/80", alt: "..." }
+        }),
     _vm._v(" "),
     _c("div", { staticClass: "card__container" }, [
       _c("h5", { staticClass: "card__container__title" }, [
@@ -40029,6 +40063,7 @@ var render = function() {
               _c("ImageInput", {
                 staticClass: "r-full",
                 attrs: { name: "profile" },
+                on: { getImage: _vm.getImage },
                 model: {
                   value: _vm.employee.profile,
                   callback: function($$v) {
@@ -40376,6 +40411,7 @@ var render = function() {
               employee.middle_name[0] +
               " " +
               employee.last_name,
+            profile: employee.profile,
             data: employee
           },
           nativeOn: {

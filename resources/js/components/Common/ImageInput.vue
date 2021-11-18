@@ -22,6 +22,7 @@ export default {
         previewImage(e) {
             const file = e.target.files[0];
             this.src = URL.createObjectURL(file);
+            this.$emit('getImage', file)
         }
     }
 }
