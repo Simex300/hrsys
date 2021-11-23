@@ -10,4 +10,12 @@ class EmployeeAddress extends Model
     use HasFactory;
 
     protected $table = 'employee_addresses';
+    protected $fillable = [
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'country',
+        'zipcode',
+    ];
 }

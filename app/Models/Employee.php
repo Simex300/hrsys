@@ -13,7 +13,26 @@ class Employee extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'address_id',
+        'email',
         'salary',
+        'salary_rate',
         'hire_at'
     ];
+
+    public function address() {
+        return $this->belongsTo(EmployeeAddress::class);
+    }
+
+    public function attendances() {
+        return $this->hasMany(EmployeeAttendance::class);
+    }
+
+    public function contract() {
+        return $this->hasMany(EmployeeContract::class);
+    }
+
+    public function wages() {
+        return $this->hasMany(EmployeeWage::class);
+    }
 }

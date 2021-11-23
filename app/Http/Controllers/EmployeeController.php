@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\EmployeeAddress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use Faker;
 
@@ -38,27 +40,40 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $employee = new Employee([
-            'first_name' => $request->input('first_name'),
-            'middle_name' => $request->input('middle_name'),
-            'last_name' => $request->input('last_name'),
-            'salary' => $request->input('salary'),
-            'hire_at' => $request->input('hire_at'),
-        ]);
-        $employee->email = $request->input('email');
+        return DB::transaction(function () use ($request) {
+            $employeeAddress = new EmployeeAddress([
+                'address1' => $request->input('address1'),
+                'address2' => $request->input('address2'),
+                'city' => $request->input('city'),
+                'state' => $request->input('state'),
+                'country' => $request->input('country'),
+                'zipcode' => $request->input('zipcode'),
+            ]);
+            $employeeAddress->save();
 
-        if($request->hasFile('profile')) {
-            $faker = Faker\Factory::create();
-            $extension = $request->file('profile')->getClientOriginalExtension();
-            $filename = $faker->sha1;
-            $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
+            $employee = new Employee([
+                'first_name' => $request->input('first_name'),
+                'middle_name' => $request->input('middle_name'),
+                'last_name' => $request->input('last_name'),
+                'address_id' => $employeeAddress->id,
+                'email' => $request->input('email'),
+                'salary' => $request->input('salary'),
+                'salary_rate' => $request->input('salary_rate'),
+                'hire_at' => $request->input('hire_at'),
+            ]);
 
-            $employee->profile = str_replace("public/", "", $filepath);
-        }
+            if($request->hasFile('profile')) {
+                $faker = Faker\Factory::create();
+                $extension = $request->file('profile')->getClientOriginalExtension();
+                $filename = $faker->sha1;
+                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
 
-        $employee->save();
+                $employee->profile = str_replace("public/", "", $filepath);
+            }
 
-        return response()->json($employee);
+            $employee->save();
+            return response()->json($employee);
+        });
     }
 
     /**

@@ -56,6 +56,7 @@
                     state: "",
                     country: "",
                     salary: "0.00",
+                    salary_rate: "",
                     hire_at: this.dateFormat(Date.now()),
                 }
             };
@@ -104,6 +105,7 @@
                     state: "",
                     country: "",
                     salary: "",
+                    salary_rate: "",
                     hire_at: this.dateFormat(Date.now()),
                 }
             },

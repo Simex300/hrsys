@@ -17,7 +17,7 @@
                 </div>
                 <div class="form__group">
                     <Input type="date" name="date_of_birth" label="Date of Birth" v-model="employee.date_of_birth" />
-                    <Select name="gender" label="Gender" v-model="employee.gender" :options="this.gender" />
+                    <Select name="gender" label="Gender" v-model="employee.gender" :options="this.options.gender" />
                 </div>
                 <div class="form__group">
                     <Input type="text" name="address1" label="Address 1" v-model="employee.address1" />
@@ -30,6 +30,7 @@
                 </div>
                 <div class="form__group">
                     <Currency type="text" name="salary" label="Salary" v-model="employee.salary" />
+                    <Select name="salary_rate" label="Salary Rate" v-model="employee.salary_rate" :options="this.options.salary_rate" />
                     <Input type="date" name="hire_at" label="Hire At" v-model="employee.hire_at" />
                 </div>
                 <div class="form__group footer">
@@ -55,7 +56,10 @@ export default {
     props: ['employee'],
     data() {
         return {
-            gender: {male: "Male", female: "Female"},
+            options: {
+                gender: {male: "Male", female: "Female"},
+                salary_rate: {Hourly: 'Hourly', Weekly: 'Weekly', Monthly: 'Monthly', Anually: 'Anually'},
+            },
             profile: null,
             formConfig: {
                 headers: {

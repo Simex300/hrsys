@@ -2293,6 +2293,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     label: String,
@@ -2300,6 +2301,11 @@ __webpack_require__.r(__webpack_exports__);
     placeholder: String,
     value: String,
     options: Object
+  },
+  methods: {
+    changeValue: function changeValue(e) {
+      this.$emit('input', e.target.value);
+    }
   }
 });
 
@@ -2398,6 +2404,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2412,9 +2419,17 @@ __webpack_require__.r(__webpack_exports__);
   props: ['employee'],
   data: function data() {
     return {
-      gender: {
-        male: "Male",
-        female: "Female"
+      options: {
+        gender: {
+          male: "Male",
+          female: "Female"
+        },
+        salary_rate: {
+          Hourly: 'Hourly',
+          Weekly: 'Weekly',
+          Monthly: 'Monthly',
+          Anually: 'Anually'
+        }
       },
       profile: null,
       formConfig: {
@@ -2555,6 +2570,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         state: "",
         country: "",
         salary: "0.00",
+        salary_rate: "",
         hire_at: this.dateFormat(Date.now())
       }
     };
@@ -2610,6 +2626,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         state: "",
         country: "",
         salary: "",
+        salary_rate: "",
         hire_at: this.dateFormat(Date.now())
       };
     },
@@ -39931,15 +39948,21 @@ var render = function() {
       "select",
       {
         staticClass: "form__group__select",
-        attrs: { name: _vm.name, placeholder: _vm.placeholder },
-        domProps: { value: _vm.value }
+        attrs: { name: _vm.name },
+        on: { change: _vm.changeValue }
       },
-      _vm._l(_vm.options, function(option, key) {
-        return _c("option", { key: key, domProps: { value: key } }, [
-          _vm._v(_vm._s(option))
-        ])
-      }),
-      0
+      [
+        _c("option", { attrs: { disabled: "", value: "", selected: "" } }, [
+          _vm._v(_vm._s(_vm.placeholder))
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.options, function(option, key) {
+          return _c("option", { key: key, domProps: { value: key } }, [
+            _vm._v(_vm._s(option))
+          ])
+        })
+      ],
+      2
     )
   ])
 }
@@ -40172,7 +40195,7 @@ var render = function() {
                 attrs: {
                   name: "gender",
                   label: "Gender",
-                  options: this.gender
+                  options: this.options.gender
                 },
                 model: {
                   value: _vm.employee.gender,
@@ -40267,6 +40290,21 @@ var render = function() {
                     _vm.$set(_vm.employee, "salary", $$v)
                   },
                   expression: "employee.salary"
+                }
+              }),
+              _vm._v(" "),
+              _c("Select", {
+                attrs: {
+                  name: "salary_rate",
+                  label: "Salary Rate",
+                  options: this.options.salary_rate
+                },
+                model: {
+                  value: _vm.employee.salary_rate,
+                  callback: function($$v) {
+                    _vm.$set(_vm.employee, "salary_rate", $$v)
+                  },
+                  expression: "employee.salary_rate"
                 }
               }),
               _vm._v(" "),

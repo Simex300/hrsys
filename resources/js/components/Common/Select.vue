@@ -1,7 +1,8 @@
 <template>
     <label class="form__group__label label">
         <span>{{label}}</span>
-        <select class="form__group__select" :name="name" :placeholder="placeholder" :value="value">
+        <select class="form__group__select" :name="name" @change="changeValue">
+            <option disabled value="" selected>{{placeholder}}</option>
             <option v-for="(option, key) in options" :key="key" :value="key">{{option}}</option>
         </select>
     </label>
@@ -15,5 +16,10 @@ export default {
         value: String,
         options: Object
     },
+    methods: {
+        changeValue(e) {
+            this.$emit('input', e.target.value);
+        }
+    }
 }
 </script>
