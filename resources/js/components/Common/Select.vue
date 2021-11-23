@@ -1,8 +1,8 @@
 <template>
     <label class="form__group__label label">
         <span>{{label}}</span>
-        <select class="form__group__select" :name="name" @change="changeValue">
-            <option disabled value="" selected>{{placeholder}}</option>
+        <select class="form__group__select" :name="name" :value="value" @change="changeValue">
+            <option disabled hidden value="">{{placeholder ? placeholder : "Select an option"}}</option>
             <option v-for="(option, key) in options" :key="key" :value="key">{{option}}</option>
         </select>
     </label>

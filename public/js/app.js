@@ -2196,9 +2196,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['value'],
   data: function data() {
     return {
-      src: ""
+      src: ''
     };
   },
   methods: {
@@ -39797,20 +39798,29 @@ var render = function() {
     _c("input", {
       ref: "inputFile",
       staticClass: "image-input__file",
-      attrs: { type: "file", accept: "image/*", name: "", id: "" },
+      attrs: { type: "file", accept: "image/*" },
       on: { change: _vm.previewImage }
     }),
     _vm._v(" "),
     _c("img", {
-      class: { "image-input__image": true, hidden: this.src == "" },
-      attrs: { src: this.src, alt: "" },
+      class: {
+        "image-input__image": true,
+        hidden: this.src == "" && this.value == undefined
+      },
+      attrs: {
+        src: this.src != "" ? this.src : "./storage/" + this.value,
+        alt: ""
+      },
       on: { click: _vm.openImageSearch }
     }),
     _vm._v(" "),
     _c(
       "div",
       {
-        class: { "image-input__button": true, "with-image": this.src != "" },
+        class: {
+          "image-input__button": true,
+          "with-image": this.src != "" || this.value != undefined
+        },
         on: { click: _vm.openImageSearch }
       },
       [
@@ -39949,11 +39959,12 @@ var render = function() {
       {
         staticClass: "form__group__select",
         attrs: { name: _vm.name },
+        domProps: { value: _vm.value },
         on: { change: _vm.changeValue }
       },
       [
-        _c("option", { attrs: { disabled: "", value: "", selected: "" } }, [
-          _vm._v(_vm._s(_vm.placeholder))
+        _c("option", { attrs: { disabled: "", hidden: "", value: "" } }, [
+          _vm._v(_vm._s(_vm.placeholder ? _vm.placeholder : "Select an option"))
         ]),
         _vm._v(" "),
         _vm._l(_vm.options, function(option, key) {

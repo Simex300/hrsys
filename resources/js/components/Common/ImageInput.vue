@@ -1,8 +1,8 @@
 <template>
     <div class="image-input">
-        <input type="file" ref="inputFile" class="image-input__file" accept="image/*" name="" id="" @change="previewImage"/>
-        <img :class="{'image-input__image': true, 'hidden': this.src == ''} " :src="this.src" alt=""  @click="openImageSearch">
-        <div :class="{'image-input__button': true, 'with-image': this.src != ''}" @click="openImageSearch">
+        <input type="file" ref="inputFile" class="image-input__file" accept="image/*" @change="previewImage"/>
+        <img :class="{'image-input__image': true, 'hidden': this.src == '' && this.value == undefined } " :src="this.src != '' ? this.src : './storage/' + this.value" alt="" @click="openImageSearch">
+        <div :class="{'image-input__button': true, 'with-image': this.src != '' || this.value != undefined}" @click="openImageSearch">
             <span class="image-input__button__label">Upload Image</span>
             <i class="image-input__button__icon fas fa-upload"></i>
         </div>
@@ -10,9 +10,10 @@
 </template>
 <script>
 export default {
+    props: ['value'],
     data() {
         return {
-            src: ""
+            src: ''
         }
     },
     methods: {
