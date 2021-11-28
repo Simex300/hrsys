@@ -47,7 +47,7 @@ import Input from "../Common/Input.vue"
 import Select from "../Common/Select.vue"
 
 import useVuelidate from '@vuelidate/core'
-import { required, email } from '@vuelidate/validators'
+import { required, email, minValue, maxValue, helpers, minLength } from '@vuelidate/validators'
 
 export default {
     setup() {
@@ -89,9 +89,7 @@ export default {
             return data
         },
         async AddEmployee(employee) {
-            // console.log("Employee: ", employee);
             const isFormCorrect = await this.v$.$validate()
-            // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
             if (!isFormCorrect) return
             if (this.profile) {
                 employee.profile = this.profile
@@ -113,17 +111,22 @@ export default {
         },
     },
     validations () {
+        const requiredMessage = helpers.withMessage('This field is required', required);
+        const emailMessage = helpers.withMessage('This field requires an email', email);
+        const minValueMessage = (value) => helpers.withMessage(({$params}) => `This field has a value lower than ${$params.min}`, minValue(value));
+        const maxValueMessage = (value) => helpers.withMessage(({$params}) => `This field has a value greater than ${$params.max}`, maxValue(value));
+
         return {
             employee: {
-                first_name: { required },
-                last_name: { required },
-                email: { required, email },
-                address1: { required },
-                city: { required },
-                state: { required },
-                country: { required },
-                salary: { required },
-                salary_rate: { required },
+                first_name: { required: requiredMessage },
+                last_name: { required: requiredMessage },
+                email: { required: requiredMessage, email: emailMessage },
+                address1: { required: requiredMessage },
+                city: { required: requiredMessage },
+                state: { required: requiredMessage },
+                country: { required: requiredMessage },
+                salary: { required: requiredMessage, minValue: minValueMessage(1), maxValue:maxValueMessage(999999.99)},
+                salary_rate: { required: requiredMessage },
             }
         }
     }

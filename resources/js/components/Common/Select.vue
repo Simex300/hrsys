@@ -1,6 +1,6 @@
 <template>
-    <label class="form__group__label label">
-        <span>{{label}} <span class="form__group__error" v-if="error && error.$error"> There are errors</span></span>
+    <label class="label">
+        <span>{{label}} <span class="error" v-if="error && error.$error"> {{ error.$errors[0].$message }}</span></span>
         <select class="form__group__select" :name="name" :value="value" @change="changeValue">
             <option disabled hidden value="">{{placeholder ? placeholder : "Select an option"}}</option>
             <option v-for="(option, key) in options" :key="key" :value="key">{{option}}</option>

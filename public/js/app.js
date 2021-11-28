@@ -4615,35 +4615,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   validations: function validations() {
+    var requiredMessage = _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('This field is required', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required);
+    var emailMessage = _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage('This field requires an email', _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.email);
+
+    var minValueMessage = function minValueMessage(value) {
+      return _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage(function (_ref) {
+        var $params = _ref.$params;
+        return "This field has a value lower than ".concat($params.min);
+      }, (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.minValue)(value));
+    };
+
+    var maxValueMessage = function maxValueMessage(value) {
+      return _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.helpers.withMessage(function (_ref2) {
+        var $params = _ref2.$params;
+        return "This field has a value greater than ".concat($params.max);
+      }, (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.maxValue)(value));
+    };
+
     return {
       employee: {
         first_name: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         last_name: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         email: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required,
-          email: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.email
+          required: requiredMessage,
+          email: emailMessage
         },
         address1: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         city: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         state: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         country: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         },
         salary: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage,
+          minValue: minValueMessage(1),
+          maxValue: maxValueMessage(999999.99)
         },
         salary_rate: {
-          required: _vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.required
+          required: requiredMessage
         }
       }
     };
@@ -42676,7 +42695,9 @@ var render = function() {
     _c("span", [
       _vm._v(_vm._s(_vm.label) + " "),
       _vm.error && _vm.error.$error
-        ? _c("span", { staticClass: "error" }, [_vm._v(" There are errors")])
+        ? _c("span", { staticClass: "error" }, [
+            _vm._v(" " + _vm._s(_vm.error.$errors[0].$message))
+          ])
         : _vm._e()
     ]),
     _vm._v(" "),
@@ -42792,7 +42813,9 @@ var render = function() {
     _c("span", [
       _vm._v(_vm._s(_vm.label) + " "),
       _vm.error && _vm.error.$error
-        ? _c("span", { staticClass: "error" }, [_vm._v(" There are errors")])
+        ? _c("span", { staticClass: "error" }, [
+            _vm._v(" " + _vm._s(_vm.error.$errors[0].$message))
+          ])
         : _vm._e()
     ]),
     _vm._v(" "),
@@ -42888,12 +42911,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("label", { staticClass: "form__group__label label" }, [
+  return _c("label", { staticClass: "label" }, [
     _c("span", [
       _vm._v(_vm._s(_vm.label) + " "),
       _vm.error && _vm.error.$error
-        ? _c("span", { staticClass: "form__group__error" }, [
-            _vm._v(" There are errors")
+        ? _c("span", { staticClass: "error" }, [
+            _vm._v(" " + _vm._s(_vm.error.$errors[0].$message))
           ])
         : _vm._e()
     ]),
