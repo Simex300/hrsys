@@ -1,6 +1,6 @@
 <template>
     <label class="form__group__label label">
-        <span>{{label}}</span>
+        <span>{{label}} <span class="error" v-if="error && error.$error"> There are errors</span></span>
         <input type="hidden" :value="value" v-on:input="$emit('input', $event.target.value)">
         <input type="text" :name="name" :placeholder="placeholder" :value="formattedValue" @input="$emit('input', formatCurrency($event))" @keydown="avoidDelete" class="form__group__input">
     </label>
@@ -11,7 +11,8 @@ export default {
         label: String,
         name: String,
         placeholder: String,
-        value: [String, Number]
+        value: [String, Number],
+        error: Object
     },
     data() {
         return {

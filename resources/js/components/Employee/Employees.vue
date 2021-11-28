@@ -30,6 +30,30 @@
     import Card from '../Common/Card.vue'
     import EmployeeForm from './EmployeeForm.vue'
 
+    const dateFormat = (date) => {
+        let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];
+        return format.map(val => {
+            return new Intl.DateTimeFormat('es', val).format(date)
+        }).join("-");
+    }
+
+    const defaultValue = {
+        id: 0,
+        first_name: "",
+        middle_name: "",
+        last_name: "",
+        date_of_birth: "",
+        gender: "",
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        country: "",
+        salary: "0.00",
+        salary_rate: "",
+        hire_at: dateFormat(Date.now()),
+    };
+
     export default {
         components: {
             Card,
@@ -40,25 +64,12 @@
         data() {
             return {
                 modalShow: false,
+                // Search Engine
                 search: "",
                 list: [],
+                // Employee Values
                 employees: [],
-                employee: {
-                    id: 0,
-                    first_name: "",
-                    middle_name: "",
-                    last_name: "",
-                    date_of_birth: "",
-                    gender: "",
-                    address1: "",
-                    address2: "",
-                    city: "",
-                    state: "",
-                    country: "",
-                    salary: "0.00",
-                    salary_rate: "",
-                    hire_at: this.dateFormat(Date.now()),
-                }
+                employee: defaultValue
             };
         },
         created() {
@@ -92,22 +103,7 @@
                 this.employees = [data, ...this.employees];
             },
             resetEmployee() {
-                this.employee = {
-                    id: 0,
-                    first_name: "",
-                    middle_name: "",
-                    last_name: "",
-                    date_of_birth: "",
-                    gender: "",
-                    address1: "",
-                    address2: "",
-                    city: "",
-                    state: "",
-                    country: "",
-                    salary: "",
-                    salary_rate: "",
-                    hire_at: this.dateFormat(Date.now()),
-                }
+                this.employee = defaultValue
             },
             searchEmployee(){
                 if(this.list.length == 0) {
@@ -128,12 +124,6 @@
                         this.employees.splice(index, 1);
                     })
                 })
-            },
-            dateFormat(date) {
-                let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];
-                return format.map(val => {
-                    return new Intl.DateTimeFormat('es', val).format(date)
-                }).join("-");
             }
         },
     };

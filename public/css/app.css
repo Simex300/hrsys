@@ -163,6 +163,9 @@
   grid-template-rows: 1fr 1fr;
   font-size: 1.4rem;
 }
+.label .error {
+  color: #BE5B56;
+}
 .label span {
   align-self: center;
   padding-left: 0.4rem;

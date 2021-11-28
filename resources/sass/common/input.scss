@@ -4,6 +4,10 @@
 
     font-size: 1.4rem;
 
+    .error {
+        color: $danger;
+    }
+
     span {
         align-self: center;
         padding-left: .4rem;

@@ -40,7 +40,8 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        return DB::transaction(function () use ($request) {
+        DB::beginTransaction();
+        try {
             $employeeAddress = new EmployeeAddress([
                 'address1' => $request->input('address1'),
                 'address2' => $request->input('address2'),
@@ -72,8 +73,12 @@ class EmployeeController extends Controller
             }
 
             $employee->save();
+            DB::commit();
             return response()->json($employee);
-        });
+        }
+        catch (\Throwable $e) {
+            DB::rollback();
+        }
     }
 
     /**
