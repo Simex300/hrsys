@@ -2,17 +2,22 @@
 // import AddEmployee from './components/Employee/AddEmployee.vue';
 // import UpdateEmployee from './components/Employee/UpdateEmployee.vue';
 
-// Test
-import ExampleComponent from './components/ExampleComponent.vue';
-import Employee from './components/Employee/Employees.vue';
-import Page from './components/Test/Page.vue';
-import employee from './routes/employee';
+// TODO: Remove when not needed
+import ExampleComponent from '../components/ExampleComponent.vue';
+import Employee from '../components/Employee/Employees.vue';
+import Page from '../components/Test/Page.vue';
+// Routes
+import auth from './auth';
+import employee from './employee';
 
 export const routes = [
     {
         path: '/',
         name: 'home',
-        component: Employee
+        component: Employee,
+        meta: {
+            middleware: 'auth'
+        }
     },
     {
         path: '/spa-page',
@@ -27,6 +32,7 @@ export const routes = [
             }
         }
     },
+    ...auth,
     ...employee
 ];
 
