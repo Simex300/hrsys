@@ -4170,6 +4170,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Sidebar: _components_Common_Sidebar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      authenticated: this.$store.state.auth.authenticated
+    };
   }
 });
 
@@ -4188,7 +4193,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Input.vue */ "./resources/js/components/Common/Input.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4222,8 +4228,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "login",
+  components: {
+    Input: _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   data: function data() {
     return {
       auth: {
@@ -4233,7 +4243,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       processing: false
     };
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     signIn: 'auth/login'
   })), {}, {
     login: function login() {
@@ -4287,7 +4297,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Common/Input.vue */ "./resources/js/components/Common/Input.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4320,19 +4331,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "login",
+  components: {
+    Input: _Common_Input_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
   data: function data() {
     return {
-      auth: {
+      user: {
+        name: "",
         email: "",
-        password: ""
+        password: "",
+        password_confirmation: ""
       },
       processing: false
     };
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     signIn: 'auth/login'
   })), {}, {
     login: function login() {
@@ -5270,7 +5291,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./routes */ "./resources/js/router/routes.js");
-/* provided dependency */ var process = __webpack_require__(/*! process/browser */ "./node_modules/process/browser.js");
 
 
 
@@ -5281,7 +5301,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_1__.routes
 });
 router.beforeEach(function (to, from, next) {
-  document.title = "".concat(to.meta.title, " - ").concat(process.env.MIX_APP_NAME);
+  document.title = "".concat(to.meta.title, " - ").concat("HRS");
 
   if (to.meta.middleware == "guest") {
     next();
@@ -43129,8 +43149,10 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "screen" }, [
-    _c("div", { staticClass: "sidebar-container" }, [_c("Sidebar")], 1),
+  return _c("div", { class: { screen: true, full: !this.authenticated } }, [
+    this.authenticated
+      ? _c("div", { staticClass: "sidebar-container" }, [_c("Sidebar")], 1)
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "page-container" }, [_c("router-view")], 1)
   ])
@@ -43225,7 +43247,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "header" }, [_c("h2", [_vm._v("Login")])])
+    return _c("div", { staticClass: "header" }, [_c("h1", [_vm._v("Login")])])
   },
   function() {
     var _vm = this
@@ -43258,7 +43280,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "login" }, [
+  return _c("div", { staticClass: "register" }, [
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "body" }, [
@@ -43279,13 +43301,31 @@ var render = function() {
             { staticClass: "form__group" },
             [
               _c("Input", {
+                attrs: { type: "text", name: "name", label: "Name" },
+                model: {
+                  value: _vm.user.name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.user, "name", $$v)
+                  },
+                  expression: "user.name"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "form__group" },
+            [
+              _c("Input", {
                 attrs: { type: "text", name: "email", label: "Email" },
                 model: {
-                  value: _vm.auth.email,
+                  value: _vm.user.email,
                   callback: function($$v) {
-                    _vm.$set(_vm.auth, "email", $$v)
+                    _vm.$set(_vm.user, "email", $$v)
                   },
-                  expression: "auth.email"
+                  expression: "user.email"
                 }
               })
             ],
@@ -43303,11 +43343,26 @@ var render = function() {
                   label: "Password"
                 },
                 model: {
-                  value: _vm.auth.date_of_birth,
+                  value: _vm.user.password,
                   callback: function($$v) {
-                    _vm.$set(_vm.auth, "date_of_birth", $$v)
+                    _vm.$set(_vm.user, "password", $$v)
                   },
-                  expression: "auth.date_of_birth"
+                  expression: "user.password"
+                }
+              }),
+              _vm._v(" "),
+              _c("Input", {
+                attrs: {
+                  type: "password",
+                  name: "password_confirm",
+                  label: "Confirm Password"
+                },
+                model: {
+                  value: _vm.user.password_confirmation,
+                  callback: function($$v) {
+                    _vm.$set(_vm.user, "password_confirmation", $$v)
+                  },
+                  expression: "user.password_confirmation"
                 }
               })
             ],
@@ -43326,7 +43381,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "header" }, [
-      _c("h2", [_vm._v("Add Employee")])
+      _c("h1", [_vm._v("Add User")])
     ])
   },
   function() {

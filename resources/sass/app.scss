@@ -5,6 +5,9 @@
 // -- Layout --
 @import './layout/sidebar.scss';
 @import './layout/pageContainer.scss';
+// -- Auth --
+@import './auth/login.scss';
+@import './auth/register.scss';
 // -- Common --
 @import './common/card.scss';
 @import './common/imageInput.scss';
@@ -41,7 +44,12 @@ a {
 
     width: 100vw;
     height: 100vh;
+
+    &.full {
+        grid-template-columns: 1fr;
+    }
 }
+
 
 textarea:focus, input:focus{
     outline: none;

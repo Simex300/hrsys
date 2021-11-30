@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="header">
-            <h2>Login</h2>
+            <h1>Login</h1>
         </div>
         <div class="body">
             <form @submit.prevent="onSubmit" class="form">
@@ -21,8 +21,13 @@
 <script>
 import { mapActions } from 'vuex'
 
+import Input from '../Common/Input.vue';
+
 export default {
     name: "login",
+    components: {
+        Input
+    },
     data() {
         return {
             auth: {
