@@ -4,12 +4,12 @@
             <h1>Login</h1>
         </div>
         <div class="body">
-            <form @submit.prevent="onSubmit" class="form">
+            <form @submit.prevent="login" class="form">
                 <div class="form__group">
                     <Input type="text" name="email" label="Email" v-model="auth.email"/>
                 </div>
                 <div class="form__group">
-                    <Input type="password" name="password" label="Password" v-model="auth.date_of_birth" />
+                    <Input type="password" name="password" label="Password" v-model="auth.password" />
                 </div>
                 <div class="form__group footer">
                     <button>Submit</button>
@@ -44,7 +44,7 @@ export default {
         async login() {
             this.processing = true;
             await axios.get('/sanctum/csrf-cookie')
-            await axios.post('/login',this.auth).then(({data})=>{
+            await axios.post('/api/login',this.auth).then(({data})=>{
                 this.signIn()
             }).catch(({response:{data}})=>{
                 alert(data.message)

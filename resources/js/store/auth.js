@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import router from '../router'
+import router from '../router'
 
 export default {
     namespaced: true,
@@ -25,11 +25,12 @@ export default {
     },
     actions:{
         login({commit}){
-            return axios.get('/api/user').then(({data})=>{
-                commit('SET_USER',data)
-                commit('SET_AUTHENTICATED',true)
-                // router.push({name:'dashboard'})
-            }).catch(({response:{data}})=>{
+            return axios.get('/api/user').then(data => {
+                commit('SET_USER', data)
+                commit('SET_AUTHENTICATED', true)
+                router.push({name: 'home'})
+            }).catch((response)=>{
+                console.log(response);
                 commit('SET_USER',{})
                 commit('SET_AUTHENTICATED',false)
             })

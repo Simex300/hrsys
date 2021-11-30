@@ -17,10 +17,26 @@
         <div class="navbar__footer">
             <img class="navbar__footer__image" src="https://i.redd.it/9rwqt4hld3q71.jpg" alt="hugenerd" width="30" height="30">
             <span class="navbar__footer__dropdown">Name</span>
+            <div class="navbar__footer__icon" @click.prevent="logout">
+                <i class="fas fa-power-off"></i>
+            </div>
         </div>
     </div>
 </template>
 <script>
+import {mapActions} from 'vuex';
+
 export default {
+    methods: {
+        ...mapActions({
+            signOut: "auth/logout"
+        }),
+        async logout() {
+            await axios.post('/api/logout').then(data => {
+                this.signOut()
+                this.$router.push({name:"login"})
+            })
+        }
+    }
 }
 </script>

@@ -4,7 +4,7 @@
             <h1>Add User</h1>
         </div>
         <div class="body">
-            <form @submit.prevent="onSubmit" class="form">
+            <form @submit.prevent="register" class="form">
                 <div class="form__group">
                     <Input type="text" name="name" label="Name" v-model="user.name"/>
                 </div>
@@ -28,7 +28,7 @@ import { mapActions } from 'vuex'
 import Input from '../Common/Input.vue';
 
 export default {
-    name: "login",
+    name: "register",
     components: {
         Input
     },
@@ -47,10 +47,9 @@ export default {
         ...mapActions({
             signIn: 'auth/login'
         }),
-        async login() {
+        async register() {
             this.processing = true;
-            await axios.get('/sanctum/csrf-cookie')
-            await axios.post('/login',this.auth).then(({data})=>{
+            await axios.post('/api/register',this.user).then(data=>{
                 this.signIn()
             }).catch(({response:{data}})=>{
                 alert(data.message)
