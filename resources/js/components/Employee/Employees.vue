@@ -18,9 +18,12 @@
                 </button>
             </div>
         </div>
-        <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" />
-        <Modal ref="employeeModal" :showModal="modalShow" @onClose="closeModal">
+        <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" @dblclick.native="openDetails($event, index)"/>
+        <Modal ref="employeeModal" :showModal="formShow" @onClose="closeModal">
             <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" />
+        </Modal>
+        <Modal ref="employeeDetails" :showModal="detailsShow" @onClose="closeModal">
+            <EmployeeDetails :employee="this.employee" @addEmployee="loadEmployee" />
         </Modal>
     </div>
 </template>
@@ -29,6 +32,7 @@
     import Input from '../Common/Input.vue'
     import Card from '../Common/Card.vue'
     import EmployeeForm from './EmployeeForm.vue'
+    import EmployeeDetails from './EmployeeDetails.vue'
 
     const dateFormat = (date) => {
         let format = [{year: 'numeric'}, {month: 'numeric'}, {day: 'numeric'}];
@@ -59,11 +63,13 @@
             Card,
             Input,
             Modal,
-            EmployeeForm
+            EmployeeForm,
+            EmployeeDetails
         },
         data() {
             return {
-                modalShow: false,
+                formShow: false,
+                detailsShow: true,
                 // Search Engine
                 search: "",
                 list: [],
@@ -74,6 +80,7 @@
         },
         created() {
             axios.get("http://localhost:8000/api/employees").then((response) => {
+                //TODO: remove for loop to optimize the first instance
                 for (let index = 0; index < response.data.length; index++) {
                     response.data[index] = {...response.data[index], selected: false}
                 }
@@ -88,18 +95,27 @@
                         return val.selected == true
                     });
                 }
-                this.modalShow = true;
+                this.formShow = true;
+            },
+            openDetails(e, index) {
+                this.employee = this.employees[index];
+                this.detailsShow = true;
             },
             closeModal() {
-                this.modalShow = false;
+                this.formShow = false;
+                this.detailsShow = false;
                 this.resetEmployee();
             },
+            // closeModal() {
+            //     this.modalShow = false;
+            //     this.resetEmployee();
+            // },
             toggleSelect(e, index) {
                 this.employees[index].selected = !this.employees[index].selected
             },
             loadEmployee(data) {
                 data.selected = false;
-                this.modalShow = false;
+                this.formShow = false;
                 this.employees = [data, ...this.employees];
             },
             resetEmployee() {

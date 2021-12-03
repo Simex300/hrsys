@@ -16,7 +16,8 @@ export const routes = [
         name: 'home',
         component: Employee,
         meta: {
-            middleware: 'auth'
+            middleware: 'auth',
+            title: `Home`
         }
     },
     {

@@ -1,0 +1,80 @@
+.employee-details {
+    display: grid;
+    grid-template-rows: 10rem 1fr;
+    row-gap: 2rem;
+
+    height: 100%;
+
+    padding: 0 3rem;
+
+    &__header {
+        display: grid;
+        grid-template-rows: [top-s] 1fr [top-e botton-s] 1fr [botton-e];
+        grid-template-columns: [profile-s] 10rem [profile-e details-s] 1fr [details-e actions-s] 10rem [actions-e];
+        margin-right: 5rem;
+        border-bottom: 0.1rem solid #000;
+
+        &__profile {
+            grid-row: top-s/botton-e;
+            grid-column: profile-s/profile-e;
+            align-self: center;
+            justify-self: center;
+        }
+
+        &__name {
+            grid-row: top-s/top-e;
+            grid-column: details-s/details-e;
+            align-self: end;
+
+            font-size: 2.4rem;
+        }
+
+        &__extra {
+            grid-row: botton-s/botton-e;
+            grid-column: details-s/details-e;
+
+            font-size: 1.6rem;
+        }
+
+        &__options {
+            grid-template-columns: repeat(2, 4rem);
+            grid-row: top-s/botton-e;
+            grid-column: actions-s/actions-e;
+            align-self: center;
+            justify-items: center;
+        }
+    }
+    &__body {
+        display: grid;
+        grid-template-rows: auto 1fr;
+
+        &__achievements {
+            .achievement-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                row-gap: 1rem;
+                list-style-type: none;
+
+                .achievement-item {
+                    text-align: center;
+                    margin-left: 1rem;
+                    margin-bottom: .4rem;
+
+                    font-size: 1.6rem;
+                    font-weight: 700;
+
+                    .achievement-value {
+                        display: block;
+                        font-size: 3rem;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+
+        .title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+    }
+}

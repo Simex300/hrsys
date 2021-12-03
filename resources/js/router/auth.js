@@ -6,7 +6,7 @@ export default [
         name:"login",
         path:"/login",
         component: Login,
-        meta:{
+        meta: {
             middleware:"guest",
             title:`Login`
         }
@@ -15,7 +15,7 @@ export default [
         name:"register",
         path:"/register",
         component: Register,
-        meta:{
+        meta: {
             middleware:"guest",
             title:`Register`
         }

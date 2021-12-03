@@ -20,7 +20,7 @@ export default {
             state.authenticated = value
         },
         SET_USER (state, value) {
-            state.user = value
+            state.user = value.data
         }
     },
     actions:{
@@ -30,7 +30,6 @@ export default {
                 commit('SET_AUTHENTICATED', true)
                 router.push({name: 'home'})
             }).catch((response)=>{
-                console.log(response);
                 commit('SET_USER',{})
                 commit('SET_AUTHENTICATED',false)
             })

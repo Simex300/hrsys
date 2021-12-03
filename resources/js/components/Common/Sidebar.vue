@@ -16,7 +16,7 @@
         </div>
         <div class="navbar__footer">
             <img class="navbar__footer__image" src="https://i.redd.it/9rwqt4hld3q71.jpg" alt="hugenerd" width="30" height="30">
-            <span class="navbar__footer__dropdown">Name</span>
+            <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.name }}</span>
             <div class="navbar__footer__icon" @click.prevent="logout">
                 <i class="fas fa-power-off"></i>
             </div>
