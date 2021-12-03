@@ -47,11 +47,12 @@
     &__body {
         display: grid;
         grid-template-rows: auto 1fr;
+        row-gap: 1rem;
 
         &__achievements {
             .achievement-list {
                 display: grid;
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 row-gap: 1rem;
                 list-style-type: none;
 

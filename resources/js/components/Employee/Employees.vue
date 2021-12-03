@@ -69,7 +69,7 @@
         data() {
             return {
                 formShow: false,
-                detailsShow: true,
+                detailsShow: false,
                 // Search Engine
                 search: "",
                 list: [],

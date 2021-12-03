@@ -4751,11 +4751,7 @@ __webpack_require__.r(__webpack_exports__);
     CalendarHeatmap: vue_calendar_heatmap__WEBPACK_IMPORTED_MODULE_0__.CalendarHeatmap
   },
   props: {
-    data: Object,
-    profile: String,
-    title: String,
-    body: String,
-    footer: String
+    employee: Object
   }
 });
 
@@ -5099,7 +5095,7 @@ var defaultValue = {
   data: function data() {
     return {
       formShow: false,
-      detailsShow: true,
+      detailsShow: false,
       // Search Engine
       search: "",
       list: [],
@@ -44125,10 +44121,10 @@ var render = function() {
   return _c("div", { staticClass: "employee-details" }, [
     _c("div", { staticClass: "employee-details__header" }, [
       _c("div", { staticClass: "employee-details__header__profile" }, [
-        _vm.profile
+        _vm.employee.profile
           ? _c("img", {
               staticClass: "card__image",
-              attrs: { src: "./storage/" + _vm.profile, alt: "..." }
+              attrs: { src: "./storage/" + _vm.employee.profile, alt: "..." }
             })
           : _c("img", {
               staticClass: "card__image",
@@ -44137,7 +44133,13 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "employee-details__header__name" }, [
-        _vm._v("Some name")
+        _vm._v(
+          _vm._s(_vm.employee.first_name) +
+            " " +
+            _vm._s(_vm.employee.middle_name) +
+            " " +
+            _vm._s(_vm.employee.last_name)
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "employee-details__header__extra" }, [
@@ -44160,7 +44162,8 @@ var render = function() {
             staticClass: "calendar",
             attrs: {
               values: [{ date: "2021-12-02", count: 1 }],
-              "end-date": "2021-12-31"
+              "end-date": "2021-12-31",
+              "tooltip-unit": "Hours Worked"
             }
           })
         ],

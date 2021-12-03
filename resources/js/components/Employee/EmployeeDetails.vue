@@ -2,10 +2,10 @@
     <div class="employee-details">
         <div class="employee-details__header">
             <div class="employee-details__header__profile">
-                <img v-if="profile" class="card__image" :src="`./storage/${profile}`" alt="...">
+                <img v-if="employee.profile" class="card__image" :src="`./storage/${employee.profile}`" alt="...">
                 <img v-else class="card__image" src="https://via.placeholder.com/80" alt="...">
             </div>
-            <div class="employee-details__header__name">Some name</div>
+            <div class="employee-details__header__name">{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</div>
             <div class="employee-details__header__extra">Some extra details</div>
             <div class="employee-details__header__options actions">
                 <button class="actions__add">
@@ -27,7 +27,7 @@
             </div>
             <div class="employee-details__body__calendar">
                 <h2 class="title">Work Calendar</h2>
-                <CalendarHeatmap class="calendar" :values="[{date: '2021-12-02', count: 1}]" end-date="2021-12-31" />
+                <CalendarHeatmap class="calendar" :values="[{date: '2021-12-02', count: 1}]" end-date="2021-12-31" tooltip-unit="Hours Worked" />
             </div>
         </div>
     </div>
@@ -39,11 +39,7 @@ export default {
         CalendarHeatmap
     },
     props: {
-        data: Object,
-        profile: String,
-        title: String,
-        body: String,
-        footer: String,
+        employee: Object,
     }
 }
 </script>
