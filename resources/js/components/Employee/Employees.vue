@@ -68,7 +68,7 @@
         },
         data() {
             return {
-                formShow: false,
+                formShow: true,
                 detailsShow: false,
                 // Search Engine
                 search: "",

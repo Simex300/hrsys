@@ -4824,6 +4824,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4855,9 +4887,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           Weekly: 'Weekly',
           Monthly: 'Monthly',
           Anually: 'Anually'
+        },
+        role: {
+          worker: "Worker",
+          manager: "Manager",
+          hr: "Human Resource",
+          president: "President"
+        },
+        department: {
+          hr: "Human Resource",
+          development: "Development",
+          executive: "Executive"
         }
       },
       profile: null,
+      currTab: 0,
       formConfig: {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -4880,6 +4924,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return data;
+    },
+    changeTab: function changeTab(e, index) {
+      this.currTab = index;
+    },
+    nextTab: function nextTab() {
+      this.currTab++;
     },
     AddEmployee: function AddEmployee(employee) {
       var _this = this;
@@ -5094,7 +5144,7 @@ var defaultValue = {
   },
   data: function data() {
     return {
-      formShow: false,
+      formShow: true,
       detailsShow: false,
       // Search Engine
       search: "",
@@ -44257,287 +44307,526 @@ var render = function() {
           }
         },
         [
-          _c(
-            "div",
-            { staticClass: "form__group row-2 col-3" },
-            [
-              _c("ImageInput", {
-                staticClass: "r-full",
-                attrs: { name: "profile" },
-                on: { getImage: _vm.getImage },
-                model: {
-                  value: _vm.employee.profile,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "profile", $$v)
-                  },
-                  expression: "employee.profile"
-                }
-              }),
+          _c("div", { staticClass: "form__tabs" }, [
+            _c("div", { staticClass: "form__tabs__options" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "form__tabs__options__option",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeTab($event, 0)
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "icon fas fa-plus" }),
+                  _c("span", { staticClass: "text" }, [
+                    _vm._v("Personal Information")
+                  ])
+                ]
+              ),
               _vm._v(" "),
-              _c("Input", {
-                staticClass: "r-first-half",
-                attrs: {
-                  type: "text",
-                  name: "first_name",
-                  label: "First Name",
-                  error: _vm.v$.employee.first_name
+              _c(
+                "div",
+                {
+                  staticClass: "form__tabs__options__option",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeTab($event, 1)
+                    }
+                  }
                 },
-                model: {
-                  value: _vm.employee.first_name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "first_name", $$v)
-                  },
-                  expression: "employee.first_name"
-                }
-              }),
+                [
+                  _c("i", { staticClass: "icon fas fa-plus" }),
+                  _c("span", { staticClass: "text" }, [
+                    _vm._v("Employee Information")
+                  ])
+                ]
+              ),
               _vm._v(" "),
-              _c("Input", {
-                staticClass: "r-first-half",
-                attrs: {
-                  type: "text",
-                  name: "middle_name",
-                  label: "Middle Name"
+              _c(
+                "div",
+                {
+                  staticClass: "form__tabs__options__option",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeTab($event, 2)
+                    }
+                  }
                 },
-                model: {
-                  value: _vm.employee.middle_name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "middle_name", $$v)
-                  },
-                  expression: "employee.middle_name"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                staticClass: "r-second-half c-two-third",
-                attrs: {
-                  type: "text",
-                  name: "last_name",
-                  label: "Last Name",
-                  error: _vm.v$.employee.last_name
-                },
-                model: {
-                  value: _vm.employee.last_name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "last_name", $$v)
-                  },
-                  expression: "employee.last_name"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form__group" },
-            [
-              _c("Input", {
-                attrs: {
-                  type: "text",
-                  name: "email",
-                  label: "Email",
-                  error: _vm.v$.employee.email
-                },
-                model: {
-                  value: _vm.employee.email,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "email", $$v)
-                  },
-                  expression: "employee.email"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                attrs: { type: "text", name: "phone", label: "Phone" },
-                model: {
-                  value: _vm.employee.phone,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "phone", $$v)
-                  },
-                  expression: "employee.phone"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form__group" },
-            [
-              _c("Input", {
-                attrs: {
-                  type: "date",
-                  name: "date_of_birth",
-                  label: "Date of Birth"
-                },
-                model: {
-                  value: _vm.employee.date_of_birth,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "date_of_birth", $$v)
-                  },
-                  expression: "employee.date_of_birth"
-                }
-              }),
-              _vm._v(" "),
-              _c("Select", {
-                attrs: {
-                  name: "gender",
-                  label: "Gender",
-                  options: this.options.gender
-                },
-                model: {
-                  value: _vm.employee.gender,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "gender", $$v)
-                  },
-                  expression: "employee.gender"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form__group" },
-            [
-              _c("Input", {
-                attrs: {
-                  type: "text",
-                  name: "address1",
-                  label: "Address 1",
-                  error: _vm.v$.employee.address1
-                },
-                model: {
-                  value: _vm.employee.address1,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "address1", $$v)
-                  },
-                  expression: "employee.address1"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                attrs: { type: "text", name: "address2", label: "Address 2" },
-                model: {
-                  value: _vm.employee.address2,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "address2", $$v)
-                  },
-                  expression: "employee.address2"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form__group" },
-            [
-              _c("Input", {
-                attrs: {
-                  type: "text",
-                  name: "city",
-                  label: "City",
-                  error: _vm.v$.employee.city
-                },
-                model: {
-                  value: _vm.employee.city,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "city", $$v)
-                  },
-                  expression: "employee.city"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                attrs: {
-                  type: "text",
-                  name: "state",
-                  label: "State",
-                  error: _vm.v$.employee.state
-                },
-                model: {
-                  value: _vm.employee.state,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "state", $$v)
-                  },
-                  expression: "employee.state"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                attrs: {
-                  type: "text",
-                  name: "country",
-                  label: "Country",
-                  error: _vm.v$.employee.country
-                },
-                model: {
-                  value: _vm.employee.country,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "country", $$v)
-                  },
-                  expression: "employee.country"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "form__group" },
-            [
-              _c("Currency", {
-                attrs: {
-                  type: "text",
-                  name: "salary",
-                  label: "Salary",
-                  error: _vm.v$.employee.salary
-                },
-                model: {
-                  value: _vm.employee.salary,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "salary", $$v)
-                  },
-                  expression: "employee.salary"
-                }
-              }),
-              _vm._v(" "),
-              _c("Select", {
-                attrs: {
-                  name: "salary_rate",
-                  label: "Salary Rate",
-                  options: this.options.salary_rate,
-                  error: _vm.v$.employee.salary_rate
-                },
-                model: {
-                  value: _vm.employee.salary_rate,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "salary_rate", $$v)
-                  },
-                  expression: "employee.salary_rate"
-                }
-              }),
-              _vm._v(" "),
-              _c("Input", {
-                attrs: { type: "date", name: "hire_at", label: "Hire At" },
-                model: {
-                  value: _vm.employee.hire_at,
-                  callback: function($$v) {
-                    _vm.$set(_vm.employee, "hire_at", $$v)
-                  },
-                  expression: "employee.hire_at"
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _vm._m(1)
+                [
+                  _c("i", { staticClass: "icon fas fa-plus" }),
+                  _c("span", { staticClass: "text" }, [
+                    _vm._v("Account Information")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.currTab == 0,
+                    expression: "currTab == 0"
+                  }
+                ],
+                staticClass: "form__tabs__content"
+              },
+              [
+                _c("h3", { staticClass: "form__tabs__content__title" }, [
+                  _vm._v("Personal Information")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group row-2 col-3" },
+                  [
+                    _c("ImageInput", {
+                      staticClass: "r-full",
+                      attrs: { name: "profile" },
+                      on: { getImage: _vm.getImage },
+                      model: {
+                        value: _vm.employee.profile,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "profile", $$v)
+                        },
+                        expression: "employee.profile"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      staticClass: "r-first-half",
+                      attrs: {
+                        type: "text",
+                        name: "first_name",
+                        label: "First Name",
+                        error: _vm.v$.employee.first_name
+                      },
+                      model: {
+                        value: _vm.employee.first_name,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "first_name", $$v)
+                        },
+                        expression: "employee.first_name"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      staticClass: "r-first-half",
+                      attrs: {
+                        type: "text",
+                        name: "middle_name",
+                        label: "Middle Name"
+                      },
+                      model: {
+                        value: _vm.employee.middle_name,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "middle_name", $$v)
+                        },
+                        expression: "employee.middle_name"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      staticClass: "r-second-half c-two-third",
+                      attrs: {
+                        type: "text",
+                        name: "last_name",
+                        label: "Last Name",
+                        error: _vm.v$.employee.last_name
+                      },
+                      model: {
+                        value: _vm.employee.last_name,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "last_name", $$v)
+                        },
+                        expression: "employee.last_name"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: { type: "text", name: "phone", label: "Phone" },
+                      model: {
+                        value: _vm.employee.phone,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "phone", $$v)
+                        },
+                        expression: "employee.phone"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: {
+                        type: "date",
+                        name: "date_of_birth",
+                        label: "Date of Birth"
+                      },
+                      model: {
+                        value: _vm.employee.date_of_birth,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "date_of_birth", $$v)
+                        },
+                        expression: "employee.date_of_birth"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Select", {
+                      attrs: {
+                        name: "gender",
+                        label: "Gender",
+                        options: this.options.gender
+                      },
+                      model: {
+                        value: _vm.employee.gender,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "gender", $$v)
+                        },
+                        expression: "employee.gender"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "address1",
+                        label: "Address 1",
+                        error: _vm.v$.employee.address1
+                      },
+                      model: {
+                        value: _vm.employee.address1,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "address1", $$v)
+                        },
+                        expression: "employee.address1"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "address2",
+                        label: "Address 2"
+                      },
+                      model: {
+                        value: _vm.employee.address2,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "address2", $$v)
+                        },
+                        expression: "employee.address2"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "city",
+                        label: "City",
+                        error: _vm.v$.employee.city
+                      },
+                      model: {
+                        value: _vm.employee.city,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "city", $$v)
+                        },
+                        expression: "employee.city"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "state",
+                        label: "State",
+                        error: _vm.v$.employee.state
+                      },
+                      model: {
+                        value: _vm.employee.state,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "state", $$v)
+                        },
+                        expression: "employee.state"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "country",
+                        label: "Country",
+                        error: _vm.v$.employee.country
+                      },
+                      model: {
+                        value: _vm.employee.country,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "country", $$v)
+                        },
+                        expression: "employee.country"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form__group footer" }, [
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.nextTab.apply(null, arguments)
+                        }
+                      }
+                    },
+                    [_vm._v("Next")]
+                  )
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.currTab == 1,
+                    expression: "currTab == 1"
+                  }
+                ],
+                staticClass: "form__tabs__content"
+              },
+              [
+                _c("h3", { staticClass: "form__tabs__content__title" }, [
+                  _vm._v("Employee Information")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Select", {
+                      attrs: {
+                        name: "role",
+                        label: "Role",
+                        options: this.options.role,
+                        error: _vm.v$.employee.role
+                      },
+                      model: {
+                        value: _vm.employee.role,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "role", $$v)
+                        },
+                        expression: "employee.role"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Select", {
+                      attrs: {
+                        name: "department",
+                        label: "Department",
+                        options: this.options.department,
+                        error: _vm.v$.employee.department
+                      },
+                      model: {
+                        value: _vm.employee.department,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "department", $$v)
+                        },
+                        expression: "employee.department"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Currency", {
+                      attrs: {
+                        type: "text",
+                        name: "salary",
+                        label: "Salary",
+                        error: _vm.v$.employee.salary
+                      },
+                      model: {
+                        value: _vm.employee.salary,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "salary", $$v)
+                        },
+                        expression: "employee.salary"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Select", {
+                      attrs: {
+                        name: "salary_rate",
+                        label: "Salary Rate",
+                        options: this.options.salary_rate,
+                        error: _vm.v$.employee.salary_rate
+                      },
+                      model: {
+                        value: _vm.employee.salary_rate,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "salary_rate", $$v)
+                        },
+                        expression: "employee.salary_rate"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "date",
+                        name: "hire_at",
+                        label: "Hire At"
+                      },
+                      model: {
+                        value: _vm.employee.hire_at,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "hire_at", $$v)
+                        },
+                        expression: "employee.hire_at"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "form__group footer" }, [
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.nextTab.apply(null, arguments)
+                        }
+                      }
+                    },
+                    [_vm._v("Next")]
+                  )
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.currTab == 2,
+                    expression: "currTab == 2"
+                  }
+                ],
+                staticClass: "form__tabs__content"
+              },
+              [
+                _c("h3", { staticClass: "form__tabs__content__title" }, [
+                  _vm._v("Account Information")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "email",
+                        label: "Email",
+                        error: _vm.v$.employee.email
+                      },
+                      model: {
+                        value: _vm.employee.email,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "email", $$v)
+                        },
+                        expression: "employee.email"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "form__group" },
+                  [
+                    _c("Input", {
+                      attrs: {
+                        type: "password",
+                        name: "password",
+                        label: "Password"
+                      },
+                      model: {
+                        value: _vm.employee.password,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "password", $$v)
+                        },
+                        expression: "employee.password"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "password",
+                        name: "password_confirm",
+                        label: "Confirm Password"
+                      },
+                      model: {
+                        value: _vm.employee.password_confirmation,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee, "password_confirmation", $$v)
+                        },
+                        expression: "employee.password_confirmation"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ]
+            )
+          ])
         ]
       )
     ])

@@ -19,6 +19,52 @@
             grid-template-rows: repeat(auto-fill, minmax(6rem, 1fr));
             row-gap: 1rem;
 
+            //TODO: Remove when tested to a separate file
+            .form__tabs {
+                display: grid;
+                grid-template-rows: 4rem 1fr;
+                row-gap: 1rem;
+
+                &__options {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+                    align-items: end;
+
+                    text-align: center;
+
+                    &__option {
+                        display: grid;
+                        grid-template-columns: 3rem auto;
+                        align-items: center;
+
+                        height: 80%;
+                        border-bottom: 0.1rem solid #000;
+
+                        font-size: 1.4rem;
+
+                        cursor: pointer;
+
+                        .icon {
+                            justify-self: end;
+                        }
+
+                        &:nth-child(n+2) {
+                            border-left: 0.1rem solid #000;
+                        }
+                    }
+                }
+
+                &__content {
+                    display: grid;
+                    row-gap: 1rem;
+
+                    &__title {
+                        font-size: 2.0rem;
+                        margin-bottom: 1rem;
+                    }
+                }
+            }
+
             .form__group {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
