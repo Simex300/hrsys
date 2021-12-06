@@ -46,16 +46,28 @@
         first_name: "",
         middle_name: "",
         last_name: "",
+        phone: "",
         date_of_birth: "",
         gender: "",
-        address1: "",
-        address2: "",
-        city: "",
-        state: "",
-        country: "",
+        email: "",
+        profile: null,
+        role: "",
+        department: "",
         salary: "0.00",
         salary_rate: "",
         hire_at: dateFormat(Date.now()),
+        address: {
+            address1: "",
+            address2: "",
+            city: "",
+            state: "",
+            country: "",
+            zipcode: "",
+        },
+        user: {
+            email: "",
+            password: ""
+        }
     };
 
     export default {

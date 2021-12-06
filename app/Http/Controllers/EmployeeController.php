@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\EmployeeAddress;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use Faker;
 
@@ -18,7 +20,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all()->toArray();
+        $employees = Employee::with('address')->get()->toArray();
         return array_reverse($employees);
     }
 
@@ -42,22 +44,36 @@ class EmployeeController extends Controller
     {
         DB::beginTransaction();
         try {
+            $addressRequest = json_decode($request->input('address'));
             $employeeAddress = new EmployeeAddress([
-                'address1' => $request->input('address1'),
-                'address2' => $request->input('address2'),
-                'city' => $request->input('city'),
-                'state' => $request->input('state'),
-                'country' => $request->input('country'),
-                'zipcode' => $request->input('zipcode'),
+                'address1' => $addressRequest->address1,
+                'address2' => $addressRequest->address2,
+                'city' => $addressRequest->city,
+                'state' => $addressRequest->state,
+                'country' => $addressRequest->country,
+                'zipcode' => $addressRequest->zipcode,
             ]);
             $employeeAddress->save();
+
+            $userRequest = json_decode($request->input('user'));
+            $employeeUser = new User([
+                'email' => $userRequest->email,
+                'password' => Hash::make($userRequest->password),
+            ]);
+            $employeeUser->save();
 
             $employee = new Employee([
                 'first_name' => $request->input('first_name'),
                 'middle_name' => $request->input('middle_name'),
                 'last_name' => $request->input('last_name'),
+                'phone' => $request->input('phone'),
+                'date_of_birth' => $request->input('date_of_birth'),
+                'gender' => $request->input('gender'),
                 'address_id' => $employeeAddress->id,
-                'email' => $request->input('email'),
+                'user_id' => $employeeUser->id,
+                'email' => $userRequest->email,
+                'role' => $request->input('role'),
+                'department' => $request->input('department'),
                 'salary' => $request->input('salary'),
                 'salary_rate' => $request->input('salary_rate'),
                 'hire_at' => $request->input('hire_at'),
@@ -78,6 +94,8 @@ class EmployeeController extends Controller
         }
         catch (\Throwable $e) {
             DB::rollback();
+            // TODO: Remove file if transaction fails
+            return response()->json($e, 500);
         }
     }
 

@@ -4782,7 +4782,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 //
 //
 //
@@ -4920,62 +4921,158 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var data = new FormData();
 
       for (var field in fields) {
-        data.append(field, fields[field]);
+        if (_typeof(fields[field]) == "object") {
+          data.append(field, JSON.stringify(fields[field]));
+        } else {
+          data.append(field, fields[field]);
+        }
       }
 
       return data;
     },
-    changeTab: function changeTab(e, index) {
-      this.currTab = index;
+    personalInformationValidation: function personalInformationValidation() {
+      return this.v$.employee.first_name.$validate() && this.v$.employee.last_name.$validate() && this.v$.employee.address.$validate();
     },
-    nextTab: function nextTab() {
-      this.currTab++;
+    employeeInformationValidation: function employeeInformationValidation() {
+      return this.v$.employee.role.$validate() && this.v$.employee.department.$validate() && this.v$.employee.salary.$validate() && this.v$.employee.salary_rate.$validate();
     },
-    AddEmployee: function AddEmployee(employee) {
+    accountInformationValidation: function accountInformationValidation() {
+      return this.v$.employee.user.$validate();
+    },
+    validateTab: function validateTab(index) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var isFormCorrect, formFields;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _this.v$.$validate();
+                _context.t0 = index;
+                _context.next = _context.t0 === 0 ? 3 : _context.t0 === 1 ? 6 : _context.t0 === 2 ? 9 : 12;
+                break;
 
-              case 2:
-                isFormCorrect = _context.sent;
-
-                if (isFormCorrect) {
-                  _context.next = 5;
-                  break;
-                }
-
-                return _context.abrupt("return");
+              case 3:
+                _context.next = 5;
+                return _this.personalInformationValidation();
 
               case 5:
-                if (_this.profile) {
-                  employee.profile = _this.profile;
-                }
+                return _context.abrupt("return", _context.sent);
 
-                formFields = _this.getFormDataFields(employee);
-
-                if (employee.id > 0) {
-                  axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this.formConfig).then(function (res) {
-                    _this.$emit('editEmployee', res);
-                  });
-                } else {
-                  axios.post("http://localhost:8000/api/employees", formFields, _this.formConfig).then(function (res) {
-                    _this.$emit('addEmployee', res.data);
-                  });
-                }
+              case 6:
+                _context.next = 8;
+                return _this.employeeInformationValidation();
 
               case 8:
+                return _context.abrupt("return", _context.sent);
+
+              case 9:
+                _context.next = 11;
+                return _this.accountInformationValidation();
+
+              case 11:
+                return _context.abrupt("return", _context.sent);
+
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
+      }))();
+    },
+    changeTab: function changeTab(e, index) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var nextTab;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this2.validateTab(_this2.currTab);
+
+              case 2:
+                nextTab = _context2.sent;
+                if (nextTab) _this2.currTab = index;
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    nextTab: function nextTab() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var nextTab;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _this3.validateTab(_this3.currTab);
+
+              case 2:
+                nextTab = _context3.sent;
+                if (nextTab) _this3.currTab++;
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    AddEmployee: function AddEmployee(employee) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+        var isFormCorrect, formFields;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _this4.v$.$validate();
+
+              case 2:
+                isFormCorrect = _context4.sent;
+
+                if (isFormCorrect) {
+                  _context4.next = 5;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 5:
+                if (_this4.profile) {
+                  employee.profile = _this4.profile;
+                }
+
+                formFields = _this4.getFormDataFields(employee);
+
+                if (employee.id > 0) {
+                  axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this4.formConfig).then(function (res) {
+                    _this4.$emit('editEmployee', res);
+                  });
+                } else {
+                  axios.post("http://localhost:8000/api/employees", formFields, _this4.formConfig).then(function (res) {
+                    _this4.$emit('addEmployee', res.data);
+                  });
+                }
+
+              case 8:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
       }))();
     }
   },
@@ -5005,20 +5102,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         last_name: {
           required: requiredMessage
         },
-        email: {
-          required: requiredMessage,
-          email: emailMessage
-        },
-        address1: {
+        role: {
           required: requiredMessage
         },
-        city: {
-          required: requiredMessage
-        },
-        state: {
-          required: requiredMessage
-        },
-        country: {
+        department: {
           required: requiredMessage
         },
         salary: {
@@ -5028,6 +5115,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         },
         salary_rate: {
           required: requiredMessage
+        },
+        hire_at: {
+          required: requiredMessage
+        },
+        address: {
+          address1: {
+            required: requiredMessage
+          },
+          city: {
+            required: requiredMessage
+          },
+          state: {
+            required: requiredMessage
+          },
+          country: {
+            required: requiredMessage
+          },
+          zipcode: {
+            required: requiredMessage
+          }
+        },
+        user: {
+          email: {
+            required: requiredMessage,
+            email: emailMessage
+          },
+          password: {
+            required: requiredMessage
+          },
+          password_confirmation: {
+            required: requiredMessage,
+            sameAs: (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.sameAs)(this.employee.user.password)
+          }
         }
       }
     };
@@ -5123,16 +5243,28 @@ var defaultValue = {
   first_name: "",
   middle_name: "",
   last_name: "",
+  phone: "",
   date_of_birth: "",
   gender: "",
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-  country: "",
+  email: "",
+  profile: null,
+  role: "",
+  department: "",
   salary: "0.00",
   salary_rate: "",
-  hire_at: dateFormat(Date.now())
+  hire_at: dateFormat(Date.now()),
+  address: {
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    country: "",
+    zipcode: ""
+  },
+  user: {
+    email: "",
+    password: ""
+  }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -44312,55 +44444,49 @@ var render = function() {
               _c(
                 "div",
                 {
-                  staticClass: "form__tabs__options__option",
+                  class: {
+                    form__tabs__options__option: true,
+                    active: this.currTab == 0
+                  },
                   on: {
                     click: function($event) {
                       return _vm.changeTab($event, 0)
                     }
                   }
                 },
-                [
-                  _c("i", { staticClass: "icon fas fa-plus" }),
-                  _c("span", { staticClass: "text" }, [
-                    _vm._v("Personal Information")
-                  ])
-                ]
+                [_vm._m(1)]
               ),
               _vm._v(" "),
               _c(
                 "div",
                 {
-                  staticClass: "form__tabs__options__option",
+                  class: {
+                    form__tabs__options__option: true,
+                    active: this.currTab == 1
+                  },
                   on: {
                     click: function($event) {
                       return _vm.changeTab($event, 1)
                     }
                   }
                 },
-                [
-                  _c("i", { staticClass: "icon fas fa-plus" }),
-                  _c("span", { staticClass: "text" }, [
-                    _vm._v("Employee Information")
-                  ])
-                ]
+                [_vm._m(2)]
               ),
               _vm._v(" "),
               _c(
                 "div",
                 {
-                  staticClass: "form__tabs__options__option",
+                  class: {
+                    form__tabs__options__option: true,
+                    active: this.currTab == 2
+                  },
                   on: {
                     click: function($event) {
                       return _vm.changeTab($event, 2)
                     }
                   }
                 },
-                [
-                  _c("i", { staticClass: "icon fas fa-plus" }),
-                  _c("span", { staticClass: "text" }, [
-                    _vm._v("Account Information")
-                  ])
-                ]
+                [_vm._m(3)]
               )
             ]),
             _vm._v(" "),
@@ -44465,15 +44591,8 @@ var render = function() {
                         },
                         expression: "employee.phone"
                       }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form__group" },
-                  [
+                    }),
+                    _vm._v(" "),
                     _c("Input", {
                       attrs: {
                         type: "date",
@@ -44516,14 +44635,14 @@ var render = function() {
                         type: "text",
                         name: "address1",
                         label: "Address 1",
-                        error: _vm.v$.employee.address1
+                        error: _vm.v$.employee.address.address1
                       },
                       model: {
-                        value: _vm.employee.address1,
+                        value: _vm.employee.address.address1,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "address1", $$v)
+                          _vm.$set(_vm.employee.address, "address1", $$v)
                         },
-                        expression: "employee.address1"
+                        expression: "employee.address.address1"
                       }
                     }),
                     _vm._v(" "),
@@ -44534,11 +44653,11 @@ var render = function() {
                         label: "Address 2"
                       },
                       model: {
-                        value: _vm.employee.address2,
+                        value: _vm.employee.address.address2,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "address2", $$v)
+                          _vm.$set(_vm.employee.address, "address2", $$v)
                         },
-                        expression: "employee.address2"
+                        expression: "employee.address.address2"
                       }
                     })
                   ],
@@ -44554,14 +44673,14 @@ var render = function() {
                         type: "text",
                         name: "city",
                         label: "City",
-                        error: _vm.v$.employee.city
+                        error: _vm.v$.employee.address.city
                       },
                       model: {
-                        value: _vm.employee.city,
+                        value: _vm.employee.address.city,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "city", $$v)
+                          _vm.$set(_vm.employee.address, "city", $$v)
                         },
-                        expression: "employee.city"
+                        expression: "employee.address.city"
                       }
                     }),
                     _vm._v(" "),
@@ -44570,14 +44689,14 @@ var render = function() {
                         type: "text",
                         name: "state",
                         label: "State",
-                        error: _vm.v$.employee.state
+                        error: _vm.v$.employee.address.state
                       },
                       model: {
-                        value: _vm.employee.state,
+                        value: _vm.employee.address.state,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "state", $$v)
+                          _vm.$set(_vm.employee.address, "state", $$v)
                         },
-                        expression: "employee.state"
+                        expression: "employee.address.state"
                       }
                     }),
                     _vm._v(" "),
@@ -44586,14 +44705,30 @@ var render = function() {
                         type: "text",
                         name: "country",
                         label: "Country",
-                        error: _vm.v$.employee.country
+                        error: _vm.v$.employee.address.country
                       },
                       model: {
-                        value: _vm.employee.country,
+                        value: _vm.employee.address.country,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "country", $$v)
+                          _vm.$set(_vm.employee.address, "country", $$v)
                         },
-                        expression: "employee.country"
+                        expression: "employee.address.country"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("Input", {
+                      attrs: {
+                        type: "text",
+                        name: "zipcode",
+                        label: "Zip Code",
+                        error: _vm.v$.employee.address.zipcode
+                      },
+                      model: {
+                        value: _vm.employee.address.zipcode,
+                        callback: function($$v) {
+                          _vm.$set(_vm.employee.address, "zipcode", $$v)
+                        },
+                        expression: "employee.address.zipcode"
                       }
                     })
                   ],
@@ -44772,14 +44907,14 @@ var render = function() {
                         type: "text",
                         name: "email",
                         label: "Email",
-                        error: _vm.v$.employee.email
+                        error: _vm.v$.employee.user.email
                       },
                       model: {
-                        value: _vm.employee.email,
+                        value: _vm.employee.user.email,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "email", $$v)
+                          _vm.$set(_vm.employee.user, "email", $$v)
                         },
-                        expression: "employee.email"
+                        expression: "employee.user.email"
                       }
                     })
                   ],
@@ -44794,14 +44929,15 @@ var render = function() {
                       attrs: {
                         type: "password",
                         name: "password",
-                        label: "Password"
+                        label: "Password",
+                        error: _vm.v$.employee.user.password
                       },
                       model: {
-                        value: _vm.employee.password,
+                        value: _vm.employee.user.password,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "password", $$v)
+                          _vm.$set(_vm.employee.user, "password", $$v)
                         },
-                        expression: "employee.password"
+                        expression: "employee.user.password"
                       }
                     }),
                     _vm._v(" "),
@@ -44809,21 +44945,26 @@ var render = function() {
                       attrs: {
                         type: "password",
                         name: "password_confirm",
-                        label: "Confirm Password"
+                        label: "Confirm Password",
+                        error: _vm.v$.employee.user.password_confirmation
                       },
                       model: {
-                        value: _vm.employee.password_confirmation,
+                        value: _vm.employee.user.password_confirmation,
                         callback: function($$v) {
-                          _vm.$set(_vm.employee, "password_confirmation", $$v)
+                          _vm.$set(
+                            _vm.employee.user,
+                            "password_confirmation",
+                            $$v
+                          )
                         },
-                        expression: "employee.password_confirmation"
+                        expression: "employee.user.password_confirmation"
                       }
                     })
                   ],
                   1
                 ),
                 _vm._v(" "),
-                _vm._m(1)
+                _vm._m(4)
               ]
             )
           ])
@@ -44839,6 +44980,33 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "header" }, [
       _c("h2", [_vm._v("Add Employee")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("i", { staticClass: "icon fas fa-user-circle" }),
+      _vm._v("Personal Information")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("i", { staticClass: "icon fas fa-file" }),
+      _vm._v("Employee Information")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _c("i", { staticClass: "icon fas fa-shield-alt" }),
+      _vm._v("Account Information")
     ])
   },
   function() {

@@ -421,7 +421,7 @@
 }
 .employeeForm .body .form .form__tabs__options__option {
   display: grid;
-  grid-template-columns: 3rem auto;
+  grid-template-columns: 1fr;
   align-items: center;
   height: 80%;
   border-bottom: 0.1rem solid #000;
@@ -429,10 +429,17 @@
   cursor: pointer;
 }
 .employeeForm .body .form .form__tabs__options__option .icon {
-  justify-self: end;
+  font-size: 1.8rem;
+  margin-right: 1rem;
+}
+.employeeForm .body .form .form__tabs__options__option:hover {
+  background-color: rgba(132, 169, 172, 0.5);
 }
 .employeeForm .body .form .form__tabs__options__option:nth-child(n+2) {
   border-left: 0.1rem solid #000;
+}
+.employeeForm .body .form .form__tabs__options__option.active {
+  background-color: #84a9ac;
 }
 .employeeForm .body .form .form__tabs__content {
   display: grid;

@@ -34,7 +34,7 @@
 
                     &__option {
                         display: grid;
-                        grid-template-columns: 3rem auto;
+                        grid-template-columns: 1fr;
                         align-items: center;
 
                         height: 80%;
@@ -45,11 +45,20 @@
                         cursor: pointer;
 
                         .icon {
-                            justify-self: end;
+                            font-size: 1.8rem;
+                            margin-right: 1rem;
+                        }
+
+                        &:hover {
+                            background-color: rgba($light, .5);
                         }
 
                         &:nth-child(n+2) {
                             border-left: 0.1rem solid #000;
+                        }
+
+                        &.active {
+                            background-color: $light;
                         }
                     }
                 }

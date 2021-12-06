@@ -13,8 +13,13 @@ class Employee extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'phone',
+        'date_of_birth',
+        'gender',
         'address_id',
         'email',
+        'role',
+        'department',
         'salary',
         'salary_rate',
         'hire_at'

@@ -7,9 +7,9 @@
             <form @submit.prevent="onSubmit" class="form">
                 <div class="form__tabs">
                     <div class="form__tabs__options">
-                        <div class="form__tabs__options__option" @click="changeTab($event, 0)"><i class="icon fas fa-plus"></i><span class="text">Personal Information</span></div>
-                        <div class="form__tabs__options__option" @click="changeTab($event, 1)"><i class="icon fas fa-plus"></i><span class="text">Employee Information</span></div>
-                        <div class="form__tabs__options__option" @click="changeTab($event, 2)"><i class="icon fas fa-plus"></i><span class="text">Account Information</span></div>
+                        <div :class="{form__tabs__options__option: true, active: this.currTab == 0}" @click="changeTab($event, 0)"><span><i class="icon fas fa-user-circle"></i>Personal Information</span></div>
+                        <div :class="{form__tabs__options__option: true, active: this.currTab == 1}" @click="changeTab($event, 1)"><span><i class="icon fas fa-file"></i>Employee Information</span></div>
+                        <div :class="{form__tabs__options__option: true, active: this.currTab == 2}" @click="changeTab($event, 2)"><span><i class="icon fas fa-shield-alt"></i>Account Information</span></div>
                     </div>
                     <div v-show="currTab == 0" class="form__tabs__content">
                         <h3 class="form__tabs__content__title">Personal Information</h3>
@@ -21,19 +21,18 @@
                         </div>
                         <div class="form__group">
                             <Input type="text" name="phone" label="Phone" v-model="employee.phone" />
-                        </div>
-                        <div class="form__group">
                             <Input type="date" name="date_of_birth" label="Date of Birth" v-model="employee.date_of_birth" />
                             <Select name="gender" label="Gender" v-model="employee.gender" :options="this.options.gender" />
                         </div>
                         <div class="form__group">
-                            <Input type="text" name="address1" label="Address 1" v-model="employee.address1" :error="v$.employee.address1"/>
-                            <Input type="text" name="address2" label="Address 2" v-model="employee.address2" />
+                            <Input type="text" name="address1" label="Address 1" v-model="employee.address.address1" :error="v$.employee.address.address1"/>
+                            <Input type="text" name="address2" label="Address 2" v-model="employee.address.address2" />
                         </div>
                         <div class="form__group">
-                            <Input type="text" name="city" label="City" v-model="employee.city" :error="v$.employee.city" />
-                            <Input type="text" name="state" label="State" v-model="employee.state" :error="v$.employee.state" />
-                            <Input type="text" name="country" label="Country" v-model="employee.country" :error="v$.employee.country" />
+                            <Input type="text" name="city" label="City" v-model="employee.address.city" :error="v$.employee.address.city" />
+                            <Input type="text" name="state" label="State" v-model="employee.address.state" :error="v$.employee.address.state" />
+                            <Input type="text" name="country" label="Country" v-model="employee.address.country" :error="v$.employee.address.country" />
+                            <Input type="text" name="zipcode" label="Zip Code" v-model="employee.address.zipcode" :error="v$.employee.address.zipcode" />
                         </div>
                         <div class="form__group footer">
                             <button @click.prevent="nextTab">Next</button>
@@ -57,11 +56,11 @@
                     <div v-show="currTab == 2" class="form__tabs__content">
                         <h3 class="form__tabs__content__title">Account Information</h3>
                         <div class="form__group">
-                            <Input type="text" name="email" label="Email" v-model="employee.email" :error="v$.employee.email"/>
+                            <Input type="text" name="email" label="Email" v-model="employee.user.email" :error="v$.employee.user.email"/>
                         </div>
                         <div class="form__group">
-                            <Input type="password" name="password" label="Password" v-model="employee.password" />
-                            <Input type="password" name="password_confirm" label="Confirm Password" v-model="employee.password_confirmation" />
+                            <Input type="password" name="password" label="Password" v-model="employee.user.password" :error="v$.employee.user.password"/>
+                            <Input type="password" name="password_confirm" label="Confirm Password" v-model="employee.user.password_confirmation" :error="v$.employee.user.password_confirmation"/>
                         </div>
                         <div class="form__group footer">
                             <button>Submit</button>
@@ -79,7 +78,7 @@ import Input from "../Common/Input.vue"
 import Select from "../Common/Select.vue"
 
 import useVuelidate from '@vuelidate/core'
-import { required, email, minValue, maxValue, helpers, minLength } from '@vuelidate/validators'
+import { required, email, minValue, maxValue, sameAs, helpers } from '@vuelidate/validators'
 
 export default {
     setup() {
@@ -118,17 +117,50 @@ export default {
         },
         getFormDataFields(fields) {
             let data  = new FormData();
-            for(const field in fields) {
-                data.append(field, fields[field]);
+            for (const field in fields) {
+                if (typeof fields[field] == "object"){
+                    data.append(field, JSON.stringify(fields[field]));
+                }
+                else {
+                    data.append(field, fields[field]);
+                }
             }
             return data
         },
-        changeTab(e, index) {
-
-            this.currTab = index;
+        personalInformationValidation() {
+            return this.v$.employee.first_name.$validate() &&
+                   this.v$.employee.last_name.$validate() &&
+                   this.v$.employee.address.$validate()
         },
-        nextTab() {
-            this.currTab++;
+        employeeInformationValidation() {
+            return this.v$.employee.role.$validate() &&
+                    this.v$.employee.department.$validate() &&
+                    this.v$.employee.salary.$validate() &&
+                    this.v$.employee.salary_rate.$validate()
+        },
+        accountInformationValidation() {
+            return this.v$.employee.user.$validate()
+        },
+        async validateTab(index) {
+            switch(index){
+                case 0:
+                    return await this.personalInformationValidation();
+                case 1:
+                    return await this.employeeInformationValidation();
+                case 2:
+                    return await this.accountInformationValidation();
+            }
+        },
+        async changeTab(e, index) {
+            let nextTab = await this.validateTab(this.currTab);
+            if (nextTab)
+                this.currTab = index;
+
+        },
+        async nextTab() {
+            let nextTab = await this.validateTab(this.currTab);
+            if (nextTab)
+                this.currTab++;
         },
         async AddEmployee(employee) {
             const isFormCorrect = await this.v$.$validate()
@@ -162,13 +194,23 @@ export default {
             employee: {
                 first_name: { required: requiredMessage },
                 last_name: { required: requiredMessage },
-                email: { required: requiredMessage, email: emailMessage },
-                address1: { required: requiredMessage },
-                city: { required: requiredMessage },
-                state: { required: requiredMessage },
-                country: { required: requiredMessage },
+                role: { required: requiredMessage },
+                department: { required: requiredMessage },
                 salary: { required: requiredMessage, minValue: minValueMessage(1), maxValue:maxValueMessage(999999.99)},
                 salary_rate: { required: requiredMessage },
+                hire_at: { required: requiredMessage },
+                address: {
+                    address1: { required: requiredMessage },
+                    city: { required: requiredMessage },
+                    state: { required: requiredMessage },
+                    country: { required: requiredMessage },
+                    zipcode: { required: requiredMessage },
+                },
+                user: {
+                    email: { required: requiredMessage, email: emailMessage },
+                    password: { required: requiredMessage },
+                    password_confirmation: { required: requiredMessage, sameAs: sameAs(this.employee.user.password) },
+                }
             }
         }
     }
