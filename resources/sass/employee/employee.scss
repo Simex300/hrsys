@@ -16,6 +16,11 @@
         grid-template-columns: 7fr 1fr;
         column-gap: 1rem;
     }
+
+    &__container {
+        max-height: calc(100vh - 12.2rem);
+        overflow-y: scroll;
+    }
 }
 
 // TODO: Move definition to a separate file later on the line

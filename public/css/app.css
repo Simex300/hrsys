@@ -348,6 +348,10 @@
   -moz-column-gap: 1rem;
        column-gap: 1rem;
 }
+.employee__container {
+  max-height: calc(100vh - 12.2rem);
+  overflow-y: scroll;
+}
 
 .search {
   display: grid;

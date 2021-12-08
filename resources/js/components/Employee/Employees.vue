@@ -18,7 +18,9 @@
                 </button>
             </div>
         </div>
-        <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" @dblclick.native="openDetails($event, index)"/>
+        <div class="employee__container">
+            <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" @dblclick.native="openDetails($event, index)"/>
+        </div>
         <Modal ref="employeeModal" :showModal="formShow" @onClose="closeModal">
             <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" />
         </Modal>

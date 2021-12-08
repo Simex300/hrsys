@@ -5208,6 +5208,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -45106,29 +45108,34 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._l(this.employees, function(employee, index) {
-        return _c("Card", {
-          key: index,
-          attrs: {
-            title:
-              employee.first_name +
-              " " +
-              employee.middle_name[0] +
-              " " +
-              employee.last_name,
-            profile: employee.profile,
-            data: employee
-          },
-          nativeOn: {
-            click: function($event) {
-              return _vm.toggleSelect($event, index)
+      _c(
+        "div",
+        { staticClass: "employee__container" },
+        _vm._l(this.employees, function(employee, index) {
+          return _c("Card", {
+            key: index,
+            attrs: {
+              title:
+                employee.first_name +
+                " " +
+                employee.middle_name[0] +
+                " " +
+                employee.last_name,
+              profile: employee.profile,
+              data: employee
             },
-            dblclick: function($event) {
-              return _vm.openDetails($event, index)
+            nativeOn: {
+              click: function($event) {
+                return _vm.toggleSelect($event, index)
+              },
+              dblclick: function($event) {
+                return _vm.openDetails($event, index)
+              }
             }
-          }
-        })
-      }),
+          })
+        }),
+        1
+      ),
       _vm._v(" "),
       _c(
         "Modal",
@@ -45157,7 +45164,7 @@ var render = function() {
         1
       )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
