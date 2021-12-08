@@ -4950,32 +4950,30 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.t0 = index;
-                _context.next = _context.t0 === 0 ? 3 : _context.t0 === 1 ? 6 : _context.t0 === 2 ? 9 : 12;
-                break;
+                return _context.abrupt("return", true);
 
-              case 3:
-                _context.next = 5;
+              case 4:
+                _context.next = 6;
                 return _this.personalInformationValidation();
 
-              case 5:
+              case 6:
                 return _context.abrupt("return", _context.sent);
 
-              case 6:
-                _context.next = 8;
+              case 7:
+                _context.next = 9;
                 return _this.employeeInformationValidation();
 
-              case 8:
+              case 9:
                 return _context.abrupt("return", _context.sent);
 
-              case 9:
-                _context.next = 11;
+              case 10:
+                _context.next = 12;
                 return _this.accountInformationValidation();
 
-              case 11:
+              case 12:
                 return _context.abrupt("return", _context.sent);
 
-              case 12:
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -5035,25 +5033,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var isFormCorrect, formFields;
+        var formFields;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.next = 2;
-                return _this4.v$.$validate();
-
-              case 2:
-                isFormCorrect = _context4.sent;
-
-                if (isFormCorrect) {
-                  _context4.next = 5;
-                  break;
-                }
-
-                return _context4.abrupt("return");
-
-              case 5:
+                // const isFormCorrect = await this.v$.$validate()
+                // if (!isFormCorrect) return
                 if (_this4.profile) {
                   employee.profile = _this4.profile;
                 }
@@ -5070,7 +5056,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                   });
                 }
 
-              case 8:
+              case 3:
               case "end":
                 return _context4.stop();
             }

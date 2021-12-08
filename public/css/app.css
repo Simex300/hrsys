@@ -44,6 +44,8 @@
        column-gap: 2rem;
 }
 .navbar__footer__image {
+  -o-object-fit: cover;
+     object-fit: cover;
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
@@ -52,8 +54,6 @@
   font-size: 1.8rem;
 }
 .navbar__footer__icon {
-  -o-object-fit: cover;
-     object-fit: cover;
   color: inherit;
   font-size: 2.4rem;
 }

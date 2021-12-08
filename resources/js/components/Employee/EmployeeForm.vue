@@ -142,6 +142,7 @@ export default {
             return this.v$.employee.user.$validate()
         },
         async validateTab(index) {
+            return true;
             switch(index){
                 case 0:
                     return await this.personalInformationValidation();
@@ -163,8 +164,8 @@ export default {
                 this.currTab++;
         },
         async AddEmployee(employee) {
-            const isFormCorrect = await this.v$.$validate()
-            if (!isFormCorrect) return
+            // const isFormCorrect = await this.v$.$validate()
+            // if (!isFormCorrect) return
             if (this.profile) {
                 employee.profile = this.profile
             }
