@@ -13,10 +13,13 @@
             <a href="#" class="navbar-link">
                 <i class="navbar-icons fas fa-user-friends"></i> <span>Customers</span>
             </a>
+            <a href="#" class="navbar-link">
+                <i class="navbar-icons fas fa-archive"></i> <span>Productos</span>
+            </a>
         </div>
         <div class="navbar__footer">
             <img class="navbar__footer__image" src="https://i.redd.it/9rwqt4hld3q71.jpg" alt="hugenerd" width="30" height="30">
-            <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.name }}</span>
+            <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.email }}</span>
             <div class="navbar__footer__icon" @click.prevent="logout">
                 <i class="fas fa-power-off"></i>
             </div>

@@ -23,7 +23,7 @@
             <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" />
         </Modal>
         <Modal ref="employeeDetails" :showModal="detailsShow" @onClose="closeModal">
-            <EmployeeDetails :employee="this.employee" @addEmployee="loadEmployee" />
+            <EmployeeDetails :employee="this.employee" />
         </Modal>
     </div>
 </template>
@@ -80,7 +80,7 @@
         },
         data() {
             return {
-                formShow: true,
+                formShow: false,
                 detailsShow: false,
                 // Search Engine
                 search: "",
@@ -118,10 +118,6 @@
                 this.detailsShow = false;
                 this.resetEmployee();
             },
-            // closeModal() {
-            //     this.modalShow = false;
-            //     this.resetEmployee();
-            // },
             toggleSelect(e, index) {
                 this.employees[index].selected = !this.employees[index].selected
             },

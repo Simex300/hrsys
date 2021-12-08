@@ -4664,6 +4664,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
@@ -4921,7 +4924,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       var data = new FormData();
 
       for (var field in fields) {
-        if (_typeof(fields[field]) == "object") {
+        if (_typeof(fields[field]) == "object" && field != 'profile') {
           data.append(field, JSON.stringify(fields[field]));
         } else {
           data.append(field, fields[field]);
@@ -5276,7 +5279,7 @@ var defaultValue = {
   },
   data: function data() {
     return {
-      formShow: true,
+      formShow: false,
       detailsShow: false,
       // Search Engine
       search: "",
@@ -5321,10 +5324,6 @@ var defaultValue = {
       this.detailsShow = false;
       this.resetEmployee();
     },
-    // closeModal() {
-    //     this.modalShow = false;
-    //     this.resetEmployee();
-    // },
     toggleSelect: function toggleSelect(e, index) {
       this.employees[index].selected = !this.employees[index].selected;
     },
@@ -44223,7 +44222,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "navbar__footer__dropdown" }, [
-        _vm._v(_vm._s(this.$store.state.auth.user.name))
+        _vm._v(_vm._s(this.$store.state.auth.user.email))
       ]),
       _vm._v(" "),
       _c(
@@ -44274,6 +44273,12 @@ var staticRenderFns = [
         _c("i", { staticClass: "navbar-icons fas fa-user-friends" }),
         _vm._v(" "),
         _c("span", [_vm._v("Customers")])
+      ]),
+      _vm._v(" "),
+      _c("a", { staticClass: "navbar-link", attrs: { href: "#" } }, [
+        _c("i", { staticClass: "navbar-icons fas fa-archive" }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Productos")])
       ])
     ])
   }
@@ -45158,12 +45163,7 @@ var render = function() {
           attrs: { showModal: _vm.detailsShow },
           on: { onClose: _vm.closeModal }
         },
-        [
-          _c("EmployeeDetails", {
-            attrs: { employee: this.employee },
-            on: { addEmployee: _vm.loadEmployee }
-          })
-        ],
+        [_c("EmployeeDetails", { attrs: { employee: this.employee } })],
         1
       )
     ],

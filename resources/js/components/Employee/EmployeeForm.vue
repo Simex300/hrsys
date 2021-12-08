@@ -118,7 +118,7 @@ export default {
         getFormDataFields(fields) {
             let data  = new FormData();
             for (const field in fields) {
-                if (typeof fields[field] == "object"){
+                if (typeof fields[field] == "object" && field != 'profile'){
                     data.append(field, JSON.stringify(fields[field]));
                 }
                 else {
