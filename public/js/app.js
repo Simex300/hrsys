@@ -44214,7 +44214,7 @@ var render = function() {
       _c("img", {
         staticClass: "navbar__footer__image",
         attrs: {
-          src: "https://i.redd.it/9rwqt4hld3q71.jpg",
+          src: "./storage/" + this.$store.state.auth.user.profile,
           alt: "hugenerd",
           width: "30",
           height: "30"
@@ -44222,7 +44222,11 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("span", { staticClass: "navbar__footer__dropdown" }, [
-        _vm._v(_vm._s(this.$store.state.auth.user.email))
+        _vm._v(
+          _vm._s(this.$store.state.auth.user.first_name) +
+            " " +
+            _vm._s(this.$store.state.auth.user.last_name)
+        )
       ]),
       _vm._v(" "),
       _c(

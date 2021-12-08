@@ -29,14 +29,14 @@ export default {
                 commit('SET_USER', data)
                 commit('SET_AUTHENTICATED', true)
                 router.push({name: 'home'})
-            }).catch((response)=>{
-                commit('SET_USER',{})
-                commit('SET_AUTHENTICATED',false)
+            }).catch((response) => {
+                commit('SET_USER', {})
+                commit('SET_AUTHENTICATED', false)
             })
         },
         logout({commit}){
-            commit('SET_USER',{})
-            commit('SET_AUTHENTICATED',false)
+            commit('SET_USER', {})
+            commit('SET_AUTHENTICATED', false)
         }
     }
 }

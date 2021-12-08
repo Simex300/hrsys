@@ -18,8 +18,8 @@
             </a>
         </div>
         <div class="navbar__footer">
-            <img class="navbar__footer__image" src="https://i.redd.it/9rwqt4hld3q71.jpg" alt="hugenerd" width="30" height="30">
-            <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.email }}</span>
+            <img class="navbar__footer__image" :src="`./storage/${this.$store.state.auth.user.profile}`" alt="hugenerd" width="30" height="30">
+            <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.first_name }} {{ this.$store.state.auth.user.last_name }}</span>
             <div class="navbar__footer__icon" @click.prevent="logout">
                 <i class="fas fa-power-off"></i>
             </div>
