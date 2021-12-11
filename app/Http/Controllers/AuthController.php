@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -55,5 +56,17 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out'
         ]);
+    }
+
+    public function checkEmail(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|string|email|unique:users'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'The email already exists', 'found' => true]);
+        }
+
+        return response()->json(['message' => 'The email does not exists', 'found' => false]);
     }
 }

@@ -56,7 +56,7 @@
                     <div v-show="currTab == 2" class="form__tabs__content">
                         <h3 class="form__tabs__content__title">Account Information</h3>
                         <div class="form__group">
-                            <Input type="text" name="email" label="Email" v-model="employee.user.email" :error="v$.employee.user.email"/>
+                            <Input type="text" name="email" label="Email" v-model="employee.user.email" :error="v$.employee.user.email" :serverValidation="serverValidations" @blur="checkEmail"/>
                         </div>
                         <div class="form__group">
                             <Input type="password" name="password" label="Password" v-model="employee.user.password" :error="v$.employee.user.password"/>
@@ -98,6 +98,10 @@ export default {
                 salary_rate: {Hourly: 'Hourly', Weekly: 'Weekly', Monthly: 'Monthly', Anually: 'Anually'},
                 role: {worker: "Worker", manager: "Manager", hr: "Human Resource", president: "President"},
                 department: {hr: "Human Resource", development: "Development",  executive: "Executive"},
+            },
+            serverValidations: {
+                email: {},
+                validate: this.checkEmail
             },
             profile: null,
             currTab: 0,
@@ -141,8 +145,13 @@ export default {
         accountInformationValidation() {
             return this.v$.employee.user.$validate()
         },
+        checkEmail() {
+            axios.post("http://localhost:8000/api/checkEmail").then(res => {
+                this.serverValidations.email = res.data;
+            })
+        },
         async validateTab(index) {
-            return true;
+            // return true;
             switch(index){
                 case 0:
                     return await this.personalInformationValidation();
@@ -164,8 +173,8 @@ export default {
                 this.currTab++;
         },
         async AddEmployee(employee) {
-            // const isFormCorrect = await this.v$.$validate()
-            // if (!isFormCorrect) return
+            const isFormCorrect = await this.v$.$validate()
+            if (!isFormCorrect) return
             if (this.profile) {
                 employee.profile = this.profile
             }

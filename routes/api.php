@@ -20,7 +20,9 @@ Route::post('/register',[AuthController::class,'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
+
 Route::middleware('api')->group(function() {
+    Route::post('/checkEmail', [AuthController::class, 'checkEmail']);
     Route::resource('employees', EmployeeController::class);
 });
 

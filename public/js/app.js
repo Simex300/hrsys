@@ -4539,7 +4539,14 @@ __webpack_require__.r(__webpack_exports__);
     name: String,
     placeholder: String,
     value: [String, Number],
-    error: Object
+    error: Object,
+    serverValidation: [Function, Object]
+  },
+  methods: {
+    manageInput: function manageInput(event) {
+      if (!this.serverValidation) return;
+      this.serverValidation.validate();
+    }
   }
 });
 
@@ -4904,6 +4911,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           executive: "Executive"
         }
       },
+      serverValidations: {
+        email: {},
+        validate: this.checkEmail
+      },
       profile: null,
       currTab: 0,
       formConfig: {
@@ -4942,38 +4953,47 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     accountInformationValidation: function accountInformationValidation() {
       return this.v$.employee.user.$validate();
     },
-    validateTab: function validateTab(index) {
+    checkEmail: function checkEmail() {
       var _this = this;
+
+      axios.post("http://localhost:8000/api/checkEmail").then(function (res) {
+        _this.serverValidations.email = res.data;
+      });
+    },
+    validateTab: function validateTab(index) {
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", true);
+                _context.t0 = index;
+                _context.next = _context.t0 === 0 ? 3 : _context.t0 === 1 ? 6 : _context.t0 === 2 ? 9 : 12;
+                break;
 
-              case 4:
-                _context.next = 6;
-                return _this.personalInformationValidation();
+              case 3:
+                _context.next = 5;
+                return _this2.personalInformationValidation();
+
+              case 5:
+                return _context.abrupt("return", _context.sent);
 
               case 6:
-                return _context.abrupt("return", _context.sent);
+                _context.next = 8;
+                return _this2.employeeInformationValidation();
 
-              case 7:
-                _context.next = 9;
-                return _this.employeeInformationValidation();
+              case 8:
+                return _context.abrupt("return", _context.sent);
 
               case 9:
-                return _context.abrupt("return", _context.sent);
+                _context.next = 11;
+                return _this2.accountInformationValidation();
 
-              case 10:
-                _context.next = 12;
-                return _this.accountInformationValidation();
+              case 11:
+                return _context.abrupt("return", _context.sent);
 
               case 12:
-                return _context.abrupt("return", _context.sent);
-
-              case 13:
               case "end":
                 return _context.stop();
             }
@@ -4982,7 +5002,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }))();
     },
     changeTab: function changeTab(e, index) {
-      var _this2 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var nextTab;
@@ -4991,11 +5011,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _this2.validateTab(_this2.currTab);
+                return _this3.validateTab(_this3.currTab);
 
               case 2:
                 nextTab = _context2.sent;
-                if (nextTab) _this2.currTab = index;
+                if (nextTab) _this3.currTab = index;
 
               case 4:
               case "end":
@@ -5006,7 +5026,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }))();
     },
     nextTab: function nextTab() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var nextTab;
@@ -5015,11 +5035,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return _this3.validateTab(_this3.currTab);
+                return _this4.validateTab(_this4.currTab);
 
               case 2:
                 nextTab = _context3.sent;
-                if (nextTab) _this3.currTab++;
+                if (nextTab) _this4.currTab++;
 
               case 4:
               case "end":
@@ -5030,33 +5050,45 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }))();
     },
     AddEmployee: function AddEmployee(employee) {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var formFields;
+        var isFormCorrect, formFields;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                // const isFormCorrect = await this.v$.$validate()
-                // if (!isFormCorrect) return
-                if (_this4.profile) {
-                  employee.profile = _this4.profile;
+                _context4.next = 2;
+                return _this5.v$.$validate();
+
+              case 2:
+                isFormCorrect = _context4.sent;
+
+                if (isFormCorrect) {
+                  _context4.next = 5;
+                  break;
                 }
 
-                formFields = _this4.getFormDataFields(employee);
+                return _context4.abrupt("return");
+
+              case 5:
+                if (_this5.profile) {
+                  employee.profile = _this5.profile;
+                }
+
+                formFields = _this5.getFormDataFields(employee);
 
                 if (employee.id > 0) {
-                  axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this4.formConfig).then(function (res) {
-                    _this4.$emit('editEmployee', res);
+                  axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this5.formConfig).then(function (res) {
+                    _this5.$emit('editEmployee', res);
                   });
                 } else {
-                  axios.post("http://localhost:8000/api/employees", formFields, _this4.formConfig).then(function (res) {
-                    _this4.$emit('addEmployee', res.data);
+                  axios.post("http://localhost:8000/api/employees", formFields, _this5.formConfig).then(function (res) {
+                    _this5.$emit('addEmployee', res.data);
                   });
                 }
 
-              case 3:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -44042,6 +44074,11 @@ var render = function() {
         ? _c("span", { staticClass: "error" }, [
             _vm._v(" " + _vm._s(_vm.error.$errors[0].$message))
           ])
+        : _vm._e(),
+      _vm.serverValidation && _vm.serverValidation[_vm.name].found
+        ? _c("span", { staticClass: "error" }, [
+            _vm._v(" " + _vm._s(_vm.serverValidation[_vm.name].message))
+          ])
         : _vm._e()
     ]),
     _vm._v(" "),
@@ -44052,7 +44089,8 @@ var render = function() {
       on: {
         input: function($event) {
           return _vm.$emit("input", $event.target.value)
-        }
+        },
+        blur: _vm.manageInput
       }
     })
   ])
@@ -44904,8 +44942,10 @@ var render = function() {
                         type: "text",
                         name: "email",
                         label: "Email",
-                        error: _vm.v$.employee.user.email
+                        error: _vm.v$.employee.user.email,
+                        serverValidation: _vm.serverValidations
                       },
+                      on: { blur: _vm.checkEmail },
                       model: {
                         value: _vm.employee.user.email,
                         callback: function($$v) {
