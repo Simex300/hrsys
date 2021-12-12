@@ -332,6 +332,54 @@
   cursor: pointer;
 }
 
+.notification {
+  position: absolute;
+  right: 1rem;
+  margin-bottom: 1rem;
+  z-index: 100;
+}
+.notification__node {
+  display: grid;
+  grid-template-rows: [top-s] 2rem [top-e botton-s] 2rem [botton-e];
+  grid-template-columns: [icon-s] 2rem [icon-e text-s] 1fr [text-e];
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
+  row-gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  min-width: 30rem;
+  max-width: 40rem;
+}
+.notification__node .icon {
+  align-self: center;
+  grid-row: top-s/botton-e;
+  grid-column: icon-s/icon-e;
+  font-size: 2rem;
+}
+.notification__node .title {
+  align-self: end;
+  grid-row: top-s/top-e;
+  grid-column: text-s/text-e;
+  font-size: 1.6rem;
+}
+.notification__node .sub {
+  font-size: 1.4rem;
+  grid-row: botton-s/botton-e;
+  grid-column: text-s/text-e;
+}
+.notification__node.success {
+  background-color: rgba(56, 193, 114, 0.7);
+}
+.notification__node.warning {
+  background-color: rgba(255, 237, 74, 0.7);
+}
+.notification__node.error {
+  background-color: rgba(227, 52, 47, 0.7);
+}
+.notification__node.info {
+  background-color: rgba(132, 169, 172, 0.7);
+}
+
 .employee {
   margin-top: 2.2rem;
   margin-left: 2rem;

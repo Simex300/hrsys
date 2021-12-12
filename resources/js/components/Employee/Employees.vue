@@ -16,6 +16,9 @@
                 <button class="actions__delete" @click="deleteEmployee">
                     <i class="fas fa-trash"></i>
                 </button>
+                <!-- <button class="actions__add" @click="addNotification">
+                    <i class="fas fa-trash"></i>
+                </button> -->
             </div>
         </div>
         <div class="employee__container">
@@ -149,6 +152,14 @@
                         let index = this.employees.indexOf(employee);
                         this.employees.splice(index, 1);
                     })
+                })
+            },
+            addNotification() {
+                this.$emit('add-notification', {
+                    type: "warning",
+                    icon: "fa-user",
+                    title: "Test",
+                    sub: "Im just testing you know"
                 })
             }
         },

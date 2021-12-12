@@ -4,16 +4,24 @@
             <Sidebar />
         </div>
         <div class="page-container">
-            <router-view></router-view>
+            <router-view @add-notification="addNotification"></router-view>
         </div>
+        <Notification ref="notification"/>
     </div>
 </template>
 <script>
     import Sidebar from "./components/Common/Sidebar.vue";
+    import Notification from './components/Common/Notification.vue';
 
     export default {
         components: {
-            Sidebar
+            Sidebar,
+            Notification,
+        },
+        methods: {
+            addNotification(data) {
+                this.$refs.notification.addNotification(data);
+            }
         }
     }
 </script>
