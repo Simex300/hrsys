@@ -4608,6 +4608,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4623,15 +4632,31 @@ __webpack_require__.r(__webpack_exports__);
     addNotification: function addNotification(data) {
       data.maxTime = this.maxTime;
       data.startTime = Date.now();
-      this.notifications.unshift(data);
+      this.notifications.push(data);
     },
-    removeNotification: function removeNotification() {
+    removeNotification: function removeNotification(notification) {
       var _this = this;
 
       var seconds = this.maxTime;
-      setTimeout(function () {
-        _this.$delete(_this.notifications, _this.notifications.length - 1);
+      notification.timeOut = setTimeout(function () {
+        console.log("Removing: ", _this.notifications.indexOf(notification));
+
+        _this.$delete(_this.notifications, _this.notifications.indexOf(notification));
       }, seconds * 1000);
+    },
+    pauseNotification: function pauseNotification(notification) {
+      console.log("Pausing: ", this.notifications.indexOf(notification));
+      notification.secondsRemaining = (notification.secondsRemaining ? notification.secondsRemaining : this.maxTime * 1000) - (Date.now() - notification.startTime);
+      clearTimeout(notification.timeOut);
+    },
+    resumeNotification: function resumeNotification(notification) {
+      var _this2 = this;
+
+      console.log("Resuming: ", this.notifications.indexOf(notification));
+      notification.startTime = Date.now();
+      notification.timeOut = setTimeout(function () {
+        _this2.$delete(_this2.notifications, _this2.notifications.length - 1);
+      }, notification.secondsRemaining);
     }
   }
 });
@@ -4661,23 +4686,52 @@ __webpack_require__.r(__webpack_exports__);
   props: ['icon', 'title', 'sub', 'data', 'maxTime'],
   data: function data() {
     return {
-      progressWidth: 0
+      progressWidth: 0,
+      progressInterval: null
     };
   },
   mounted: function mounted() {
     var _this = this;
 
     this.$emit('destroy');
-    var progressInterval = setInterval(function () {
+    this.progressInterval = setInterval(function () {
       var currTime = Date.now();
       _this.progressWidth = ((currTime - _this.data.startTime) / (_this.maxTime * 1000) * 100).toFixed(2);
-      if (_this.$refs.progress) _this.$refs.progress.style['width'] = "".concat(_this.progressWidth, "%");
 
-      if (_this.progressWidth > 100) {
-        _this.progressWidth = 100;
-        clearInterval(progressInterval);
-      }
+      _this.addWidth();
+
+      _this.clear();
     }, 20);
+  },
+  methods: {
+    pauseNotification: function pauseNotification() {
+      this.$emit('pause');
+      clearInterval(this.progressInterval);
+    },
+    resumeNotification: function resumeNotification() {
+      var _this2 = this;
+
+      var newStartTime = Date.now();
+      var seconds = this.progressWidth / 100 * this.maxTime;
+      this.$emit('resume');
+      this.progressInterval = setInterval(function () {
+        var currTime = Date.now();
+        _this2.progressWidth = ((currTime - newStartTime + seconds * 1000) / (_this2.maxTime * 1000) * 100).toFixed(2);
+
+        _this2.addWidth();
+
+        _this2.clear();
+      }, 20);
+    },
+    addWidth: function addWidth() {
+      if (this.$refs.progress) this.$refs.progress.style['width'] = "".concat(this.progressWidth, "%");
+    },
+    clear: function clear() {
+      if (this.progressWidth > 100) {
+        this.progressWidth = 100;
+        clearInterval(this.progressInterval);
+      }
+    }
   }
 });
 
@@ -44455,7 +44509,17 @@ var render = function() {
           data: notification,
           maxTime: _vm.maxTime
         },
-        on: { destroy: _vm.removeNotification }
+        on: {
+          destroy: function($event) {
+            return _vm.removeNotification(notification)
+          },
+          pause: function($event) {
+            return _vm.pauseNotification(notification)
+          },
+          resume: function($event) {
+            return _vm.resumeNotification(notification)
+          }
+        }
       })
     }),
     1
@@ -44484,15 +44548,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "notification__node" }, [
-    _c("i", { class: ["icon", "fas", _vm.icon] }),
-    _vm._v(" "),
-    _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
-    _vm._v(" "),
-    _c("p", { staticClass: "sub" }, [_vm._v(_vm._s(_vm.sub))]),
-    _vm._v(" "),
-    _c("div", { ref: "progress", staticClass: "progress" })
-  ])
+  return _c(
+    "div",
+    {
+      staticClass: "notification__node",
+      on: {
+        mouseenter: this.pauseNotification,
+        mouseleave: _vm.resumeNotification
+      }
+    },
+    [
+      _c("i", { class: ["icon", "fas", _vm.icon] }),
+      _vm._v(" "),
+      _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
+      _vm._v(" "),
+      _c("p", { staticClass: "sub" }, [_vm._v(_vm._s(_vm.sub))]),
+      _vm._v(" "),
+      _c("div", { ref: "progress", staticClass: "progress" })
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
