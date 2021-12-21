@@ -9,7 +9,8 @@
         :maxTime="maxTime"
         @destroy="removeNotification(notification)"
         @pause="pauseNotification(notification)"
-        @resume="resumeNotification(notification)" />
+        @resume="resumeNotification(notification)"
+        @remove="destroyNotification(notification)" />
     </div>
 </template>
 <script>
@@ -34,21 +35,21 @@ export default {
         removeNotification(notification) {
             let seconds = this.maxTime;
             notification.timeOut = setTimeout(() => {
-                console.log("Removing: ", this.notifications.indexOf(notification));
-                this.$delete(this.notifications, this.notifications.indexOf(notification));
+                this.destroyNotification(notification);
             }, seconds * 1000);
         },
         pauseNotification(notification) {
-            console.log("Pausing: ", this.notifications.indexOf(notification));
             notification.secondsRemaining = (notification.secondsRemaining ? notification.secondsRemaining : this.maxTime * 1000) - (Date.now() - notification.startTime);
             clearTimeout(notification.timeOut);
         },
         resumeNotification(notification) {
-            console.log("Resuming: ", this.notifications.indexOf(notification));
             notification.startTime = Date.now();
             notification.timeOut = setTimeout(() => {
                 this.$delete(this.notifications, this.notifications.length - 1);
             }, notification.secondsRemaining);
+        },
+        destroyNotification(notification) {
+            this.$delete(this.notifications, this.notifications.indexOf(notification));
         }
     }
 }

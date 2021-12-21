@@ -1,5 +1,8 @@
 <template>
-    <div class="notification__node" @mouseenter="this.pauseNotification" @mouseleave="resumeNotification">
+    <div class="notification__node"
+    @mouseenter="this.pauseNotification"
+    @mouseleave="resumeNotification"
+    @click="$emit('remove')">
         <i :class="['icon', 'fas', icon]"></i>
         <h2 class="title">{{title}}</h2>
         <p class="sub">{{sub}}</p>

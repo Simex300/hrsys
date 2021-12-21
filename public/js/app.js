@@ -4617,6 +4617,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4639,24 +4640,23 @@ __webpack_require__.r(__webpack_exports__);
 
       var seconds = this.maxTime;
       notification.timeOut = setTimeout(function () {
-        console.log("Removing: ", _this.notifications.indexOf(notification));
-
-        _this.$delete(_this.notifications, _this.notifications.indexOf(notification));
+        _this.destroyNotification(notification);
       }, seconds * 1000);
     },
     pauseNotification: function pauseNotification(notification) {
-      console.log("Pausing: ", this.notifications.indexOf(notification));
       notification.secondsRemaining = (notification.secondsRemaining ? notification.secondsRemaining : this.maxTime * 1000) - (Date.now() - notification.startTime);
       clearTimeout(notification.timeOut);
     },
     resumeNotification: function resumeNotification(notification) {
       var _this2 = this;
 
-      console.log("Resuming: ", this.notifications.indexOf(notification));
       notification.startTime = Date.now();
       notification.timeOut = setTimeout(function () {
         _this2.$delete(_this2.notifications, _this2.notifications.length - 1);
       }, notification.secondsRemaining);
+    },
+    destroyNotification: function destroyNotification(notification) {
+      this.$delete(this.notifications, this.notifications.indexOf(notification));
     }
   }
 });
@@ -4674,6 +4674,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
 //
 //
 //
@@ -44518,6 +44521,9 @@ var render = function() {
           },
           resume: function($event) {
             return _vm.resumeNotification(notification)
+          },
+          remove: function($event) {
+            return _vm.destroyNotification(notification)
           }
         }
       })
@@ -44554,7 +44560,10 @@ var render = function() {
       staticClass: "notification__node",
       on: {
         mouseenter: this.pauseNotification,
-        mouseleave: _vm.resumeNotification
+        mouseleave: _vm.resumeNotification,
+        click: function($event) {
+          return _vm.$emit("remove")
+        }
       }
     },
     [
