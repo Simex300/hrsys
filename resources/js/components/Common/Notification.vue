@@ -1,26 +1,6 @@
 <template>
     <div class="notification">
-        <NotificationNode v-for="(notification, index) in this.notifications" :key="index" :class="notification.type" :icon="notification.icon" :title="notification.title" :sub="notification.sub" @destroy="removeNotification" />
-        <!-- <div class="notification__node success">
-            <i class="icon fas fa-cog"></i>
-            <h2 class="title">Success</h2>
-            <p class="sub">The configuration has been done sucessfully</p>
-        </div>
-        <div class="notification__node warning">
-            <i class="icon fas fa-cog"></i>
-            <h2 class="title">Success</h2>
-            <p class="sub">The configuration has been done sucessfully</p>
-        </div>
-        <div class="notification__node error">
-            <i class="icon fas fa-cog"></i>
-            <h2 class="title">Success</h2>
-            <p class="sub">The configuration has been done sucessfully</p>
-        </div>
-        <div class="notification__node info">
-            <i class="icon fas fa-cog"></i>
-            <h2 class="title">Success</h2>
-            <p class="sub">The configuration has been done sucessfully</p>
-        </div> -->
+        <NotificationNode v-for="(notification, index) in this.notifications" :key="index" :class="notification.type" :icon="notification.icon" :title="notification.title" :sub="notification.sub" :data="notification" :maxTime="maxTime" @destroy="removeNotification" />
     </div>
 </template>
 <script>
@@ -32,17 +12,21 @@ export default {
     },
     data() {
         return {
-            notifications: []
+            notifications: [],
+            maxTime: 5
         }
     },
     methods: {
         addNotification(data) {
+            data.maxTime = this.maxTime;
+            data.startTime = Date.now();
             this.notifications.unshift(data);
         },
         removeNotification() {
+            let seconds = this.maxTime;
             setTimeout(() => {
                 this.$delete(this.notifications, this.notifications.length - 1);
-            }, 5 * 1000)
+            }, seconds * 1000);
         }
 
     }

@@ -7,6 +7,7 @@
     z-index: 100;
 
     &__node {
+        position: relative;
         display: grid;
         grid-template-rows: [top-s] 2rem [top-e botton-s] 2rem [botton-e];
         grid-template-columns: [icon-s] 2rem [icon-e text-s] 1fr [text-e];
@@ -39,20 +40,39 @@
             grid-column: text-s/text-e;
         }
 
+        .progress {
+            position: absolute;
+            bottom: 0;
+
+            height: .4rem;
+        }
+
         &.success {
             background-color: rgba($green, .7);
+            .progress {
+                background-color: rgba($darkgreen, 1);
+            }
         }
 
         &.warning {
             background-color: rgba($yellow, .7);
+            .progress {
+                background-color: rgba($warning, 1);
+            }
         }
 
         &.error {
             background-color: rgba($red, .7);
+            .progress {
+                background-color: rgba($danger, 1);
+            }
         }
 
         &.info {
             background-color: rgba($light, .7);
+            .progress {
+                background-color: rgba($main, 1);
+            }
         }
     }
 }

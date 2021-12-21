@@ -339,6 +339,7 @@
   z-index: 100;
 }
 .notification__node {
+  position: relative;
   display: grid;
   grid-template-rows: [top-s] 2rem [top-e botton-s] 2rem [botton-e];
   grid-template-columns: [icon-s] 2rem [icon-e text-s] 1fr [text-e];
@@ -367,17 +368,34 @@
   grid-row: botton-s/botton-e;
   grid-column: text-s/text-e;
 }
+.notification__node .progress {
+  position: absolute;
+  bottom: 0;
+  height: 0.4rem;
+}
 .notification__node.success {
   background-color: rgba(56, 193, 114, 0.7);
+}
+.notification__node.success .progress {
+  background-color: #00662c;
 }
 .notification__node.warning {
   background-color: rgba(255, 237, 74, 0.7);
 }
+.notification__node.warning .progress {
+  background-color: #e8cc91;
+}
 .notification__node.error {
   background-color: rgba(227, 52, 47, 0.7);
 }
+.notification__node.error .progress {
+  background-color: #be5b56;
+}
 .notification__node.info {
   background-color: rgba(132, 169, 172, 0.7);
+}
+.notification__node.info .progress {
+  background-color: #3b6978;
 }
 
 .employee {
@@ -397,7 +415,7 @@
        column-gap: 1rem;
 }
 .employee__container {
-  max-height: calc(100vh - 12.2rem);
+  max-height: calc(100vh - 14rem);
   overflow-y: scroll;
 }
 

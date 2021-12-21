@@ -4608,26 +4608,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -4635,19 +4615,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      notifications: []
+      notifications: [],
+      maxTime: 5
     };
   },
   methods: {
     addNotification: function addNotification(data) {
+      data.maxTime = this.maxTime;
+      data.startTime = Date.now();
       this.notifications.unshift(data);
     },
     removeNotification: function removeNotification() {
       var _this = this;
 
+      var seconds = this.maxTime;
       setTimeout(function () {
         _this.$delete(_this.notifications, _this.notifications.length - 1);
-      }, 5 * 1000);
+      }, seconds * 1000);
     }
   }
 });
@@ -4672,10 +4656,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['icon', 'title', 'sub'],
+  props: ['icon', 'title', 'sub', 'data', 'maxTime'],
+  data: function data() {
+    return {
+      progressWidth: 0
+    };
+  },
   mounted: function mounted() {
+    var _this = this;
+
     this.$emit('destroy');
+    var progressInterval = setInterval(function () {
+      var currTime = Date.now();
+      _this.progressWidth = ((currTime - _this.data.startTime) / (_this.maxTime * 1000) * 100).toFixed(2);
+      if (_this.$refs.progress) _this.$refs.progress.style['width'] = "".concat(_this.progressWidth, "%");
+
+      if (_this.progressWidth > 100) {
+        _this.progressWidth = 100;
+        clearInterval(progressInterval);
+      }
+    }, 20);
   }
 });
 
@@ -5484,7 +5486,7 @@ var defaultValue = {
     },
     addNotification: function addNotification() {
       this.$emit('add-notification', {
-        type: "warning",
+        type: "info",
         icon: "fa-user",
         title: "Test",
         sub: "Im just testing you know"
@@ -44449,7 +44451,9 @@ var render = function() {
         attrs: {
           icon: notification.icon,
           title: notification.title,
-          sub: notification.sub
+          sub: notification.sub,
+          data: notification,
+          maxTime: _vm.maxTime
         },
         on: { destroy: _vm.removeNotification }
       })
@@ -44485,7 +44489,9 @@ var render = function() {
     _vm._v(" "),
     _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))]),
     _vm._v(" "),
-    _c("p", { staticClass: "sub" }, [_vm._v(_vm._s(_vm.sub))])
+    _c("p", { staticClass: "sub" }, [_vm._v(_vm._s(_vm.sub))]),
+    _vm._v(" "),
+    _c("div", { ref: "progress", staticClass: "progress" })
   ])
 }
 var staticRenderFns = []
@@ -45479,6 +45485,12 @@ var render = function() {
               staticClass: "actions__delete",
               on: { click: _vm.deleteEmployee }
             },
+            [_c("i", { staticClass: "fas fa-trash" })]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "actions__add", on: { click: _vm.addNotification } },
             [_c("i", { staticClass: "fas fa-trash" })]
           )
         ])

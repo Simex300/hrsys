@@ -16,9 +16,9 @@
                 <button class="actions__delete" @click="deleteEmployee">
                     <i class="fas fa-trash"></i>
                 </button>
-                <!-- <button class="actions__add" @click="addNotification">
+                <button class="actions__add" @click="addNotification">
                     <i class="fas fa-trash"></i>
-                </button> -->
+                </button>
             </div>
         </div>
         <div class="employee__container">
@@ -156,7 +156,7 @@
             },
             addNotification() {
                 this.$emit('add-notification', {
-                    type: "warning",
+                    type: "info",
                     icon: "fa-user",
                     title: "Test",
                     sub: "Im just testing you know"
