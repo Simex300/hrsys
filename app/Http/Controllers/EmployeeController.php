@@ -20,7 +20,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with('address')->get()->toArray();
+        $employees = Employee::with('address')->with('user')->get()->toArray();
         return array_reverse($employees);
     }
 
@@ -107,7 +107,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return response()->json($employee);
+        return response()->json($employee->with('address')->with('user')->find($employee->id));
     }
 
     /**
