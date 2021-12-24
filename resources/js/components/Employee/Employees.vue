@@ -25,7 +25,7 @@
             <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" @dblclick.native="openDetails($event, index)"/>
         </div>
         <Modal ref="employeeModal" :showModal="formShow" @onClose="closeModal">
-            <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" />
+            <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" @editEmployee="updateEmployee" :edit="this.edit" />
         </Modal>
         <Modal ref="employeeDetails" :showModal="detailsShow" @onClose="closeModal">
             <EmployeeDetails :employee="this.employee" />
@@ -92,7 +92,8 @@
                 list: [],
                 // Employee Values
                 employees: [],
-                employee: defaultValue
+                employee: defaultValue,
+                edit: false
             };
         },
         created() {
@@ -107,10 +108,14 @@
         methods: {
             openModal(e, edit) {
                 this.resetEmployee();
+                this.edit = false;
                 if(edit) {
                     this.employee = this.employees.find(val => {
                         return val.selected == true
                     });
+                    if (!this.employee)
+                        return
+                    this.edit = true;
                 }
                 this.formShow = true;
             },
@@ -130,6 +135,21 @@
                 data.selected = false;
                 this.formShow = false;
                 this.employees = [data, ...this.employees];
+                this.$emit('add-notification', {
+                    type: "success",
+                    icon: "fa-user",
+                    title: "Added",
+                    sub: "The user has been added successfully"
+                })
+            },
+            updateEmployee(data) {
+                this.formShow = false;
+                this.$emit('add-notification', {
+                    type: "success",
+                    icon: "fa-user",
+                    title: "Updated",
+                    sub: "The user has been updated successfully"
+                })
             },
             resetEmployee() {
                 this.employee = defaultValue

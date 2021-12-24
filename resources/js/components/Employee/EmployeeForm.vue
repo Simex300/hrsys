@@ -9,7 +9,7 @@
                     <div class="form__tabs__options">
                         <div :class="{form__tabs__options__option: true, active: this.currTab == 0}" @click="changeTab($event, 0)"><span><i class="icon fas fa-user-circle"></i>Personal Information</span></div>
                         <div :class="{form__tabs__options__option: true, active: this.currTab == 1}" @click="changeTab($event, 1)"><span><i class="icon fas fa-file"></i>Employee Information</span></div>
-                        <div :class="{form__tabs__options__option: true, active: this.currTab == 2}" @click="changeTab($event, 2)"><span><i class="icon fas fa-shield-alt"></i>Account Information</span></div>
+                        <div v-if="!edit" :class="{form__tabs__options__option: true, active: this.currTab == 2}" @click="changeTab($event, 2)"><span><i class="icon fas fa-shield-alt"></i>Account Information</span></div>
                     </div>
                     <div v-show="currTab == 0" class="form__tabs__content">
                         <h3 class="form__tabs__content__title">Personal Information</h3>
@@ -50,10 +50,11 @@
                             <Input type="date" name="hire_at" label="Hire At" v-model="employee.hire_at" />
                         </div>
                         <div class="form__group footer">
-                            <button @click.prevent="nextTab">Next</button>
+                            <button v-if="!edit" @click.prevent="nextTab">Next</button>
+                            <button v-else>Submit</button>
                         </div>
                     </div>
-                    <div v-show="currTab == 2" class="form__tabs__content">
+                    <div v-if="!edit" v-show="currTab == 2" class="form__tabs__content">
                         <h3 class="form__tabs__content__title">Account Information</h3>
                         <div class="form__group">
                             <Input type="text" name="email" label="Email" v-model="employee.user.email" :error="v$.employee.user.email" :serverValidation="serverValidations" @blur="checkEmail"/>
@@ -90,7 +91,7 @@ export default {
         Input,
         Select
     },
-    props: ['employee'],
+    props: ['employee', 'edit'],
     data() {
         return {
             options: {
@@ -129,7 +130,10 @@ export default {
                     data.append(field, fields[field]);
                 }
             }
-            return data
+            if (this.edit) {
+                data.append('_method', 'PATCH');
+            }
+            return data;
         },
         personalInformationValidation() {
             return this.v$.employee.first_name.$validate() &&
@@ -151,14 +155,13 @@ export default {
             })
         },
         async validateTab(index) {
-            // return true;
             switch(index){
                 case 0:
                     return await this.personalInformationValidation();
                 case 1:
                     return await this.employeeInformationValidation();
                 case 2:
-                    return await this.accountInformationValidation();
+                    return edit ? true : await this.accountInformationValidation();
             }
         },
         async changeTab(e, index) {
@@ -178,12 +181,13 @@ export default {
             if (this.profile) {
                 employee.profile = this.profile
             }
+
             const formFields = this.getFormDataFields(employee);
 
             if(employee.id > 0) {
-                axios.patch(`http://localhost:8000/api/employees/${employee.id}`, formFields, this.formConfig)
+                axios.post(`http://localhost:8000/api/employees/${employee.id}`, formFields, this.formConfig)
                 .then(res => {
-                    this.$emit('editEmployee', res);
+                    this.$emit('editEmployee', res.data);
                 })
             }
             else {
@@ -200,7 +204,7 @@ export default {
         const minValueMessage = (value) => helpers.withMessage(({$params}) => `This field has a value lower than ${$params.min}`, minValue(value));
         const maxValueMessage = (value) => helpers.withMessage(({$params}) => `This field has a value greater than ${$params.max}`, maxValue(value));
 
-        return {
+        let validations = {
             employee: {
                 first_name: { required: requiredMessage },
                 last_name: { required: requiredMessage },
@@ -223,6 +227,12 @@ export default {
                 }
             }
         }
+
+        if(this.edit) {
+            validations.employee.user = {};
+        }
+
+        return validations;
     }
 }
 </script>

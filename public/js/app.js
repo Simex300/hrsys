@@ -5025,6 +5025,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
 
 
 
@@ -5043,7 +5044,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     Input: _Common_Input_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     Select: _Common_Select_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['employee'],
+  props: ['employee', 'edit'],
   data: function data() {
     return {
       options: {
@@ -5100,6 +5101,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       }
 
+      if (this.edit) {
+        data.append('_method', 'PATCH');
+      }
+
       return data;
     },
     personalInformationValidation: function personalInformationValidation() {
@@ -5127,7 +5132,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             switch (_context.prev = _context.next) {
               case 0:
                 _context.t0 = index;
-                _context.next = _context.t0 === 0 ? 3 : _context.t0 === 1 ? 6 : _context.t0 === 2 ? 9 : 12;
+                _context.next = _context.t0 === 0 ? 3 : _context.t0 === 1 ? 6 : _context.t0 === 2 ? 9 : 17;
                 break;
 
               case 3:
@@ -5145,13 +5150,26 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                 return _context.abrupt("return", _context.sent);
 
               case 9:
-                _context.next = 11;
+                if (!edit) {
+                  _context.next = 13;
+                  break;
+                }
+
+                _context.t1 = true;
+                _context.next = 16;
+                break;
+
+              case 13:
+                _context.next = 15;
                 return _this2.accountInformationValidation();
 
-              case 11:
-                return _context.abrupt("return", _context.sent);
+              case 15:
+                _context.t1 = _context.sent;
 
-              case 12:
+              case 16:
+                return _context.abrupt("return", _context.t1);
+
+              case 17:
               case "end":
                 return _context.stop();
             }
@@ -5237,8 +5255,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
                 formFields = _this5.getFormDataFields(employee);
 
                 if (employee.id > 0) {
-                  axios.patch("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this5.formConfig).then(function (res) {
-                    _this5.$emit('editEmployee', res);
+                  axios.post("http://localhost:8000/api/employees/".concat(employee.id), formFields, _this5.formConfig).then(function (res) {
+                    _this5.$emit('editEmployee', res.data);
                   });
                 } else {
                   axios.post("http://localhost:8000/api/employees", formFields, _this5.formConfig).then(function (res) {
@@ -5273,7 +5291,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       }, (0,_vuelidate_validators__WEBPACK_IMPORTED_MODULE_6__.maxValue)(value));
     };
 
-    return {
+    var validations = {
       employee: {
         first_name: {
           required: requiredMessage
@@ -5330,6 +5348,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         }
       }
     };
+
+    if (this.edit) {
+      validations.employee.user = {};
+    }
+
+    return validations;
   }
 });
 
@@ -5467,7 +5491,8 @@ var defaultValue = {
       list: [],
       // Employee Values
       employees: [],
-      employee: defaultValue
+      employee: defaultValue,
+      edit: false
     };
   },
   created: function created() {
@@ -5487,11 +5512,14 @@ var defaultValue = {
   methods: {
     openModal: function openModal(e, edit) {
       this.resetEmployee();
+      this.edit = false;
 
       if (edit) {
         this.employee = this.employees.find(function (val) {
           return val.selected == true;
         });
+        if (!this.employee) return;
+        this.edit = true;
       }
 
       this.formShow = true;
@@ -5512,6 +5540,21 @@ var defaultValue = {
       data.selected = false;
       this.formShow = false;
       this.employees = [data].concat(_toConsumableArray(this.employees));
+      this.$emit('add-notification', {
+        type: "success",
+        icon: "fa-user",
+        title: "Added",
+        sub: "The user has been added successfully"
+      });
+    },
+    updateEmployee: function updateEmployee(data) {
+      this.formShow = false;
+      this.$emit('add-notification', {
+        type: "success",
+        icon: "fa-user",
+        title: "Updated",
+        sub: "The user has been updated successfully"
+      });
     },
     resetEmployee: function resetEmployee() {
       this.employee = defaultValue;
@@ -44933,21 +44976,23 @@ var render = function() {
                 [_vm._m(2)]
               ),
               _vm._v(" "),
-              _c(
-                "div",
-                {
-                  class: {
-                    form__tabs__options__option: true,
-                    active: this.currTab == 2
-                  },
-                  on: {
-                    click: function($event) {
-                      return _vm.changeTab($event, 2)
-                    }
-                  }
-                },
-                [_vm._m(3)]
-              )
+              !_vm.edit
+                ? _c(
+                    "div",
+                    {
+                      class: {
+                        form__tabs__options__option: true,
+                        active: this.currTab == 2
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.changeTab($event, 2)
+                        }
+                      }
+                    },
+                    [_vm._m(3)]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c(
@@ -45324,111 +45369,115 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "form__group footer" }, [
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.nextTab.apply(null, arguments)
-                        }
-                      }
-                    },
-                    [_vm._v("Next")]
-                  )
+                  !_vm.edit
+                    ? _c(
+                        "button",
+                        {
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.nextTab.apply(null, arguments)
+                            }
+                          }
+                        },
+                        [_vm._v("Next")]
+                      )
+                    : _c("button", [_vm._v("Submit")])
                 ])
               ]
             ),
             _vm._v(" "),
-            _c(
-              "div",
-              {
-                directives: [
+            !_vm.edit
+              ? _c(
+                  "div",
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.currTab == 2,
-                    expression: "currTab == 2"
-                  }
-                ],
-                staticClass: "form__tabs__content"
-              },
-              [
-                _c("h3", { staticClass: "form__tabs__content__title" }, [
-                  _vm._v("Account Information")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form__group" },
-                  [
-                    _c("Input", {
-                      attrs: {
-                        type: "text",
-                        name: "email",
-                        label: "Email",
-                        error: _vm.v$.employee.user.email,
-                        serverValidation: _vm.serverValidations
-                      },
-                      on: { blur: _vm.checkEmail },
-                      model: {
-                        value: _vm.employee.user.email,
-                        callback: function($$v) {
-                          _vm.$set(_vm.employee.user, "email", $$v)
-                        },
-                        expression: "employee.user.email"
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.currTab == 2,
+                        expression: "currTab == 2"
                       }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form__group" },
+                    ],
+                    staticClass: "form__tabs__content"
+                  },
                   [
-                    _c("Input", {
-                      attrs: {
-                        type: "password",
-                        name: "password",
-                        label: "Password",
-                        error: _vm.v$.employee.user.password
-                      },
-                      model: {
-                        value: _vm.employee.user.password,
-                        callback: function($$v) {
-                          _vm.$set(_vm.employee.user, "password", $$v)
-                        },
-                        expression: "employee.user.password"
-                      }
-                    }),
+                    _c("h3", { staticClass: "form__tabs__content__title" }, [
+                      _vm._v("Account Information")
+                    ]),
                     _vm._v(" "),
-                    _c("Input", {
-                      attrs: {
-                        type: "password",
-                        name: "password_confirm",
-                        label: "Confirm Password",
-                        error: _vm.v$.employee.user.password_confirmation
-                      },
-                      model: {
-                        value: _vm.employee.user.password_confirmation,
-                        callback: function($$v) {
-                          _vm.$set(
-                            _vm.employee.user,
-                            "password_confirmation",
-                            $$v
-                          )
-                        },
-                        expression: "employee.user.password_confirmation"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm._m(4)
-              ]
-            )
+                    _c(
+                      "div",
+                      { staticClass: "form__group" },
+                      [
+                        _c("Input", {
+                          attrs: {
+                            type: "text",
+                            name: "email",
+                            label: "Email",
+                            error: _vm.v$.employee.user.email,
+                            serverValidation: _vm.serverValidations
+                          },
+                          on: { blur: _vm.checkEmail },
+                          model: {
+                            value: _vm.employee.user.email,
+                            callback: function($$v) {
+                              _vm.$set(_vm.employee.user, "email", $$v)
+                            },
+                            expression: "employee.user.email"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form__group" },
+                      [
+                        _c("Input", {
+                          attrs: {
+                            type: "password",
+                            name: "password",
+                            label: "Password",
+                            error: _vm.v$.employee.user.password
+                          },
+                          model: {
+                            value: _vm.employee.user.password,
+                            callback: function($$v) {
+                              _vm.$set(_vm.employee.user, "password", $$v)
+                            },
+                            expression: "employee.user.password"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("Input", {
+                          attrs: {
+                            type: "password",
+                            name: "password_confirm",
+                            label: "Confirm Password",
+                            error: _vm.v$.employee.user.password_confirmation
+                          },
+                          model: {
+                            value: _vm.employee.user.password_confirmation,
+                            callback: function($$v) {
+                              _vm.$set(
+                                _vm.employee.user,
+                                "password_confirmation",
+                                $$v
+                              )
+                            },
+                            expression: "employee.user.password_confirmation"
+                          }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm._m(4)
+                  ]
+                )
+              : _vm._e()
           ])
         ]
       )
@@ -45617,8 +45666,11 @@ var render = function() {
         },
         [
           _c("EmployeeForm", {
-            attrs: { employee: this.employee },
-            on: { addEmployee: _vm.loadEmployee }
+            attrs: { employee: this.employee, edit: this.edit },
+            on: {
+              addEmployee: _vm.loadEmployee,
+              editEmployee: _vm.updateEmployee
+            }
           })
         ],
         1

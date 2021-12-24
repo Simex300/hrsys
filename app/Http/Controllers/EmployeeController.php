@@ -130,8 +130,51 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        $employee->update($request->all());
-        return response()->json("Employee data updated sucessfully!");
+        DB::beginTransaction();
+        try {
+            $addressRequest = json_decode($request->input('address'));
+            $employeeAddress = EmployeeAddress::find($employee-> address_id);
+            $employeeAddress->update([
+                'address1' => $addressRequest->address1,
+                'address2' => $addressRequest->address2,
+                'city' => $addressRequest->city,
+                'state' => $addressRequest->state,
+                'country' => $addressRequest->country,
+                'zipcode' => $addressRequest->zipcode,
+            ]);
+
+            $employee->update([
+                'first_name' => $request->input('first_name'),
+                'middle_name' => $request->input('middle_name'),
+                'last_name' => $request->input('last_name'),
+                'phone' => $request->input('phone'),
+                'date_of_birth' => $request->input('date_of_birth'),
+                'gender' => $request->input('gender'),
+                'role' => $request->input('role'),
+                'department' => $request->input('department'),
+                'salary' => $request->input('salary'),
+                'salary_rate' => $request->input('salary_rate'),
+                'hire_at' => $request->input('hire_at'),
+            ]);
+
+            if($request->hasFile('profile')) {
+                $faker = Faker\Factory::create();
+                $extension = $request->file('profile')->getClientOriginalExtension();
+                $filename = $faker->sha1;
+                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
+
+                $employee->profile = str_replace("public/", "", $filepath);
+            }
+
+            $employee->save();
+            DB::commit();
+            return response()->json($employee);
+        }
+        catch (\Throwable $e) {
+            DB::rollback();
+            // TODO: Remove file if transaction fails
+            return response()->json($e, 500);
+        }
     }
 
     /**
