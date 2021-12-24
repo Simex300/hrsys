@@ -5424,9 +5424,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 
@@ -45618,12 +45615,6 @@ var render = function() {
               on: { click: _vm.deleteEmployee }
             },
             [_c("i", { staticClass: "fas fa-trash" })]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "actions__add", on: { click: _vm.addNotification } },
-            [_c("i", { staticClass: "fas fa-trash" })]
           )
         ])
       ]),
@@ -45657,24 +45648,26 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "Modal",
-        {
-          ref: "employeeModal",
-          attrs: { showModal: _vm.formShow },
-          on: { onClose: _vm.closeModal }
-        },
-        [
-          _c("EmployeeForm", {
-            attrs: { employee: this.employee, edit: this.edit },
-            on: {
-              addEmployee: _vm.loadEmployee,
-              editEmployee: _vm.updateEmployee
-            }
-          })
-        ],
-        1
-      ),
+      this.formShow
+        ? _c(
+            "Modal",
+            {
+              ref: "employeeModal",
+              attrs: { showModal: _vm.formShow },
+              on: { onClose: _vm.closeModal }
+            },
+            [
+              _c("EmployeeForm", {
+                attrs: { employee: this.employee, edit: this.edit },
+                on: {
+                  addEmployee: _vm.loadEmployee,
+                  editEmployee: _vm.updateEmployee
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c(
         "Modal",

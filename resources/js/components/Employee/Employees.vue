@@ -16,15 +16,12 @@
                 <button class="actions__delete" @click="deleteEmployee">
                     <i class="fas fa-trash"></i>
                 </button>
-                <button class="actions__add" @click="addNotification">
-                    <i class="fas fa-trash"></i>
-                </button>
             </div>
         </div>
         <div class="employee__container">
             <Card v-for="(employee, index) in this.employees" :key="index" :title="(`${employee.first_name} ${employee.middle_name[0]} ${employee.last_name}`)" :profile="employee.profile" :data="employee" @click.native="toggleSelect($event, index)" @dblclick.native="openDetails($event, index)"/>
         </div>
-        <Modal ref="employeeModal" :showModal="formShow" @onClose="closeModal">
+        <Modal v-if="this.formShow" ref="employeeModal" :showModal="formShow" @onClose="closeModal">
             <EmployeeForm :employee="this.employee" @addEmployee="loadEmployee" @editEmployee="updateEmployee" :edit="this.edit" />
         </Modal>
         <Modal ref="employeeDetails" :showModal="detailsShow" @onClose="closeModal">
