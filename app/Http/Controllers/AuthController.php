@@ -58,8 +58,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function checkEmail(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function checkEmail($email){
+        $validator = Validator::make(['email' => $email], [
             'email' => 'required|string|email|unique:users'
         ]);
 

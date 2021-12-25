@@ -4554,7 +4554,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     manageInput: function manageInput(event) {
       if (!this.serverValidation) return;
-      this.serverValidation.validate();
+      this.serverValidation.validate(this.value);
     }
   }
 });
@@ -5116,10 +5116,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     accountInformationValidation: function accountInformationValidation() {
       return this.v$.employee.user.$validate();
     },
-    checkEmail: function checkEmail() {
+    checkEmail: function checkEmail(value) {
       var _this = this;
 
-      axios.post("http://localhost:8000/api/checkEmail").then(function (res) {
+      axios.get("http://localhost:8000/api/checkEmail/".concat(value)).then(function (res) {
         _this.serverValidations.email = res.data;
       });
     },

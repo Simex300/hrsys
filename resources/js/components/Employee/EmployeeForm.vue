@@ -149,8 +149,8 @@ export default {
         accountInformationValidation() {
             return this.v$.employee.user.$validate()
         },
-        checkEmail() {
-            axios.post("http://localhost:8000/api/checkEmail").then(res => {
+        checkEmail(value) {
+            axios.get(`http://localhost:8000/api/checkEmail/${value}`).then(res => {
                 this.serverValidations.email = res.data;
             })
         },

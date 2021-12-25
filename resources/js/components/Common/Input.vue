@@ -20,7 +20,7 @@ export default {
             if(!this.serverValidation)
                 return;
 
-            this.serverValidation.validate();
+            this.serverValidation.validate(this.value);
         }
     }
 }
