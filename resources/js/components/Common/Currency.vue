@@ -19,6 +19,10 @@ export default {
             formattedValue: "0.00",
         }
     },
+    mounted() {
+        if(this.value)
+            this.formattedValue = this.value;
+    },
     methods: {
         formatCurrency(e) {
             if(e.inputType == "deleteContentBackward"){

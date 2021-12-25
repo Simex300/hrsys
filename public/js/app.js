@@ -4457,6 +4457,9 @@ __webpack_require__.r(__webpack_exports__);
       formattedValue: "0.00"
     };
   },
+  mounted: function mounted() {
+    if (this.value) this.formattedValue = this.value;
+  },
   methods: {
     formatCurrency: function formatCurrency(e) {
       if (e.inputType == "deleteContentBackward") {
