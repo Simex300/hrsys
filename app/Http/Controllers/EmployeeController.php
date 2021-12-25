@@ -192,6 +192,8 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        if(Storage::exists("/public/images/employee/{$employee->id}"))
+            Storage::deleteDirectory("public/images/employee/{$employee->id}");
         $employee->delete();
         return response()->json("Employee deleted sucessfully!");
     }
