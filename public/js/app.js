@@ -4417,7 +4417,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     data: Object,
-    profile: String,
+    profile: [String, File],
     title: String,
     body: String,
     footer: String
@@ -5545,7 +5545,9 @@ var defaultValue = {
       });
     },
     updateEmployee: function updateEmployee(data) {
+      console.log(data);
       this.formShow = false;
+      this.employee.profile = data.profile;
       this.$emit('add-notification', {
         type: "success",
         icon: "fa-user",

@@ -13,7 +13,7 @@
 export default {
     props: {
         data: Object,
-        profile: String,
+        profile: [String, File],
         title: String,
         body: String,
         footer: String,

@@ -140,7 +140,9 @@
                 })
             },
             updateEmployee(data) {
+                console.log(data);
                 this.formShow = false;
+                this.employee.profile = data.profile;
                 this.$emit('add-notification', {
                     type: "success",
                     icon: "fa-user",

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 use Faker;
+use Storage;
 
 class EmployeeController extends Controller
 {
@@ -42,6 +43,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        $filepath = "";
         DB::beginTransaction();
         try {
             $addressRequest = json_decode($request->input('address'));
@@ -79,23 +81,24 @@ class EmployeeController extends Controller
                 'hire_at' => $request->input('hire_at'),
             ]);
 
+            $employee->save();
             if($request->hasFile('profile')) {
                 $faker = Faker\Factory::create();
-                $extension = $request->file('profile')->getClientOriginalExtension();
                 $filename = $faker->sha1;
-                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
-
+                $extension = $request->file('profile')->getClientOriginalExtension();
+                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$employee->id}", "{$filename}.{$extension}");
                 $employee->profile = str_replace("public/", "", $filepath);
             }
-
             $employee->save();
+
             DB::commit();
             return response()->json($employee);
         }
         catch (\Throwable $e) {
             DB::rollback();
+            Storage::delete($filepath);
             // TODO: Remove file if transaction fails
-            return response()->json($e, 500);
+            return response()->json($filepath, 500);
         }
     }
 
@@ -130,6 +133,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
+        $filepath = "";
         DB::beginTransaction();
         try {
             $addressRequest = json_decode($request->input('address'));
@@ -158,10 +162,12 @@ class EmployeeController extends Controller
             ]);
 
             if($request->hasFile('profile')) {
+                Storage::delete("public/{$employee->profile}");
+
                 $faker = Faker\Factory::create();
                 $extension = $request->file('profile')->getClientOriginalExtension();
                 $filename = $faker->sha1;
-                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$request->input('email')}", "{$filename}.{$extension}");
+                $filepath = $request->file('profile')->storeAs("/public/images/employee/{$employee->id}", "{$filename}.{$extension}");
 
                 $employee->profile = str_replace("public/", "", $filepath);
             }
@@ -172,6 +178,7 @@ class EmployeeController extends Controller
         }
         catch (\Throwable $e) {
             DB::rollback();
+            Storage::delete($filepath);
             // TODO: Remove file if transaction fails
             return response()->json($e, 500);
         }
