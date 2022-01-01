@@ -1,3 +1,66 @@
+.employee-details-page {
+    @include pageMargin;
+
+    display: grid;
+    grid-template-rows: 10rem 1fr;
+
+    &__header {
+        display: grid;
+        grid-template-rows: [top-s] 1fr [top-e botton-s] 1fr [botton-e];
+        grid-template-columns: [profile-s] 10rem [profile-e details-s] 1fr [details-e actions-s] 10rem [actions-e];
+        border-bottom: 0.1rem solid #000;
+
+        &__profile {
+            grid-row: top-s/botton-e;
+            grid-column: profile-s/profile-e;
+            align-self: center;
+            justify-self: center;
+        }
+
+        &__name {
+            grid-row: top-s/top-e;
+            grid-column: details-s/details-e;
+            align-self: end;
+
+            font-size: 2.4rem;
+        }
+
+        &__extra {
+            grid-row: botton-s/botton-e;
+            grid-column: details-s/details-e;
+
+            font-size: 1.6rem;
+        }
+
+        &__options {
+            grid-template-columns: repeat(2, 4rem);
+            grid-row: top-s/botton-e;
+            grid-column: actions-s/actions-e;
+            align-self: center;
+            justify-items: center;
+        }
+
+    }
+
+    &__body {
+
+        &__information {
+            ul {
+                list-style: none;
+                li {
+                    margin-block: 1rem;
+                    font-size: 1.8rem;
+                    span {
+                        font-weight: 700;
+                        font-size: 2.2rem;
+                        margin-right: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .employee-details {
     display: grid;
     grid-template-rows: 10rem 1fr;

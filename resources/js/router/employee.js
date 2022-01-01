@@ -1,4 +1,5 @@
-import Employees from '../components/Employee/Employees.vue';
+import Employees from '../components/Employee/PageEmployees.vue';
+import EmployeeDetails from '../components/Employee/PageEmployeeDetails.vue';
 
 export default [
     {
@@ -8,5 +9,13 @@ export default [
         meta: {
             middleware: 'auth'
         }
-    }
+    },
+    {
+        path: '/employee/:id',
+        name: 'employeeDetails',
+        component: EmployeeDetails,
+        meta: {
+            middleware: 'auth'
+        }
+    },
 ]

@@ -43,8 +43,8 @@ export default {
         }),
         async login() {
             this.processing = true;
-            await axios.get('/sanctum/csrf-cookie')
-            await axios.post('/api/login',this.auth).then(({data})=>{
+            await axios.get(`${process.env.MIX_APP_URL}/sanctum/csrf-cookie`)
+            await axios.post(`${process.env.MIX_APP_URL}/api/login`, this.auth).then(({data})=>{
                 this.signIn()
             }).catch(({response:{data}})=>{
                 alert(data.message)

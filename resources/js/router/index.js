@@ -13,11 +13,28 @@ var router = new VueRouter({
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - ${process.env.MIX_APP_NAME}`;
     if(to.meta.middleware == "guest") {
-        next();
+        if(store.state.auth.authenticated) {
+            switch(to.name) {
+                case "login":
+                    next({name: "home"});
+                    break;
+                default:
+                    next();
+            }
+        }
+        else {
+            next();
+        }
     }
     else {
         if(store.state.auth.authenticated) {
-            next()
+            switch(to.name) {
+                case "login":
+                    next({name: "home"});
+                    break;
+                default:
+                    next();
+            }
         }
         else {
             next({name: "login"})

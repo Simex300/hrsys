@@ -18,7 +18,7 @@
             </a>
         </div>
         <div class="navbar__footer">
-            <img class="navbar__footer__image" :src="`./storage/${this.$store.state.auth.user.profile}`" alt="hugenerd" width="30" height="30">
+            <img class="navbar__footer__image" :src="`${this.api_url}/storage/${this.$store.state.auth.user.profile}`" alt="hugenerd" width="30" height="30">
             <span class="navbar__footer__dropdown">{{ this.$store.state.auth.user.first_name }} {{ this.$store.state.auth.user.last_name }}</span>
             <div class="navbar__footer__icon" @click.prevent="logout">
                 <i class="fas fa-power-off"></i>
@@ -27,15 +27,20 @@
     </div>
 </template>
 <script>
-import {mapActions} from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
+    data() {
+        return {
+            api_url: process.env.MIX_APP_URL
+        }
+    },
     methods: {
         ...mapActions({
             signOut: "auth/logout"
         }),
         async logout() {
-            await axios.post('/api/logout').then(data => {
+            await axios.post(`${process.env.MIX_APP_URL}/api/logout`).then(data => {
                 this.signOut()
                 this.$router.push({name:"login"})
             })

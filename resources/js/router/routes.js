@@ -4,7 +4,7 @@
 
 // TODO: Remove when not needed
 import ExampleComponent from '../components/ExampleComponent.vue';
-import Employee from '../components/Employee/Employees.vue';
+import Employee from '../components/Employee/PageEmployees.vue';
 import Page from '../components/Test/Page.vue';
 // Routes
 import auth from './auth';

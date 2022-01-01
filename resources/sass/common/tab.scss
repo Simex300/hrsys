@@ -1,0 +1,42 @@
+.tab {
+    display: grid;
+    grid-template-rows: 6rem 1fr;
+
+    &__options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        align-items: end;
+
+        text-align: center;
+
+        &__option {
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+
+            height: 80%;
+            border-bottom: 0.1rem solid #000;
+
+            font-size: 1.4rem;
+
+            cursor: pointer;
+
+            .icon {
+                font-size: 1.8rem;
+                margin-right: 1rem;
+            }
+
+            &:hover {
+                background-color: rgba($light, .5);
+            }
+
+            &:nth-child(n+2) {
+                border-left: 0.1rem solid #000;
+            }
+
+            &.active {
+                background-color: $light;
+            }
+        }
+    }
+}

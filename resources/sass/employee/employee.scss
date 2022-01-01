@@ -1,6 +1,5 @@
 .employee {
-    margin-top: 2.2rem;
-    margin-left: 2rem;
+    @include pageMargin;
 
     background-color: transparent;
 

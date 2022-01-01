@@ -1,0 +1,79 @@
+.custom-calendar.vc-container {
+    $day-border: 1px solid #b8c2cc;
+    $day-border-highlight: 1px solid #b8c2cc;
+    $day-width: 90px;
+    $day-height: 90px;
+    $weekday-bg: #f8fafc;
+    $weekday-border: 1px solid #eaeaea;
+
+    border-radius: 0;
+    width: 100%;
+
+    & .vc-header {
+        background-color: #f1f5f8;
+        padding: 10px 0;
+    }
+
+    & .vc-weeks {
+        padding: 0;
+    }
+
+    & .vc-weekday {
+        background-color: $weekday-bg;
+        border-bottom: $weekday-border;
+        border-top: $weekday-border;
+        padding: 5px 0;
+    }
+
+    & .vc-day {
+        padding: 0 5px 3px 5px;
+        text-align: left;
+        height: $day-height;
+        min-width: $day-width;
+        background-color: white;
+
+        &.weekday-1,
+        &.weekday-7 {
+            background-color: #eff8ff;
+        }
+        &:not(.on-bottom) {
+            border-bottom: $day-border;
+            &.weekday-1 {
+                border-bottom: $day-border-highlight;
+            }
+        }
+
+        &:not(.on-right) {
+            border-right: $day-border;
+        }
+    }
+
+    & .vc-day-dots {
+        margin-bottom: 5px;
+    }
+}
+
+.day-card {
+    display: grid;
+    grid-template-rows: 1fr 9fr;
+
+    &__day {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    &__card {
+        display: grid;
+        grid-template-rows: repeat(auto-fill, minmax(2rem, 1fr));
+        row-gap: .6rem;
+
+        &__text {
+            height: fit-content;
+            padding-inline: 1rem;
+            padding-block: .4rem;
+
+            font-size: 1.4rem;
+            background-color: aqua;
+        }
+    }
+}

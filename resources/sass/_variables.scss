@@ -60,3 +60,9 @@ $cyan: #6cb2eb;
         min-width: 50%;
     }
 }
+
+@mixin pageMargin {
+    margin-top: 2.2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}

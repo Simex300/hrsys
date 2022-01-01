@@ -150,7 +150,7 @@ export default {
             return this.v$.employee.user.$validate()
         },
         checkEmail(value) {
-            axios.get(`http://localhost:8000/api/checkEmail/${value}`).then(res => {
+            axios.get(`${process.env.MIX_APP_URL}/api/checkEmail/${value}`).then(res => {
                 this.serverValidations.email = res.data;
             })
         },
@@ -185,13 +185,13 @@ export default {
             const formFields = this.getFormDataFields(employee);
 
             if(employee.id > 0) {
-                axios.post(`http://localhost:8000/api/employees/${employee.id}`, formFields, this.formConfig)
+                axios.post(`${process.env.MIX_APP_URL}/api/employees/${employee.id}`, formFields, this.formConfig)
                 .then(res => {
                     this.$emit('editEmployee', res.data);
                 })
             }
             else {
-                axios.post("http://localhost:8000/api/employees", formFields, this.formConfig)
+                axios.post(`${process.env.MIX_APP_URL}/api/employees`, formFields, this.formConfig)
                 .then(res => {
                     this.$emit('addEmployee', res.data);
                 })

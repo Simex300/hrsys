@@ -2,13 +2,13 @@
     <div class="employee-details">
         <div class="employee-details__header">
             <div class="employee-details__header__profile">
-                <img v-if="employee.profile" class="card__image" :src="`./storage/${employee.profile}`" alt="...">
+                <img v-if="employee.profile" class="card__image" :src="`${this.api_url}/storage/${employee.profile}`" alt="...">
                 <img v-else class="card__image" src="https://via.placeholder.com/80" alt="...">
             </div>
             <div class="employee-details__header__name">{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</div>
             <div class="employee-details__header__extra">Some extra details</div>
             <div class="employee-details__header__options actions">
-                <button class="actions__add">
+                <button class="actions__add" @click="toDetailsPage(employee.id)">
                     <i class="fas fa-file-contract"></i>
                 </button>
                 <button class="actions__add">
@@ -34,12 +34,24 @@
 </template>
 <script>
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
+import router from '../../router';
+
 export default {
     components: {
         CalendarHeatmap
     },
     props: {
         employee: Object,
+    },
+    data() {
+        return {
+            api_url: process.env.MIX_APP_URL
+        }
+    },
+    methods: {
+        toDetailsPage(id) {
+            router.push({name: 'employeeDetails', params: {id}})
+        }
     }
 }
 </script>

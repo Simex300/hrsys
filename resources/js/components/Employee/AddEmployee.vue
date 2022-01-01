@@ -48,7 +48,7 @@ export default {
   methods: {
     addEmployee() {
       this.axios
-        .post("http://localhost:8000/api/employees", this.employee)
+        .post(`${process.env.MIX_APP_URL}/api/employees`, this.employee)
         .then((response) => this.$router.push({ name: "home" }))
         .catch((err) => console.log(err))
         .finally(() => (this.loading = false));

@@ -49,7 +49,7 @@ export default {
         }),
         async register() {
             this.processing = true;
-            await axios.post('/api/register',this.user).then(data=>{
+            await axios.post(`${process.env.MIX_APP_URL}/api/register`,this.user).then(data=>{
                 this.signIn()
             }).catch(({response:{data}})=>{
                 alert(data.message)

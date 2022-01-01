@@ -94,7 +94,7 @@
             };
         },
         created() {
-            axios.get("http://localhost:8000/api/employees").then((response) => {
+            axios.get(`${process.env.MIX_APP_URL}/api/employees`).then((response) => {
                 //TODO: remove for loop to optimize the first instance
                 for (let index = 0; index < response.data.length; index++) {
                     response.data[index] = {...response.data[index], selected: false}
@@ -166,7 +166,7 @@
                     return employee.selected
                 });
                 selectedEmployees.forEach(employee => {
-                    axios.delete(`http://localhost:8000/api/employees/${employee.id}`)
+                    axios.delete(`${process.env.MIX_APP_URL}/api/employees/${employee.id}`)
                     .then(res => {
                         let index = this.employees.indexOf(employee);
                         this.employees.splice(index, 1);
