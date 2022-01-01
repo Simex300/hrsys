@@ -18,7 +18,7 @@
                 <template v-slot:tabPanel-0>
                     <div class="employee-details-page__body__information">
                         <ul>
-                            <li><span>Address:</span>{{employee.address.address1}} {{employee.address.address2}} {{employee.address.city}} {{employee.address.state}} {{employee.address.country}} {{employee.address.zipcode}}</li>
+                            <li v-if="employee.address"><span>Address:</span>{{employee.address.address1}} {{employee.address.address2}} {{employee.address.city}} {{employee.address.state}} {{employee.address.country}} {{employee.address.zipcode}}</li>
                             <li><span>Date of birth:</span>{{employee.date_of_birth}}</li>
                             <li><span>Gender:</span>{{employee.gender}}</li>
                             <li><span>Salary:</span>{{employee.salary}}</li>

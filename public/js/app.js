@@ -46196,22 +46196,24 @@ var render = function() {
                     { staticClass: "employee-details-page__body__information" },
                     [
                       _c("ul", [
-                        _c("li", [
-                          _c("span", [_vm._v("Address:")]),
-                          _vm._v(
-                            _vm._s(_vm.employee.address.address1) +
-                              " " +
-                              _vm._s(_vm.employee.address.address2) +
-                              " " +
-                              _vm._s(_vm.employee.address.city) +
-                              " " +
-                              _vm._s(_vm.employee.address.state) +
-                              " " +
-                              _vm._s(_vm.employee.address.country) +
-                              " " +
-                              _vm._s(_vm.employee.address.zipcode)
-                          )
-                        ]),
+                        _vm.employee.address
+                          ? _c("li", [
+                              _c("span", [_vm._v("Address:")]),
+                              _vm._v(
+                                _vm._s(_vm.employee.address.address1) +
+                                  " " +
+                                  _vm._s(_vm.employee.address.address2) +
+                                  " " +
+                                  _vm._s(_vm.employee.address.city) +
+                                  " " +
+                                  _vm._s(_vm.employee.address.state) +
+                                  " " +
+                                  _vm._s(_vm.employee.address.country) +
+                                  " " +
+                                  _vm._s(_vm.employee.address.zipcode)
+                              )
+                            ])
+                          : _vm._e(),
                         _vm._v(" "),
                         _c("li", [
                           _c("span", [_vm._v("Date of birth:")]),
