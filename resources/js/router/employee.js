@@ -7,7 +7,8 @@ export default [
         name: 'employee',
         component: Employees,
         meta: {
-            middleware: 'auth'
+            middleware: 'auth',
+            title: "Employee"
         }
     },
     {
@@ -15,7 +16,8 @@ export default [
         name: 'employeeDetails',
         component: EmployeeDetails,
         meta: {
-            middleware: 'auth'
+            middleware: 'auth',
+            title: "Employee Details"
         }
     },
 ]

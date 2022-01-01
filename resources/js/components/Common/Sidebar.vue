@@ -4,17 +4,11 @@
             <i class="navbar-icons fas fa-city"></i> <span>Human Resources System</span>
         </div>
         <div class="navbar__body">
-            <a href="#" class="navbar-link">
-                <i class="navbar-icons fas fa-table"></i> <span> Orders</span>
-            </a>
-            <a href="#" class="navbar-link">
+            <a :class="{'navbar-link': true, 'active': this.$route.name.includes('home')}" @click="goto('home')">
                 <i class="navbar-icons fas fa-tachometer-alt"></i> <span>Dashboard</span>
             </a>
-            <a href="#" class="navbar-link">
-                <i class="navbar-icons fas fa-user-friends"></i> <span>Customers</span>
-            </a>
-            <a href="#" class="navbar-link">
-                <i class="navbar-icons fas fa-archive"></i> <span>Productos</span>
+            <a :class="{'navbar-link': true, 'active': this.$route.name.includes('employee')}" @click="goto('employee')">
+                <i class="navbar-icons fas fa-users"></i> <span> Employee</span>
             </a>
         </div>
         <div class="navbar__footer">
@@ -44,6 +38,9 @@ export default {
                 this.signOut()
                 this.$router.push({name:"login"})
             })
+        },
+        goto(name) {
+            this.$router.push({name});
         }
     }
 }

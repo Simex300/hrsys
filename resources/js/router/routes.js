@@ -3,8 +3,7 @@
 // import UpdateEmployee from './components/Employee/UpdateEmployee.vue';
 
 // TODO: Remove when not needed
-import ExampleComponent from '../components/ExampleComponent.vue';
-import Employee from '../components/Employee/PageEmployees.vue';
+import Dashboard from '../components/Dashboard.vue';
 import Page from '../components/Test/Page.vue';
 // Routes
 import auth from './auth';
@@ -14,23 +13,10 @@ export const routes = [
     {
         path: '/',
         name: 'home',
-        component: Employee,
+        component: Dashboard,
         meta: {
             middleware: 'auth',
             title: `Home`
-        }
-    },
-    {
-        path: '/spa-page',
-        name: 'page',
-        component: Page,
-        props: {
-            title: "This is the SPA Second Page",
-            author: {
-                name: "Adonis Almonte",
-                role: "Software Dev",
-                code: "Always keep it clean"
-            }
         }
     },
     ...auth,
@@ -42,6 +28,19 @@ export const routes = [
 //         name: 'home',
 //         path: '/',
 //         component: Employees
+//     },
+//     {
+//         path: '/spa-page',
+//         name: 'page',
+//         component: Page,
+//         props: {
+//             title: "This is the SPA Second Page",
+//             author: {
+//                 name: "Adonis Almonte",
+//                 role: "Software Dev",
+//                 code: "Always keep it clean"
+//             }
+//         }
 //     },
 //     {
 //         name: 'add',

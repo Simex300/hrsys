@@ -23,19 +23,24 @@
 .navbar__body {
   background-color: #84a9ac;
   display: grid;
-  grid-template-rows: repeat(auto-fit, 3rem);
-  row-gap: 1rem;
-  padding-top: 1rem;
+  grid-template-rows: repeat(auto-fit, 5rem);
 }
 .navbar__body .navbar-link {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   font-size: 2rem;
   color: black;
 }
 .navbar__body .navbar-link .navbar-icons {
   font-size: 2.4rem;
 }
+.navbar__body .navbar-link.active {
+  background-color: rgba(59, 105, 120, 0.7);
+  color: #EEE;
+}
 .navbar__body .navbar-link:hover {
-  color: #333;
+  background-color: rgba(59, 105, 120, 0.3);
+  color: #EEE;
 }
 .navbar__footer {
   background-color: #3b6978;

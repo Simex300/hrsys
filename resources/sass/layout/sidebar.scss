@@ -29,12 +29,11 @@
     &__body {
         background-color: $light;
         display: grid;
-        grid-template-rows: repeat(auto-fit, 3rem);
-        row-gap: 1rem;
-
-        padding-top: 1rem;
+        grid-template-rows: repeat(auto-fit, 5rem);
 
         .navbar-link {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
             font-size: 2rem;
             color: black;
 
@@ -42,9 +41,16 @@
                 font-size: 2.4rem;
             }
 
-            &:hover {
-                color: #333;
+            &.active {
+                background-color: rgba($main, .7);
+                color: $font-color-invert;
             }
+
+            &:hover {
+                background-color: rgba($main, .3);
+                color: $font-color-invert;
+            }
+
         }
     }
 
